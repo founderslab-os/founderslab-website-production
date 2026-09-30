@@ -1,0 +1,6 @@
+{
+  "name": "FoundersLab",
+  "description": "India's Innovation & Entrepreneurship Ecosystem Builder for transforming educational institutions into innovation hubs.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
