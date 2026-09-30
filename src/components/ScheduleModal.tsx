@@ -28,20 +28,52 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({ isOpen, onClose })
     setStep(2);
   };
 
+  React.useEffect(() => {
+    if (isOpen) {
+      window.history.pushState({ modal: 'schedule' }, '');
+
+      const handlePopState = () => {
+        onClose();
+      };
+
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
+
+      window.addEventListener('popstate', handlePopState);
+      window.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+
+      return () => {
+        window.removeEventListener('popstate', handlePopState);
+        window.removeEventListener('keydown', handleEscape);
+        document.body.style.overflow = '';
+        if (window.history.state?.modal === 'schedule') {
+          window.history.back();
+        }
+      };
+    }
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm">
+      <div 
+        className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-sm"
+        onClick={onClose}
+      >
         <motion.div
           initial={{ scale: 0.9, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
-          className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative text-slate-800"
+          onClick={(e) => e.stopPropagation()}
+          className="bg-white rounded-3xl max-w-xl w-full max-h-[95dvh] overflow-y-auto p-5 sm:p-8 shadow-2xl border border-slate-200 relative text-slate-800"
         >
           <button
+            type="button"
             onClick={onClose}
-            className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>

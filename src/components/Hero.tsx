@@ -14,35 +14,8 @@ export const Hero: React.FC<HeroProps> = ({
   onScheduleMeeting,
 }) => {
   const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80";
-  const [heroImage, setHeroImage] = useState<string>(DEFAULT_IMAGE);
-
-  useEffect(() => {
-    const savedImage = localStorage.getItem('founderslab_hero_image');
-    if (savedImage) {
-      setHeroImage(savedImage);
-    }
-  }, []);
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const result = reader.result as string;
-        setHeroImage(result);
-        localStorage.setItem('founderslab_hero_image', result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleResetImage = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setHeroImage(DEFAULT_IMAGE);
-    localStorage.removeItem('founderslab_hero_image');
-  };
   return (
-    <section id="home" className="relative pt-24 lg:pt-28 pb-10 lg:pb-16 overflow-hidden bg-gradient-to-b from-[#F5F7FA] via-white to-white">
+    <section id="home" className="relative pt-32 lg:pt-36 pb-10 lg:pb-16 overflow-hidden bg-gradient-to-b from-[#F5F7FA] via-white to-white">
       {/* Background Architectural Mesh, Tint Image & Glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Background Image Tint */}
@@ -160,35 +133,14 @@ export const Hero: React.FC<HeroProps> = ({
             >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-white group">
                 <img
-                  src={heroImage}
+                  src={DEFAULT_IMAGE}
                   alt="Students and Researchers in Hardware & Prototyping Innovation Lab"
                   className="w-full h-[380px] sm:h-[420px] object-cover group-hover:scale-105 transition-transform duration-700"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B2E6B]/85 via-transparent to-black/20" />
                 
-                {/* Upload Custom Image Overlay Button */}
-                <div className="absolute top-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-2">
-                  <label className="cursor-pointer px-3 py-1.5 rounded-xl bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/30 text-white text-xs font-bold flex items-center gap-1.5 shadow-lg transition-all hover:scale-105">
-                    <Upload className="w-3.5 h-3.5 text-[#F57C00]" />
-                    <span>Upload Image</span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                    />
-                  </label>
-                  {heroImage !== DEFAULT_IMAGE && (
-                    <button
-                      onClick={handleResetImage}
-                      title="Reset to default image"
-                      className="p-1.5 rounded-xl bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/30 text-white text-xs transition-all hover:scale-105"
-                    >
-                      <RefreshCw className="w-3.5 h-3.5 text-slate-200" />
-                    </button>
-                  )}
-                </div>
+
 
                 {/* Image Overlay Content */}
                 <div className="absolute bottom-0 inset-x-0 p-6 text-white space-y-1">

@@ -19,7 +19,7 @@ import { Logo } from './Logo';
 
 interface NavbarProps {
   onOpenSchedule: () => void;
-  onOpenUploadLogo: () => void;
+
   activeSection: string;
   customLogoUrl?: string;
   taglineText?: string;
@@ -29,7 +29,7 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({
   onOpenSchedule,
-  onOpenUploadLogo,
+
   activeSection,
   customLogoUrl = '',
   taglineText = 'BUILD ENTERPRISE • BUILD NATION',
@@ -73,6 +73,17 @@ export const Navbar: React.FC<NavbarProps> = ({
     onNavigatePage(page, sectionId);
   };
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <>
       {/* Top Banner Notice */}
@@ -81,25 +92,25 @@ export const Navbar: React.FC<NavbarProps> = ({
           <Sparkles className="w-3 h-3" />
           Ecosystem Leadership
         </span>
-        <span>
+        <span className="truncate sm:whitespace-normal max-w-[200px] sm:max-w-none">
           Transforming Educational Campuses into World-Class Innovation Hubs Across India.
         </span>
       </div>
 
       <header
-        className={`fixed top-7 left-0 right-0 z-50 transition-all duration-300 px-4 lg:px-8 ${
-          isScrolled ? 'top-0' : ''
+        className={`fixed left-0 right-0 z-50 transition-all duration-300 px-4 lg:px-8 ${
+          isScrolled ? 'top-0' : 'top-8 sm:top-7'
         }`}
       >
         <div
           className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 ${
             isScrolled
-              ? 'glass-panel shadow-lg shadow-[#0B2E6B]/5 py-3 border border-slate-200/80'
-              : 'bg-white/90 backdrop-blur-md py-4 border border-slate-100 shadow-sm'
+              ? 'glass-panel shadow-lg shadow-[#0B2E6B]/5 py-2.5 sm:py-3 border border-slate-200/80'
+              : 'bg-white/90 backdrop-blur-md py-3 sm:py-4 border border-slate-100 shadow-sm'
           }`}
         >
-          <div className="px-4 lg:px-6 flex items-center justify-between">
-            {/* Logo Container with Quick Upload Trigger */}
+          <div className="px-3 sm:px-4 lg:px-6 flex items-center justify-between">
+            {/* Logo Container */}
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => handleNavigate('home', 'home')} 
@@ -107,7 +118,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <Logo size="md" customLogoUrl={customLogoUrl} taglineText={taglineText} />
               </button>
-
             </div>
 
             {/* Desktop Navigation Links */}
@@ -305,18 +315,26 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Mobile Drawer Navigation */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-20 z-40 p-4 lg:hidden max-h-[calc(100vh-90px)] overflow-y-auto"
-          >
-            <div className="glass-panel-dark rounded-3xl p-6 shadow-2xl border border-white/20 text-white">
-              <div className="flex justify-between items-center pb-4 mb-4 border-b border-white/10">
-                <Logo variant="dark" size="sm" customLogoUrl={customLogoUrl} taglineText={taglineText} />
-              </div>
-
+          <React.Fragment key="mobile-menu-fragment">
+            <motion.div
+              key="mobile-menu-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-sm lg:hidden"
+            />
+            <motion.div
+              key="mobile-menu-drawer"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-x-0 top-[76px] sm:top-[84px] z-50 p-4 lg:hidden max-h-[calc(100dvh-80px)] overflow-y-auto scroll-smooth"
+              style={{ WebkitOverflowScrolling: 'touch' }}
+            >
+              <div className="glass-panel-dark rounded-3xl p-5 sm:p-6 shadow-2xl border border-white/20 text-white mb-4">
               {/* Navigation Grid & Accordion */}
               <div className="space-y-2 mb-6">
                 {/* Home */}
@@ -459,6 +477,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             </div>
           </motion.div>
+          </React.Fragment>
         )}
       </AnimatePresence>
     </>

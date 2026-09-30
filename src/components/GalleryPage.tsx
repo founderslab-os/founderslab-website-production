@@ -11,10 +11,7 @@ import {
   Share2, 
   Check, 
   Camera, 
-  Trash2, 
-  RotateCcw, 
-  AlertTriangle, 
-  Plus, 
+
   LayoutGrid, 
   Columns, 
   Download, 
@@ -23,7 +20,7 @@ import {
 } from 'lucide-react';
 import { GALLERY_ITEMS } from '../data/founderslabData';
 import { GalleryItem } from '../types';
-import { GalleryUploadModal } from './GalleryUploadModal';
+
 
 interface GalleryPageProps {
   onBackToHome: () => void;
@@ -31,24 +28,10 @@ interface GalleryPageProps {
   onNavigateToContact?: () => void;
 }
 
-const STORAGE_KEY = 'founderslab_multi_gallery_items_v3';
-
 export const GalleryPage: React.FC<GalleryPageProps> = ({
   onBackToHome,
 }) => {
-  // Gallery items state backed by localStorage
-  const [items, setItems] = useState<GalleryItem[]>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
-    } catch (e) {
-      console.error('Error loading gallery items from localStorage', e);
-    }
-    return GALLERY_ITEMS;
-  });
+  const [items, setItems] = useState<GalleryItem[]>(GALLERY_ITEMS);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -60,89 +43,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
   const [copiedLink, setCopiedLink] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'masonry'>('grid');
 
-  // Modals & Action States
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<GalleryItem | null>(null);
-  const [photoToDeleteFromEvent, setPhotoToDeleteFromEvent] = useState<{ item: GalleryItem; photoIndex: number } | null>(null);
-  const [showClearConfirm, setShowClearConfirm] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string>('');
 
-  // Persist items to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    } catch (e) {
-      console.error('Error saving gallery items to localStorage', e);
-    }
-  }, [items]);
-
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => {
-      setToastMessage('');
-    }, 3000);
-  };
-
-  // Add new item (with multiple photos)
-  const handleAddItem = (newItem: GalleryItem) => {
-    setItems((prev) => [newItem, ...prev]);
-    const count = newItem.images?.length || 1;
-    showToast(`"${newItem.title}" with ${count} photo${count > 1 ? 's' : ''} added!`);
-  };
-
-  // Delete entire item
-  const handleConfirmDelete = () => {
-    if (!itemToDelete) return;
-    const targetTitle = itemToDelete.title;
-    setItems((prev) => prev.filter((it) => it.id !== itemToDelete.id));
-    if (activeItem?.id === itemToDelete.id) {
-      setActiveItem(null);
-    }
-    setItemToDelete(null);
-    showToast(`Removed "${targetTitle}"`);
-  };
-
-  // Delete single photo from inside an event album
-  const handleConfirmDeletePhotoFromEvent = () => {
-    if (!photoToDeleteFromEvent) return;
-    const { item, photoIndex } = photoToDeleteFromEvent;
-    const currentImages = item.images && item.images.length > 0 ? item.images : [item.imageUrl];
-
-    if (currentImages.length <= 1) {
-      // If it only has 1 photo, delete the entire item
-      setItems((prev) => prev.filter((it) => it.id !== item.id));
-      setActiveItem(null);
-    } else {
-      const updatedImages = currentImages.filter((_, idx) => idx !== photoIndex);
-      const updatedItem: GalleryItem = {
-        ...item,
-        imageUrl: updatedImages[0],
-        images: updatedImages,
-      };
-
-      setItems((prev) => prev.map((it) => (it.id === item.id ? updatedItem : it)));
-      setActiveItem(updatedItem);
-      setActivePhotoIndex((prev) => Math.min(prev, updatedImages.length - 1));
-    }
-
-    setPhotoToDeleteFromEvent(null);
-    showToast('Photo removed from event album');
-  };
-
-  // Clear all items
-  const handleConfirmClearAll = () => {
-    setItems([]);
-    setShowClearConfirm(false);
-    setActiveItem(null);
-    showToast('Gallery cleared. Ready for your custom photos.');
-  };
-
-  // Reset to original default showcase
-  const handleResetDefaults = () => {
-    setItems(GALLERY_ITEMS);
-    setShowClearConfirm(false);
-    showToast('Default photos restored.');
-  };
 
   // Dynamic available categories
   const categories = useMemo(() => {
@@ -252,20 +153,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
 
   return (
     <div className="pt-24 pb-20 min-h-screen bg-[#F8FAFC]">
-      {/* Toast Notification Banner */}
-      <AnimatePresence>
-        {toastMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-[#0B2E6B] text-white px-5 py-2.5 rounded-2xl shadow-xl flex items-center gap-2 text-xs font-semibold border border-white/20"
-          >
-            <Check className="w-4 h-4 text-emerald-400" />
-            <span>{toastMessage}</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Navigation Bar */}
@@ -301,35 +189,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
             </p>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setIsUploadModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0B2E6B] hover:bg-[#1565C0] text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
-            >
-              <Plus className="w-4 h-4 text-[#F57C00]" />
-              <span>Upload Photos</span>
-            </button>
 
-            {items.length > 0 && (
-              <button
-                onClick={() => setShowClearConfirm(true)}
-                className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 text-xs font-semibold transition-colors cursor-pointer"
-                title="Clear all photos from gallery"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>Clear</span>
-              </button>
-            )}
-
-            <button
-              onClick={handleResetDefaults}
-              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
-              title="Reset to default photos"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
-          </div>
         </div>
 
         {/* Filter Bar & Search */}
@@ -472,20 +332,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
                       </div>
                     )}
 
-                    {/* Delete Button on Card */}
-                    <div className="absolute top-2.5 right-2.5 z-10">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setItemToDelete(item);
-                        }}
-                        className="p-1.5 rounded-lg bg-white/90 hover:bg-rose-600 text-slate-600 hover:text-white shadow-xs transition-all cursor-pointer backdrop-blur-xs"
-                        title="Delete event album"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
+
                   </div>
 
                   {/* Caption Bar */}
@@ -534,22 +381,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
                 ? 'Upload multiple photos from your device to start building your campus event gallery.'
                 : `No results matching "${searchQuery}". Try selecting another category.`}
             </p>
-            <div className="mt-4 flex items-center justify-center gap-2">
-              <button
-                onClick={() => setIsUploadModalOpen(true)}
-                className="px-4 py-2 rounded-xl bg-[#0B2E6B] text-white text-xs font-bold hover:bg-[#1565C0] transition-colors cursor-pointer"
-              >
-                Upload Photos
-              </button>
-              {items.length === 0 && (
-                <button
-                  onClick={handleResetDefaults}
-                  className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
-                >
-                  Load Sample Photos
-                </button>
-              )}
-            </div>
+
           </div>
         )}
       </div>
@@ -608,20 +440,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
                     <Download className="w-4 h-4" />
                   </a>
 
-                  {/* Delete button (deletes current photo or whole event) */}
-                  <button
-                    onClick={() => {
-                      if (activeEventPhotos.length > 1) {
-                        setPhotoToDeleteFromEvent({ item: activeItem, photoIndex: activePhotoIndex });
-                      } else {
-                        setItemToDelete(activeItem);
-                      }
-                    }}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition-colors"
-                    title={activeEventPhotos.length > 1 ? "Remove this photo from event" : "Delete event"}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+
 
                   <button
                     onClick={() => setActiveItem(null)}
@@ -728,157 +547,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Upload Modal (Multiple Photos) */}
-      <AnimatePresence>
-        {isUploadModalOpen && (
-          <GalleryUploadModal
-            isOpen={isUploadModalOpen}
-            onClose={() => setIsUploadModalOpen(false)}
-            onSave={handleAddItem}
-          />
-        )}
-      </AnimatePresence>
 
-      {/* Single Photo from Event Delete Modal */}
-      <AnimatePresence>
-        {photoToDeleteFromEvent && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setPhotoToDeleteFromEvent(null)}
-              className="fixed inset-0 bg-slate-900/70 backdrop-blur-xs"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-sm bg-white rounded-2xl p-5 shadow-2xl z-10 border border-slate-200 text-center"
-            >
-              <div className="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3">
-                <Trash2 className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-slate-900">
-                Remove this photo?
-              </h3>
-              <p className="text-xs text-slate-500 mt-1">
-                Remove photo {photoToDeleteFromEvent.photoIndex + 1} from <strong className="text-slate-800">"{photoToDeleteFromEvent.item.title}"</strong>? Other photos in this event will remain.
-              </p>
-              <div className="mt-5 flex items-center justify-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setPhotoToDeleteFromEvent(null)}
-                  className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={handleConfirmDeletePhotoFromEvent}
-                  className="px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
-                >
-                  Remove Photo
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* Delete Entire Event Modal */}
-      <AnimatePresence>
-        {itemToDelete && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setItemToDelete(null)}
-              className="fixed inset-0 bg-slate-900/70 backdrop-blur-xs"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-sm bg-white rounded-2xl p-5 shadow-2xl z-10 border border-slate-200 text-center"
-            >
-              <div className="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3">
-                <Trash2 className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-slate-900">
-                Delete Event Album?
-              </h3>
-              <p className="text-xs text-slate-500 mt-1">
-                Remove <strong className="text-slate-800">"{itemToDelete.title}"</strong> and all its photos from the gallery?
-              </p>
-              <div className="mt-5 flex items-center justify-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setItemToDelete(null)}
-                  className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={handleConfirmDelete}
-                  className="px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
-                >
-                  Delete Event
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* Clear All Confirmation Modal */}
-      <AnimatePresence>
-        {showClearConfirm && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowClearConfirm(false)}
-              className="fixed inset-0 bg-slate-900/70 backdrop-blur-xs"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-sm bg-white rounded-2xl p-5 shadow-2xl z-10 border border-slate-200 text-center"
-            >
-              <div className="w-10 h-10 rounded-xl bg-amber-100 text-[#F57C00] flex items-center justify-center mx-auto mb-3">
-                <AlertTriangle className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-slate-900">
-                Clear Gallery?
-              </h3>
-              <p className="text-xs text-slate-500 mt-1">
-                This will remove all <strong className="text-slate-800">{items.length} events</strong>. You can upload your own custom event photos or restore defaults at any time.
-              </p>
-              <div className="mt-5 flex items-center justify-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowClearConfirm(false)}
-                  className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
-                >
-                  Keep Photos
-                </button>
-                <button
-                  type="button"
-                  onClick={handleConfirmClearAll}
-                  className="px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
-                >
-                  Clear All
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };

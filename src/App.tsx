@@ -7,14 +7,14 @@ import { FlagshipPrograms } from './components/FlagshipPrograms';
 import { WhyFoundersLab } from './components/WhyFoundersLab';
 import { ContactSection } from './components/ContactSection';
 import { ScheduleModal } from './components/ScheduleModal';
-import { LogoUploadModal } from './components/LogoUploadModal';
+
 import { Footer } from './components/Footer';
 import { GalleryPage } from './components/GalleryPage';
 import { CeoPage } from './components/CeoPage';
 
 export default function App() {
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
-  const [logoUploadOpen, setLogoUploadOpen] = useState(false);
+
   const [activeSection, setActiveSection] = useState('home');
   
   // Page routing state ('home', 'gallery', or 'ceo')
@@ -138,7 +138,7 @@ export default function App() {
       {/* Header & Navigation */}
       <Navbar
         onOpenSchedule={() => setScheduleModalOpen(true)}
-        onOpenUploadLogo={() => setLogoUploadOpen(true)}
+
         activeSection={activeSection}
         customLogoUrl={customLogoUrl}
         taglineText={taglineText}
@@ -206,14 +206,7 @@ export default function App() {
         onClose={() => setScheduleModalOpen(false)}
       />
 
-      {/* Brand & Logo Customization Modal */}
-      <LogoUploadModal
-        isOpen={logoUploadOpen}
-        onClose={() => setLogoUploadOpen(false)}
-        customLogoUrl={customLogoUrl}
-        taglineText={taglineText}
-        onSaveLogo={handleSaveLogo}
-      />
+
     </div>
   );
 }
