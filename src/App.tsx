@@ -27,7 +27,7 @@ export default function App() {
 
   // Custom logo state stored in localStorage
   const [customLogoUrl, setCustomLogoUrl] = useState<string>(() => {
-    return localStorage.getItem('fl_custom_logo_url') || '';
+    return localStorage.getItem('fl_custom_logo_url') || '/logo.jpeg';
   });
   const [taglineText, setTaglineText] = useState<string>(() => {
     return localStorage.getItem('fl_tagline_text') || 'BUILD ENTERPRISE • BUILD NATION';

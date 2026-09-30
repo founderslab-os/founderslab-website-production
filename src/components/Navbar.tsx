@@ -108,15 +108,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <Logo size="md" customLogoUrl={customLogoUrl} taglineText={taglineText} />
               </button>
 
-              {/* Upload Logo Badge Button */}
-              <button
-                onClick={onOpenUploadLogo}
-                title="Upload custom institution logo"
-                className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 hover:bg-[#F57C00]/10 text-slate-700 hover:text-[#0B2E6B] text-[11px] font-bold border border-slate-200 transition-all cursor-pointer group"
-              >
-                <Upload className="w-3 h-3 text-[#F57C00] group-hover:scale-110 transition-transform" />
-                <span>Upload Logo</span>
-              </button>
             </div>
 
             {/* Desktop Navigation Links */}
@@ -324,16 +315,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="glass-panel-dark rounded-3xl p-6 shadow-2xl border border-white/20 text-white">
               <div className="flex justify-between items-center pb-4 mb-4 border-b border-white/10">
                 <Logo variant="dark" size="sm" customLogoUrl={customLogoUrl} taglineText={taglineText} />
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    onOpenUploadLogo();
-                  }}
-                  className="px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-xs font-bold text-slate-200 flex items-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  <Upload className="w-3 h-3 text-[#F57C00]" />
-                  Upload Logo
-                </button>
               </div>
 
               {/* Navigation Grid & Accordion */}

@@ -84,12 +84,12 @@ export const LogoUploadModal: React.FC<LogoUploadModalProps> = ({
   };
 
   const handleReset = () => {
-    setSelectedImage('');
+    setSelectedImage('/logo.jpeg');
     setTagline('BUILD ENTERPRISE • BUILD NATION');
     setUrlInput('');
     setErrorMessage('');
-    onSaveLogo('', 'BUILD ENTERPRISE • BUILD NATION');
-    setSuccessMessage('Reset to default vector logo');
+    onSaveLogo('/logo.jpeg', 'BUILD ENTERPRISE • BUILD NATION');
+    setSuccessMessage('Reset to default logo');
     setTimeout(() => setSuccessMessage(''), 3000);
   };
 
