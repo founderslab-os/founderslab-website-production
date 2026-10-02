@@ -32,7 +32,7 @@ interface CeoPageProps {
   onNavigateToContact: () => void;
 }
 
-const STORAGE_KEY = 'fl_ceo_profile_v1';
+const STORAGE_KEY = 'fl_ceo_profile_v2';
 
 export const CeoPage: React.FC<CeoPageProps> = ({
   onBackToHome,

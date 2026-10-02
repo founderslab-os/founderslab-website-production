@@ -1,11 +1,11 @@
 import { CeoProfile } from '../types';
 
 export const DEFAULT_CEO_PROFILE: CeoProfile = {
-  name: 'Satya Prasad Peddapelli',
-  primaryTitle: 'Chief Executive Officer & Co-Founder',
+  name: 'Ms. Sakuntala Kasaragadda (Phd)',
+  primaryTitle: 'Founder & CEO',
   organizationName: 'FoundersLab',
   location: 'Hyderabad, India',
-  photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+  photoUrl: '/ceo_image.jpg',
   badgeText: 'FoundersLab Leadership',
   availabilityStatus: 'Available for Institutional Keynotes & Advisory',
 
@@ -17,10 +17,10 @@ export const DEFAULT_CEO_PROFILE: CeoProfile = {
   phone: '+91 9010207999',
 
   // Hero section
-  taglineBadge: 'Ecosystem Visionary & Capacity Builder',
+  taglineBadge: 'ECOSYSTEM VISIONARY & CAPACITY BUILDER',
   heroHeadline: 'Transforming Campuses into Engines of High-Impact Venture Creation.',
-  heroBioParagraph1: 'Satya Prasad Peddapelli is a seasoned entrepreneurship development expert, institutional capacity-building specialist, and digital strategist with more than 16 years of leadership across national institutes, MSME ecosystems, and higher education.',
-  heroBioParagraph2: 'Prior to co-founding FoundersLab, he served as a Senior Faculty at the prestigious National Institute of Micro, Small, and Medium Enterprises (ni-msme), under the Ministry of MSME, Government of India. Through FoundersLab, he is executing a mission to turn 100+ Indian university and college campuses into self-sustaining innovation hubs.',
+  heroBioParagraph1: 'Ms. Sakuntala Kasaragadda (Phd) is an entrepreneurship, incubation and social-impact professional based in Hyderabad. She is currently associated with FoundersLab as its Founder & CEO and focuses on youth entrepreneurship, student innovation, incubation, enterprise development and ecosystem building. Her public professional profile describes her as a mentor, strategist and incubation/acceleration professional.',
+  heroBioParagraph2: '',
 
   // 4 quantifiable metrics
   metrics: [
@@ -32,10 +32,10 @@ export const DEFAULT_CEO_PROFILE: CeoProfile = {
 
   // Executive Story / Detailed Biography
   bioSectionBadge: 'Executive Profile & Journey',
-  bioSectionHeading: 'A Decade and a Half Dedicated to Capacity Building & Enterprise',
-  bioParagraph1: 'India is experiencing an unprecedented surge in academic excellence and technological literacy; however, the bridge between laboratory research, student ambition, and commercially scalable enterprises has historically remained fragmented. Satya Prasad Peddapelli recognized this systemic gap over 16 years ago.',
-  bioParagraph2: 'During his distinguished tenure as Senior Faculty at the National Institute of Micro, Small, and Medium Enterprises (ni-msme), an autonomous apex institution under the Ministry of MSME, Govt. of India, he trained thousands of prospective entrepreneurs, MSME business owners, academic directors, and state ecosystem managers. He designed curriculum modules on digital growth, social commerce, and institutional incubation governance that helped grassroots businesses transition into robust commercial entities.',
-  bioParagraph3: 'FoundersLab was founded out of this lived insight: educational institutions should not be mere conduits for campus recruitment—they must be national engines that create wealth, build innovative products, commercialize patent portfolios, and generate high-skilled jobs.',
+  bioSectionHeading: 'Two Decades Dedicated to Capacity Building & Enterprise',
+  bioParagraph1: 'Ms. Sakuntala Kasaragadda (Phd) is an accomplished entrepreneurship, incubation and social-impact leader with more than two decades of experience in enterprise development, youth entrepreneurship, women entrepreneurship, innovation and startup ecosystems.',
+  bioParagraph2: 'Her professional journey spans grassroots development with DHAN Foundation, youth entrepreneurship and mentoring with Bharatiya Yuva Shakti Trust (CII), consulting with Ernst & Young (EY), and leadership in social-impact entrepreneurship at WE Hub, Government of Telangana. She later led the Incubation Department at G. Narayanamma Institute of Technology & Science, where she worked extensively to develop innovation, incubation and entrepreneurship ecosystems for students and aspiring entrepreneurs.',
+  bioParagraph3: 'Over the years, she has supported thousands of aspiring entrepreneurs and women through enterprise-development, mentoring and entrepreneurship initiatives. As the Founder & CEO of FoundersLab, she is committed to transforming educational institutions into vibrant innovation and entrepreneurship ecosystems, enabling students to move from Ideas to Innovation, Innovation to Enterprises, and Enterprises to Impact, creating sustainable opportunities for students, institutions and communities.',
   mottoHeading: 'FoundersLab Motto Championed by the CEO',
   mottoText: 'BUILD ENTERPRISE • BUILD NATION',
 
@@ -73,7 +73,7 @@ export const DEFAULT_CEO_PROFILE: CeoProfile = {
   // 4 Strategic Pillars
   pillarsBadge: 'Strategic Focus Areas',
   pillarsHeading: 'The CEO\'s 4 Strategic Pillars for Campus Innovation',
-  pillarsSubheading: 'How Satya Prasad Peddapelli structures sustainable transformation inside educational institutions.',
+  pillarsSubheading: 'How Ms. Sakuntala Kasaragadda structures sustainable transformation inside educational institutions.',
   pillars: [
     {
       id: 'p1',
@@ -103,12 +103,12 @@ export const DEFAULT_CEO_PROFILE: CeoProfile = {
 
   // Executive Quote
   quoteText: 'We must stop measuring college success purely by placement day statistics. When an institution equips its brightest minds to build enterprises, invent indigenous deeptech, and create employment for thousands, that institution becomes a permanent pillar of nation-building.',
-  quoteAuthor: 'Satya Prasad Peddapelli',
-  quoteTitle: 'Chief Executive Officer & Co-Founder, FoundersLab',
+  quoteAuthor: 'Ms. Sakuntala Kasaragadda (Phd)',
+  quoteTitle: 'Founder & CEO, FoundersLab',
 
   // Engagement Section
   engagementBadge: 'Leadership Engagement',
-  engagementHeading: 'Engage Satya Prasad Peddapelli for Your Institution',
+  engagementHeading: 'Engage Ms. Sakuntala Kasaragadda for Your Institution',
   engagementDescription: 'Whether you are a College Chairman, Vice Chancellor, Trust Trustee, or Innovation Director looking to establish an incubation policy, audit your campus innovation readiness, or invite the CEO for an institutional keynote address:',
   engagementBullet1: 'Chancellors & Board Advisory',
   engagementBullet2: 'Incubation Policy Blueprints',
