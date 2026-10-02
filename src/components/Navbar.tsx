@@ -207,7 +207,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                             </span>
                           </div>
                           <div className="text-[11px] text-slate-500 font-normal leading-tight mt-0.5">
-                            Satya Prasad Peddapelli – Leadership & Vision
+                            Ms. Sakuntala Kasaragadda (Phd) – Leadership & Vision
                           </div>
                         </div>
                       </button>
