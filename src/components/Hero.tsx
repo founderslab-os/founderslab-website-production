@@ -15,7 +15,7 @@ export const Hero: React.FC<HeroProps> = ({
 }) => {
   const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80";
   return (
-    <section id="home" className="relative pt-32 lg:pt-36 pb-10 lg:pb-16 overflow-hidden bg-gradient-to-b from-[#F5F7FA] via-white to-white">
+    <section id="home" className="relative min-h-[100dvh] lg:min-h-screen flex items-center pt-24 lg:pt-28 pb-10 lg:pb-12 overflow-hidden bg-gradient-to-b from-[#F5F7FA] via-white to-white">
       {/* Background Architectural Mesh, Tint Image & Glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Background Image Tint */}
@@ -43,8 +43,8 @@ export const Hero: React.FC<HeroProps> = ({
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full mt-8 lg:mt-0">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-6 items-center">
           
           {/* Left Column: Storytelling & Key CTAs */}
           <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
@@ -70,7 +70,7 @@ export const Hero: React.FC<HeroProps> = ({
               transition={{ duration: 0.6, delay: 0.1 }}
               className="space-y-1.5"
             >
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-extrabold text-[#0B2E6B] tracking-tight font-poppins leading-[1.15]">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#0B2E6B] tracking-tight font-poppins leading-[1.15]">
                 Empowering Institutions.
                 <br />
                 <span className="gradient-text">Inspiring Innovation.</span>
@@ -98,7 +98,7 @@ export const Hero: React.FC<HeroProps> = ({
             >
               <button
                 onClick={onPartnerWithUs}
-                className="px-5 py-3 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#0B2E6B] to-[#1565C0] hover:from-[#1565C0] hover:to-[#0B2E6B] transition-all duration-300 shadow-lg shadow-[#0B2E6B]/20 hover:shadow-xl hover:scale-[1.02] flex items-center gap-2 cursor-pointer group"
+                className="px-4 lg:px-5 py-2.5 lg:py-3 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#0B2E6B] to-[#1565C0] hover:from-[#1565C0] hover:to-[#0B2E6B] transition-all duration-300 shadow-lg shadow-[#0B2E6B]/20 hover:shadow-xl hover:scale-[1.02] flex items-center gap-2 cursor-pointer group"
               >
                 Partner With Us
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -106,7 +106,7 @@ export const Hero: React.FC<HeroProps> = ({
 
               <button
                 onClick={onExplorePrograms}
-                className="px-5 py-3 rounded-xl font-bold text-sm text-slate-800 bg-white hover:bg-slate-50 border border-slate-300 transition-all duration-300 shadow-sm hover:border-[#1565C0] hover:text-[#1565C0] flex items-center gap-2 cursor-pointer"
+                className="px-4 lg:px-5 py-2.5 lg:py-3 rounded-xl font-bold text-sm text-slate-800 bg-white hover:bg-slate-50 border border-slate-300 transition-all duration-300 shadow-sm hover:border-[#1565C0] hover:text-[#1565C0] flex items-center gap-2 cursor-pointer"
               >
                 Explore Programs
                 <ChevronRight className="w-4 h-4 text-slate-400" />
@@ -114,7 +114,7 @@ export const Hero: React.FC<HeroProps> = ({
 
               <button
                 onClick={onScheduleMeeting}
-                className="px-5 py-3 rounded-xl font-bold text-sm text-[#0B2E6B] bg-[#F5F7FA] hover:bg-slate-200/80 border border-slate-200 transition-all duration-300 flex items-center gap-2 cursor-pointer"
+                className="px-4 lg:px-5 py-2.5 lg:py-3 rounded-xl font-bold text-sm text-[#0B2E6B] bg-[#F5F7FA] hover:bg-slate-200/80 border border-slate-200 transition-all duration-300 flex items-center gap-2 cursor-pointer"
               >
                 <Calendar className="w-4 h-4 text-[#F57C00]" />
                 Schedule a Meeting
@@ -135,7 +135,7 @@ export const Hero: React.FC<HeroProps> = ({
                 <img
                   src={DEFAULT_IMAGE}
                   alt="Students and Researchers in Hardware & Prototyping Innovation Lab"
-                  className="w-full h-[380px] sm:h-[420px] object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-[320px] sm:h-[360px] lg:h-[400px] object-cover group-hover:scale-105 transition-transform duration-700"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B2E6B]/85 via-transparent to-black/20" />

@@ -271,31 +271,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* Desktop Action Buttons */}
             <div className="hidden lg:flex items-center gap-2 xl:gap-3">
-              {/* Gallery Quick Button (if on home or ceo page) */}
-              {currentPage !== 'gallery' ? (
-                <button
-                  onClick={() => handleNavigate('gallery')}
-                  className="px-3 py-1.5 rounded-md text-sm font-semibold text-[#0B2E6B] bg-slate-100 hover:bg-[#F57C00]/10 hover:text-[#0B2E6B] border border-slate-200 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs whitespace-nowrap"
-                >
-                  <Images className="w-3.5 h-3.5 text-[#F57C00]" />
-                  <span>View Gallery</span>
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleNavigate('home', 'home')}
-                  className="px-3 py-1.5 rounded-md text-sm font-semibold text-[#0B2E6B] bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs whitespace-nowrap"
-                >
-                  <ArrowRight className="w-3.5 h-3.5 rotate-180 text-[#F57C00]" />
-                  <span>Back to Home</span>
-                </button>
-              )}
+
 
               {/* Schedule Meeting CTA */}
               <button
                 onClick={onOpenSchedule}
-                className="px-3.5 py-1.5 rounded-md text-sm font-semibold text-white bg-gradient-to-r from-[#0B2E6B] to-[#1565C0] hover:from-[#1565C0] hover:to-[#0B2E6B] transition-all shadow-md shadow-[#0B2E6B]/15 hover:shadow-lg flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+                className="px-4 py-1.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#0B2E6B] via-[#1565C0] to-[#0B2E6B] bg-[length:200%_auto] hover:bg-right transition-all duration-500 shadow-md shadow-[#0B2E6B]/20 hover:shadow-lg hover:shadow-[#0B2E6B]/30 hover:-translate-y-0.5 flex items-center gap-1.5 cursor-pointer whitespace-nowrap border border-[#1565C0]/50"
               >
-                <Calendar className="w-3.5 h-3.5 text-[#F57C00]" />
+                <Calendar className="w-3.5 h-3.5 text-[#FFB74D]" />
                 Schedule Meeting
               </button>
             </div>
