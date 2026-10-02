@@ -105,8 +105,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div
           className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 ${
             isScrolled
-              ? 'glass-panel shadow-lg shadow-[#0B2E6B]/5 py-2.5 sm:py-3 border border-slate-200/80'
-              : 'bg-white/90 backdrop-blur-md py-3 sm:py-4 border border-slate-100 shadow-sm'
+              ? 'glass-panel shadow-lg shadow-[#0B2E6B]/5 py-1.5 sm:py-2 border border-slate-200/80'
+              : 'bg-white/90 backdrop-blur-md py-2 sm:py-2.5 border border-slate-100 shadow-sm'
           }`}
         >
           <div className="px-3 sm:px-4 lg:px-6 flex items-center justify-between">
@@ -125,7 +125,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Home */}
               <button
                 onClick={() => handleNavigate('home', 'home')}
-                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all cursor-pointer ${
+                className={`px-2.5 xl:px-3 py-1.5 rounded-md text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
                   currentPage === 'home' && activeSection === 'home'
                     ? 'text-[#0B2E6B] bg-[#F5F7FA] font-bold border border-slate-200/70 shadow-xs'
                     : 'text-slate-700 hover:text-[#1565C0] hover:bg-slate-50'
@@ -143,7 +143,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <button
                   onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
-                  className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                  className={`px-2.5 xl:px-3 py-1.5 rounded-md text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                     isAboutActive
                       ? 'text-[#0B2E6B] bg-[#F5F7FA] font-bold border border-slate-200/70 shadow-xs'
                       : 'text-slate-700 hover:text-[#1565C0] hover:bg-slate-50'
@@ -219,7 +219,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Programs */}
               <button
                 onClick={() => handleNavigate('home', 'programs')}
-                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all cursor-pointer ${
+                className={`px-2.5 xl:px-3 py-1.5 rounded-md text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
                   currentPage === 'home' && activeSection === 'programs'
                     ? 'text-[#0B2E6B] bg-[#F5F7FA] font-bold border border-slate-200/70 shadow-xs'
                     : 'text-slate-700 hover:text-[#1565C0] hover:bg-slate-50'
@@ -231,7 +231,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Impact */}
               <button
                 onClick={() => handleNavigate('home', 'impact')}
-                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all cursor-pointer ${
+                className={`px-2.5 xl:px-3 py-1.5 rounded-md text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
                   currentPage === 'home' && activeSection === 'impact'
                     ? 'text-[#0B2E6B] bg-[#F5F7FA] font-bold border border-slate-200/70 shadow-xs'
                     : 'text-slate-700 hover:text-[#1565C0] hover:bg-slate-50'
@@ -243,7 +243,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Gallery */}
               <button
                 onClick={() => handleNavigate('gallery')}
-                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                className={`px-2.5 xl:px-3 py-1.5 rounded-md text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                   currentPage === 'gallery'
                     ? 'text-[#0B2E6B] bg-[#F5F7FA] font-bold border border-slate-200/70 shadow-xs'
                     : 'text-slate-700 hover:text-[#1565C0] hover:bg-slate-50'
@@ -259,7 +259,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Contact */}
               <button
                 onClick={() => handleNavigate('home', 'contact')}
-                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all cursor-pointer ${
+                className={`px-2.5 xl:px-3 py-1.5 rounded-md text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
                   currentPage === 'home' && activeSection === 'contact'
                     ? 'text-[#0B2E6B] bg-[#F5F7FA] font-bold border border-slate-200/70 shadow-xs'
                     : 'text-slate-700 hover:text-[#1565C0] hover:bg-slate-50'
@@ -275,7 +275,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {currentPage !== 'gallery' ? (
                 <button
                   onClick={() => handleNavigate('gallery')}
-                  className="px-3 py-2 rounded-xl text-xs font-bold text-[#0B2E6B] bg-slate-100 hover:bg-[#F57C00]/10 hover:text-[#0B2E6B] border border-slate-200 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  className="px-3 py-1.5 rounded-md text-sm font-semibold text-[#0B2E6B] bg-slate-100 hover:bg-[#F57C00]/10 hover:text-[#0B2E6B] border border-slate-200 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs whitespace-nowrap"
                 >
                   <Images className="w-3.5 h-3.5 text-[#F57C00]" />
                   <span>View Gallery</span>
@@ -283,7 +283,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               ) : (
                 <button
                   onClick={() => handleNavigate('home', 'home')}
-                  className="px-3 py-2 rounded-xl text-xs font-bold text-[#0B2E6B] bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  className="px-3 py-1.5 rounded-md text-sm font-semibold text-[#0B2E6B] bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs whitespace-nowrap"
                 >
                   <ArrowRight className="w-3.5 h-3.5 rotate-180 text-[#F57C00]" />
                   <span>Back to Home</span>
@@ -293,7 +293,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Schedule Meeting CTA */}
               <button
                 onClick={onOpenSchedule}
-                className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#0B2E6B] to-[#1565C0] hover:from-[#1565C0] hover:to-[#0B2E6B] transition-all shadow-md shadow-[#0B2E6B]/15 hover:shadow-lg flex items-center gap-2 cursor-pointer"
+                className="px-3.5 py-1.5 rounded-md text-sm font-semibold text-white bg-gradient-to-r from-[#0B2E6B] to-[#1565C0] hover:from-[#1565C0] hover:to-[#0B2E6B] transition-all shadow-md shadow-[#0B2E6B]/15 hover:shadow-lg flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
               >
                 <Calendar className="w-3.5 h-3.5 text-[#F57C00]" />
                 Schedule Meeting
@@ -340,7 +340,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {/* Home */}
                 <button
                   onClick={() => handleNavigate('home', 'home')}
-                  className={`w-full p-3 rounded-xl text-xs font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
+                  className={`w-full p-3.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
                     currentPage === 'home' && activeSection === 'home'
                       ? 'bg-white/20 text-white font-bold'
                       : 'text-slate-200 hover:text-white hover:bg-white/10'
@@ -354,7 +354,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <div className="rounded-xl bg-white/5 border border-white/10 overflow-hidden">
                   <button
                     onClick={() => setMobileAboutExpanded(!mobileAboutExpanded)}
-                    className="w-full p-3 text-xs font-medium transition-all flex items-center justify-between text-left cursor-pointer text-slate-200 hover:text-white"
+                    className="w-full p-3.5 text-sm font-medium transition-all flex items-center justify-between text-left cursor-pointer text-slate-200 hover:text-white"
                   >
                     <div className="flex items-center gap-2">
                       <Compass className="w-3.5 h-3.5 text-[#F57C00]" />
@@ -367,7 +367,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <div className="px-3 pb-3 space-y-1.5 border-t border-white/10 pt-2">
                       <button
                         onClick={() => handleNavigate('home', 'about')}
-                        className={`w-full p-2.5 rounded-lg text-xs transition-all flex items-center justify-between text-left cursor-pointer ${
+                        className={`w-full p-3 rounded-lg text-sm transition-all flex items-center justify-between text-left cursor-pointer ${
                           currentPage === 'home' && activeSection === 'about'
                             ? 'bg-white/20 text-white font-bold'
                             : 'text-slate-300 hover:text-white hover:bg-white/10'
@@ -382,7 +382,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                       <button
                         onClick={() => handleNavigate('ceo')}
-                        className={`w-full p-2.5 rounded-lg text-xs transition-all flex items-center justify-between text-left cursor-pointer ${
+                        className={`w-full p-3 rounded-lg text-sm transition-all flex items-center justify-between text-left cursor-pointer ${
                           currentPage === 'ceo'
                             ? 'bg-white/20 text-white font-bold'
                             : 'text-slate-300 hover:text-white hover:bg-white/10'
@@ -403,7 +403,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {/* Programs */}
                 <button
                   onClick={() => handleNavigate('home', 'programs')}
-                  className={`w-full p-3 rounded-xl text-xs font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
+                  className={`w-full p-3.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
                     currentPage === 'home' && activeSection === 'programs'
                       ? 'bg-white/20 text-white font-bold'
                       : 'text-slate-200 hover:text-white hover:bg-white/10'
@@ -416,7 +416,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {/* Impact */}
                 <button
                   onClick={() => handleNavigate('home', 'impact')}
-                  className={`w-full p-3 rounded-xl text-xs font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
+                  className={`w-full p-3.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
                     currentPage === 'home' && activeSection === 'impact'
                       ? 'bg-white/20 text-white font-bold'
                       : 'text-slate-200 hover:text-white hover:bg-white/10'
@@ -429,7 +429,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {/* Gallery */}
                 <button
                   onClick={() => handleNavigate('gallery')}
-                  className={`w-full p-3 rounded-xl text-xs font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
+                  className={`w-full p-3.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
                     currentPage === 'gallery'
                       ? 'bg-white/20 text-white font-bold'
                       : 'text-slate-200 hover:text-white hover:bg-white/10'
@@ -447,7 +447,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {/* Contact */}
                 <button
                   onClick={() => handleNavigate('home', 'contact')}
-                  className={`w-full p-3 rounded-xl text-xs font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
+                  className={`w-full p-3.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
                     currentPage === 'home' && activeSection === 'contact'
                       ? 'bg-white/20 text-white font-bold'
                       : 'text-slate-200 hover:text-white hover:bg-white/10'
@@ -464,7 +464,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     setMobileMenuOpen(false);
                     onOpenSchedule();
                   }}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-[#1565C0] to-[#F57C00] text-white text-xs font-bold shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#1565C0] to-[#F57C00] text-white text-sm font-bold shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Calendar className="w-4 h-4" />
                   Schedule Strategic Meeting

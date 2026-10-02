@@ -35,17 +35,17 @@ export const Logo: React.FC<LogoProps> = ({
 
   if (customLogoUrl) {
     const responsiveSizes = {
-      sm: 'h-10 md:h-12',
-      md: 'h-12 sm:h-14 md:h-16 lg:h-20',
-      lg: 'h-16 sm:h-20 md:h-24 lg:h-28',
-      xl: 'h-20 sm:h-24 md:h-28 lg:h-32'
+      sm: 'h-6 md:h-8',
+      md: 'h-8 sm:h-9 md:h-10 lg:h-11',
+      lg: 'h-10 sm:h-12 md:h-14 lg:h-16',
+      xl: 'h-12 sm:h-14 md:h-16 lg:h-20'
     };
 
     return (
       <img
         src={customLogoUrl}
         alt="FoundersLab Logo"
-        className={`${responsiveSizes[size]} w-auto max-w-[200px] sm:max-w-[250px] md:max-w-[300px] lg:max-w-[400px] object-contain transition-all duration-300 ${className}`}
+        className={`${responsiveSizes[size]} w-auto max-w-[140px] sm:max-w-[180px] md:max-w-[220px] lg:max-w-[240px] object-contain transition-all duration-300 ${className}`}
         referrerPolicy="no-referrer"
       />
     );
