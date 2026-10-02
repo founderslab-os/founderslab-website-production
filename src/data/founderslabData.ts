@@ -351,6 +351,36 @@ export const WHY_FOUNDERSLAB_COMPARISON = [
 
 export const GALLERY_ITEMS: GalleryItem[] = [
   {
+    id: 'g_thub',
+    title: 'FoundersLab First Anniversary at T-Hub',
+    category: 'Events',
+    date: 'July 21, 2024',
+    campusOrCity: 'Hyderabad',
+    description: 'FoundersLab celebrated its first anniversary on July 21, 2024, at the T-Hub facility in Hyderabad. Key Dignitaries: Mr. Jayesh Ranjan I.A.S. (Special Chief Secretary, Government of Telangana), Mr. Jayesh Sanghvi (Managing Partner, EY Hyderabad Office), Mr. Srinivas Rao Mahankali - MSR (CEO of T-Hub).',
+    imageUrl: '/T-HUB_GRP.jpeg',
+    tags: ['Anniversary', 'T-Hub', 'Hyderabad']
+  },
+  {
+    id: 'g0',
+    title: 'FoundersLab Inauguration',
+    category: 'Events',
+    date: 'July 9, 2023',
+    campusOrCity: 'Hyderabad',
+    description: 'FoundersLab in Hyderabad was inaugurated by Sri K.T. Rama Rao, the Telangana State IT and Industries Minister, to ignite the spirit of youth entrepreneurship and transform colleges into hubs of startup excellence.',
+    imageUrl: '/KTR_GRP_PIC.jpeg',
+    tags: ['Inauguration', 'Leadership', 'Hyderabad']
+  },
+  {
+    id: 'g_pes',
+    title: 'PES College of Engineering Orientation',
+    category: 'Events',
+    date: 'September 7, 2026',
+    campusOrCity: 'Aurangabad',
+    description: 'From Engineering Students to Future Innovators & Entrepreneurs! The last two days at PES College of Engineering have been all about innovation, entrepreneurship, skills and possibilities for students across B.Tech 1st, 2nd, 3rd and 4th years. Sakuntala Kasaragadda (PhD) , Founder & CEO, FoundersLab, led an engaging orientation for the 1st-year B.Tech students, encouraging them to look beyond classrooms and examinations—to identify problems, build skills, explore ideas and create solutions. Together with Director Sathya Peddapally, she spent two days interacting with students across all four years, creating awareness about the opportunities available through the PESCOE Incubation Foundation. [Read More]',
+    imageUrl: '/PES_GRP_1.jpeg',
+    tags: ['Orientation', 'Students', 'Aurangabad']
+  },
+  {
     id: 'g1',
     title: 'Smart Campus Hackathon',
     category: 'Hackathons',
