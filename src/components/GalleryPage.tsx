@@ -42,6 +42,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
 
   const [copiedLink, setCopiedLink] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'masonry'>('grid');
+  const [expandedDescIds, setExpandedDescIds] = useState<Set<string>>(new Set());
 
 
 
@@ -341,9 +342,27 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
                     )}
 
                     {item.description && (
-                      <p className="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">
-                        {item.description}
-                      </p>
+                      <div className="mt-1.5 flex flex-col items-start">
+                        <p className={`text-xs text-slate-500 leading-relaxed transition-all duration-300 ${expandedDescIds.has(item.id) ? '' : 'line-clamp-2'}`}>
+                          {item.description}
+                        </p>
+                        {item.description.length > 90 && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setExpandedDescIds(prev => {
+                                const next = new Set(prev);
+                                if (next.has(item.id)) next.delete(item.id);
+                                else next.add(item.id);
+                                return next;
+                              });
+                            }}
+                            className="text-[#0B2E6B] font-bold text-[11px] mt-1 hover:underline focus:outline-none"
+                          >
+                            {expandedDescIds.has(item.id) ? 'Read Less' : 'Read More'}
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
                 </motion.div>
