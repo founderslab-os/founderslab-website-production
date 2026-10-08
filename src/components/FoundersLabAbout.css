@@ -37,30 +37,39 @@
 
 /* Top Area */
 .fl-about__top {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 32px;
-  align-items: start;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 3.5rem;
+  width: 100%;
 }
 
 .fl-about__heading {
-  grid-column: 1 / 6;
-  font-size: clamp(44px, 4vw, 68px);
-  font-weight: 500;
-  line-height: 0.95;
-  letter-spacing: -0.045em;
-  color: #111111;
+  flex: 1 1 50%;
+  font-family: var(--font-heading, 'Inter', system-ui, -apple-system, sans-serif);
+  font-size: clamp(2.25rem, 3.8vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #0F172A;
   margin: 0;
 }
 
-.fl-about__intro {
-  grid-column: 6 / 13;
-  font-size: 17px;
-  line-height: 1.45;
-  color: #555555;
+.fl-about__intro-wrapper {
+  flex: 1 1 50%;
   max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.fl-about__intro {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: #334155;
   margin: 0;
-  padding-top: 6px;
+  font-weight: 400;
 }
 
 /* Divider */
@@ -223,11 +232,12 @@
   }
 
   .fl-about__top {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    flex-direction: column;
+    gap: 1.5rem;
   }
-  .fl-about__heading, .fl-about__intro {
-    grid-column: 1 / -1;
+  .fl-about__heading, .fl-about__intro-wrapper {
+    width: 100%;
+    max-width: 100%;
   }
 }
 
