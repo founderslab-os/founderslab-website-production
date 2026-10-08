@@ -29,8 +29,7 @@
   }
 
   .fl-initiatives-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
+    display: none !important;
   }
   
   .fl-initiative {
