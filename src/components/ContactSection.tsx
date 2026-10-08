@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ArrowRight, CheckCircle2, Phone, MessageSquare, ChevronDown, ChevronUp } from 'lucide-react';
 import './ContactSection.css';
 import './ContactSection.mobile.css';
 import './Contact.mobile.css';
@@ -18,6 +18,11 @@ export const ContactSection: React.FC = () => {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  
+  // Mobile Interactive States
+  const [hqDetailsExpanded, setHqDetailsExpanded] = useState(false);
+  const [mobileFormRevealed, setMobileFormRevealed] = useState(false);
+  const [formStep, setFormStep] = useState<1 | 2>(1);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,11 +36,11 @@ export const ContactSection: React.FC = () => {
         {/* Intro Area */}
         <div className="cs-intro">
           <div className="cs-intro-left">
-            <span className="cs-eyebrow">Direct Engagement</span>
+            <span className="cs-eyebrow">DIRECT ENGAGEMENT</span>
             <h2 className="cs-title">Partner With FoundersLab</h2>
             <p className="cs-desc">Initiate a high-level strategic discussion to transform your institution into a leading innovation campus.</p>
           </div>
-          <div className="cs-intro-right">
+          <div className="cs-intro-right hidden md:block">
             <div className="cs-status-block">
               <span className="cs-status-title">NATIONAL HEADQUARTERS</span>
               <div className="cs-status-divider"></div>
@@ -45,8 +50,300 @@ export const ContactSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Layout */}
-        <div className="cs-layout">
+        {/* MOBILE DEDICATED INSTITUTIONAL COMPOSITION (<768px) */}
+        <div className="cs-mobile-wrapper md:hidden">
+          
+          {/* 01 — Headquarters Identity Strip */}
+          <div className="cs-mobile-hq-strip">
+            <div className="cs-mobile-hq-header">
+              <span className="cs-mobile-hq-tag">NATIONAL HEADQUARTERS</span>
+              <div className="cs-mobile-hq-status">
+                <span className="cs-mobile-dot"></span> HQ ACTIVE
+              </div>
+            </div>
+            <h3 className="cs-mobile-hq-title">FOUNDERSLAB SECRETARIAT</h3>
+            <p className="cs-mobile-hq-sub">HYDERABAD • TELANGANA, INDIA</p>
+          </div>
+
+          <div className="cs-mobile-divider"></div>
+
+          {/* 02 — Direct Quick Contact Buttons */}
+          <div className="cs-mobile-quick-actions">
+            <a href="tel:+919010207999" className="cs-mobile-quick-btn call">
+              <Phone className="w-4 h-4 text-[#F57C00]" />
+              <div className="flex flex-col">
+                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">CALL DIRECTLY</span>
+                <span className="text-xs font-bold text-slate-900">+91 9010207999</span>
+              </div>
+            </a>
+
+            <a 
+              href="https://wa.me/919010207999?text=Hello%20FoundersLab%20Team%2C%20I%20would%20like%20to%20inquire%20about%20building%20an%20Innovation%20Ecosystem."
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="cs-mobile-quick-btn whatsapp"
+            >
+              <MessageSquare className="w-4 h-4 text-emerald-600" />
+              <div className="flex flex-col">
+                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">WHATSAPP</span>
+                <span className="text-xs font-bold text-slate-900">CONNECT →</span>
+              </div>
+            </a>
+          </div>
+
+          {/* 03 — Compact Contact Channels Rows */}
+          <div className="cs-mobile-contact-rows">
+            <div className="cs-mobile-contact-row">
+              <span className="cs-mobile-row-label">OFFICIAL EMAIL</span>
+              <a href="mailto:admin@founderslab.co.in" className="cs-mobile-row-link">
+                admin@founderslab.co.in →
+              </a>
+            </div>
+
+            <div className="cs-mobile-contact-row">
+              <span className="cs-mobile-row-label">DIRECT ADVISORY PHONE</span>
+              <a href="tel:+919010207999" className="cs-mobile-row-link">
+                +91 9010207999 →
+              </a>
+            </div>
+
+            <div className="cs-mobile-contact-row">
+              <span className="cs-mobile-row-label">WEB PORTAL</span>
+              <a href="http://www.founderslab.co.in" target="_blank" rel="noopener noreferrer" className="cs-mobile-row-link">
+                www.founderslab.co.in →
+              </a>
+            </div>
+          </div>
+
+          {/* Collapsible HQ Details */}
+          <div className="cs-mobile-collapsible-hq">
+            <button 
+              onClick={() => setHqDetailsExpanded(!hqDetailsExpanded)}
+              className="cs-mobile-accordion-btn"
+            >
+              <span>{hqDetailsExpanded ? 'Hide HQ Details −' : 'View HQ Details +'}</span>
+            </button>
+
+            <AnimatePresence>
+              {hqDetailsExpanded && (
+                <motion.div 
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="cs-mobile-accordion-body"
+                >
+                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">FoundersLab Secretariat</h4>
+                  <p className="text-xs italic text-slate-600 mb-2">Building Enterprises • Building the Nation</p>
+                  <p className="text-xs text-slate-700 leading-relaxed">
+                    National Innovation & Incubation Headquarters<br />
+                    Hyderabad • Telangana • 500001, India
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <div className="cs-mobile-divider"></div>
+
+          {/* 04 — Compact Map Preview (Height ~150px) */}
+          <div className="cs-mobile-map-box">
+            <div className="cs-mobile-map-frame">
+              <iframe
+                title="HQ Map Mobile"
+                src="https://maps.google.com/maps?q=Hyderabad&t=&z=11&ie=UTF8&iwloc=&output=embed"
+                loading="lazy"
+              ></iframe>
+            </div>
+            <div className="cs-mobile-map-meta">
+              <span className="text-xs font-bold text-slate-900">FoundersLab Secretariat</span>
+              <span className="text-[11px] text-slate-500">Hyderabad • Telangana • 500001</span>
+              <a 
+                href="https://maps.google.com/?q=Hyderabad" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="cs-mobile-map-ext-link"
+              >
+                View on Google Maps →
+              </a>
+            </div>
+          </div>
+
+          <div className="cs-mobile-divider"></div>
+
+          {/* 05 — Progressive Disclosure Partnership Inquiry Form */}
+          <div className="cs-mobile-inquiry-box">
+            <div className="cs-mobile-inquiry-header">
+              <h3 className="text-base font-bold text-slate-900">INSTITUTIONAL PARTNERSHIP</h3>
+              <p className="text-xs text-slate-600">Schedule a strategic campus transformation call with our secretariat.</p>
+            </div>
+
+            {!mobileFormRevealed ? (
+              <button 
+                onClick={() => setMobileFormRevealed(true)}
+                className="cs-mobile-start-inquiry-btn"
+              >
+                START PARTNERSHIP INQUIRY →
+              </button>
+            ) : submitted ? (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="cs-success-msg p-4 text-center">
+                <CheckCircle2 className="w-10 h-10 text-[#F57C00] mx-auto mb-2" />
+                <h4 className="text-sm font-bold text-slate-900">Inquiry Received</h4>
+                <p className="text-xs text-slate-600 mt-1">Our secretariat will contact you at {formData.email} within 24 hours.</p>
+              </motion.div>
+            ) : (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="cs-mobile-form-container">
+                {/* 2-Stage Form Header */}
+                <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
+                  <span className="text-xs font-bold text-[#F57C00] font-mono">
+                    STAGE 0{formStep} / 02
+                  </span>
+                  <span className="text-[11px] text-slate-500 font-medium">
+                    {formStep === 1 ? 'Institutional Identity' : 'Strategic Program Interest'}
+                  </span>
+                </div>
+
+                <form onSubmit={handleSubmit} className="cs-mobile-form">
+                  {formStep === 1 ? (
+                    <div className="flex flex-col gap-3">
+                      <div>
+                        <label className="cs-form-label">Full Name *</label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          className="cs-form-input"
+                          placeholder="e.g. Dr. Rajesh Kumar"
+                        />
+                      </div>
+                      <div>
+                        <label className="cs-form-label">Designation *</label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.designation}
+                          onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
+                          className="cs-form-input"
+                          placeholder="e.g. Vice Chancellor / Principal"
+                        />
+                      </div>
+                      <div>
+                        <label className="cs-form-label">Institution Name *</label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.institution}
+                          onChange={(e) => setFormData({ ...formData, institution: e.target.value })}
+                          className="cs-form-input"
+                          placeholder="e.g. University / Institute"
+                        />
+                      </div>
+                      <div>
+                        <label className="cs-form-label">Official Email *</label>
+                        <input
+                          type="email"
+                          required
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className="cs-form-input"
+                          placeholder="admin@institution.edu.in"
+                        />
+                      </div>
+                      <div>
+                        <label className="cs-form-label">Phone / Mobile Number *</label>
+                        <input
+                          type="tel"
+                          required
+                          value={formData.phone}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          className="cs-form-input"
+                          placeholder="+91 9876543210"
+                        />
+                      </div>
+
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          if (formData.name && formData.institution && formData.email) {
+                            setFormStep(2);
+                          } else {
+                            alert('Please fill in required fields to continue.');
+                          }
+                        }}
+                        className="cs-mobile-start-inquiry-btn mt-2"
+                      >
+                        CONTINUE TO STAGE 02 →
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-3">
+                      <div>
+                        <label className="cs-form-label">Institutional Role</label>
+                        <select
+                          value={formData.role}
+                          onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                          className="cs-form-select"
+                        >
+                          <option value="" disabled>[ Select role ]</option>
+                          <option value="Vice Chancellor / Director">Vice Chancellor / Director</option>
+                          <option value="College Chairman / Trustee">College Chairman / Trustee</option>
+                          <option value="Dean / HOD / Professor">Dean / HOD / Professor</option>
+                          <option value="Government / Ministry Official">Government / Ministry Official</option>
+                          <option value="Corporate CEO / CSR Head">Corporate CEO / CSR Head</option>
+                          <option value="Investor / Incubator Lead">Investor / Incubator Lead</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="cs-form-label">Primary Program Interest</label>
+                        <select
+                          value={formData.programInterest}
+                          onChange={(e) => setFormData({ ...formData, programInterest: e.target.value })}
+                          className="cs-form-select"
+                        >
+                          <option value="" disabled>[ Select program ]</option>
+                          <option value="Young FoundersLab">Young FoundersLab</option>
+                          <option value="FoundersLab PharmaPreneur Program">FoundersLab PharmaPreneur Program</option>
+                          <option value="Industry Readiness Program">Industry Readiness Program</option>
+                          <option value="Full Campus 360° Ecosystem Blueprint">Full Campus 360° Ecosystem Blueprint</option>
+                          <option value="Research & Patent Monetization">Research & Patent Monetization</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="cs-form-label">Message / Campus Vision</label>
+                        <textarea
+                          value={formData.message}
+                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                          className="cs-form-textarea"
+                          rows={3}
+                          placeholder="Tell us about your campus vision or inquiry..."
+                        />
+                      </div>
+
+                      <div className="flex gap-2 mt-2">
+                        <button 
+                          type="button"
+                          onClick={() => setFormStep(1)}
+                          className="px-4 py-2.5 rounded-sm border border-slate-300 text-slate-700 text-xs font-bold"
+                        >
+                          ← BACK
+                        </button>
+                        <button type="submit" className="cs-mobile-start-inquiry-btn flex-1">
+                          SUBMIT INQUIRY →
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </form>
+              </motion.div>
+            )}
+          </div>
+
+        </div>
+
+        {/* DESKTOP DEDICATED LAYOUT (UNCHANGED) */}
+        <div className="cs-layout hidden md:grid">
           
           {/* Headquarters Info */}
           <div className="cs-hq-col">
@@ -101,7 +398,7 @@ export const ContactSection: React.FC = () => {
             <div className="cs-map-module">
               <div className="cs-map-area">
                 <iframe
-                  title="HQ Map"
+                  title="HQ Map Desktop"
                   src="https://maps.google.com/maps?q=Hyderabad&t=&z=11&ie=UTF8&iwloc=&output=embed"
                   loading="lazy"
                 ></iframe>
