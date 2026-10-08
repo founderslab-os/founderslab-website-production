@@ -53,13 +53,6 @@ export const ContactSection: React.FC = () => {
         {/* MOBILE DEDICATED INSTITUTIONAL COMPOSITION (<768px) */}
         <div className="cs-mobile-wrapper md:hidden">
           
-          {/* 01 — Institutional Header */}
-          <div className="cs-mobile-inst-header">
-            <span className="cs-mobile-eyebrow">NATIONAL HEADQUARTERS</span>
-            <h3 className="cs-mobile-inst-title">FoundersLab Secretariat</h3>
-            <p className="cs-mobile-inst-tagline">Building Enterprises • Building the Nation</p>
-          </div>
-
           <div className="cs-mobile-rule"></div>
 
           {/* 02 — HQ Identity Strip */}
