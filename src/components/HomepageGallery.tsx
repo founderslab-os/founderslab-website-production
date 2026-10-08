@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { GALLERY_ITEMS } from '../data/founderslabData';
+import { GalleryItem } from '../types';
+import { supabase, DbGalleryItem } from '../lib/supabase';
 import { ArrowRight } from 'lucide-react';
 import './HomepageGallery.css';
 import './HomepageGallery.mobile.css';
@@ -9,8 +11,41 @@ interface HomepageGalleryProps {
 }
 
 export const HomepageGallery: React.FC<HomepageGalleryProps> = ({ onNavigateToGallery }) => {
-  // Homepage displays exactly the 3 featured items
-  const featuredItems = GALLERY_ITEMS.slice(0, 3);
+  const [items, setItems] = useState<GalleryItem[]>(GALLERY_ITEMS.slice(0, 3));
+
+  useEffect(() => {
+    async function loadLiveFeatured() {
+      try {
+        const { data, error } = await supabase
+          .from('gallery_items')
+          .select('*')
+          .eq('is_published', true)
+          .order('sort_order', { ascending: true })
+          .order('created_at', { ascending: false })
+          .limit(3);
+
+        if (data && !error && data.length > 0) {
+          const mapped: GalleryItem[] = data.map((row: DbGalleryItem) => ({
+            id: row.id,
+            title: row.title,
+            category: row.category || 'Events',
+            date: row.event_date || new Date(row.created_at).toLocaleDateString(),
+            campusOrCity: row.location || 'India',
+            description: row.description || '',
+            imageUrl: row.image_url,
+            tags: [row.category || 'Events', row.location || 'FoundersLab'].filter(Boolean)
+          }));
+          setItems(mapped);
+        }
+      } catch (err) {
+        console.error('Homepage gallery live fetch error:', err);
+      }
+    }
+    loadLiveFeatured();
+  }, []);
+
+  // Homepage displays featured items (up to 3)
+  const featuredItems = items.slice(0, 3);
 
   const getExcerpt = (text: string, maxLength: number = 140) => {
     if (!text) return '';

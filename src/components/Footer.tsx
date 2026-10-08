@@ -6,7 +6,7 @@ interface FooterProps {
   onOpenSchedule: () => void;
   customLogoUrl?: string;
   taglineText?: string;
-  onNavigatePage?: (page: 'home' | 'gallery' | 'ceo', sectionId?: string) => void;
+  onNavigatePage?: (page: 'home' | 'gallery' | 'ceo' | 'admin' | 'admin-login', sectionId?: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
@@ -16,7 +16,7 @@ export const Footer: React.FC<FooterProps> = ({
 }) => {
   const [openGroup, setOpenGroup] = useState<string | null>(null);
 
-  const handleNav = (e: React.MouseEvent, page: 'home' | 'gallery' | 'ceo', sectionId?: string) => {
+  const handleNav = (e: React.MouseEvent, page: 'home' | 'gallery' | 'ceo' | 'admin' | 'admin-login', sectionId?: string) => {
     e.preventDefault();
     if (onNavigatePage) {
       onNavigatePage(page, sectionId);
@@ -120,7 +120,7 @@ export const Footer: React.FC<FooterProps> = ({
             <a href="/terms-and-conditions" className="ft-legal-link">Terms & Conditions</a>
             <a href="/cookie-policy" className="ft-legal-link">Cookie Policy</a>
             <a href="/accessibility" className="ft-legal-link">Accessibility</a>
-            <a href="/sitemap" className="ft-legal-link">Sitemap</a>
+            <button onClick={(e) => handleNav(e, 'admin-login')} className="ft-legal-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Admin Portal</button>
             <a href="/disclaimer" className="ft-legal-link">Disclaimer</a>
           </nav>
           <p className="ft-copyright">© {new Date().getFullYear()} FoundersLab. All rights reserved.</p>

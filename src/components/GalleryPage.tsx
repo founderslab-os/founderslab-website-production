@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { GALLERY_ITEMS } from '../data/founderslabData';
 import { GalleryItem } from '../types';
+import { supabase, DbGalleryItem } from '../lib/supabase';
 import './Gallery.mobile.css';
 
 
@@ -33,6 +34,36 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
   onBackToHome,
 }) => {
   const [items, setItems] = useState<GalleryItem[]>(GALLERY_ITEMS);
+
+  useEffect(() => {
+    async function loadLiveGallery() {
+      try {
+        const { data, error } = await supabase
+          .from('gallery_items')
+          .select('*')
+          .eq('is_published', true)
+          .order('sort_order', { ascending: true })
+          .order('created_at', { ascending: false });
+
+        if (data && !error && data.length > 0) {
+          const mapped: GalleryItem[] = data.map((row: DbGalleryItem) => ({
+            id: row.id,
+            title: row.title,
+            category: row.category || 'Events',
+            date: row.event_date || new Date(row.created_at).toLocaleDateString(),
+            campusOrCity: row.location || 'India',
+            description: row.description || '',
+            imageUrl: row.image_url,
+            tags: [row.category || 'Events', row.location || 'FoundersLab'].filter(Boolean)
+          }));
+          setItems(mapped);
+        }
+      } catch (err) {
+        console.error('Supabase gallery fetch error:', err);
+      }
+    }
+    loadLiveGallery();
+  }, []);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');

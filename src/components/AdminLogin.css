@@ -1,0 +1,166 @@
+.fl-admin-login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0F172A;
+  color: #F8FAFC;
+  font-family: var(--font-heading, system-ui, -apple-system, sans-serif);
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.fl-admin-login-container {
+  width: 100%;
+  max-width: 440px;
+  background-color: #1E293B;
+  border: 1px solid #334155;
+  border-radius: 4px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+}
+
+.fl-admin-login-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.fl-admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #F97316;
+  background-color: rgba(249, 115, 22, 0.1);
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: 2px;
+  margin-bottom: 1.25rem;
+}
+
+.fl-admin-login-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.fl-admin-login-subtitle {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #94A3B8;
+  margin: 0;
+}
+
+.fl-admin-error-box {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #FCA5A5;
+  padding: 0.75rem 1rem;
+  border-radius: 2px;
+  font-size: 0.8125rem;
+  margin-bottom: 1.5rem;
+}
+
+.fl-admin-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.fl-admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  text-align: left;
+}
+
+.fl-admin-field label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #CBD5E1;
+  text-transform: uppercase;
+}
+
+.fl-admin-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.fl-input-icon {
+  position: absolute;
+  left: 0.875rem;
+  color: #64748B;
+  pointer-events: none;
+}
+
+.fl-admin-input-wrapper input {
+  width: 100%;
+  padding: 0.75rem 0.875rem 0.75rem 2.625rem;
+  background-color: #0F172A;
+  border: 1px solid #475569;
+  border-radius: 2px;
+  color: #F8FAFC;
+  font-size: 0.9375rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.fl-admin-input-wrapper input:focus {
+  outline: none;
+  border-color: #F97316;
+}
+
+.fl-admin-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.875rem;
+  background-color: #F97316;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 2px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.fl-admin-submit-btn:hover:not(:disabled) {
+  background-color: #EA580C;
+}
+
+.fl-admin-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fl-admin-login-footer {
+  margin-top: 1.75rem;
+  text-align: center;
+}
+
+.fl-admin-back-btn {
+  background: none;
+  border: none;
+  color: #94A3B8;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.fl-admin-back-btn:hover {
+  color: #F8FAFC;
+}

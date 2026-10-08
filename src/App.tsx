@@ -16,15 +16,22 @@ import { CeoPage } from './components/CeoPage';
 import { FloatingPhoneCTA } from './components/FloatingPhoneCTA';
 import { Analytics } from '@vercel/analytics/react';
 
-export default function App() {
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { AdminLogin } from './components/AdminLogin';
+import { AdminDashboard } from './components/AdminDashboard';
+
+function MainApp() {
+  const { user, isAdmin, loading: authLoading } = useAuth();
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
   const [isLoaderFinished, setIsLoaderFinished] = useState(false);
 
   const [activeSection, setActiveSection] = useState('home');
   
-  // Page routing state ('home', 'gallery', or 'ceo')
-  const [currentPage, setCurrentPage] = useState<'home' | 'gallery' | 'ceo'>(() => {
+  // Page routing state ('home', 'gallery', 'ceo', 'admin', 'admin-login')
+  const [currentPage, setCurrentPage] = useState<'home' | 'gallery' | 'ceo' | 'admin' | 'admin-login'>(() => {
     const hash = window.location.hash;
+    if (hash === '#admin/login') return 'admin-login';
+    if (hash === '#admin') return 'admin';
     if (hash === '#gallery') return 'gallery';
     if (hash === '#ceo' || hash === '#about-ceo') return 'ceo';
     return 'home';
@@ -52,7 +59,13 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
-      if (hash === '#gallery') {
+      if (hash === '#admin/login') {
+        setCurrentPage('admin-login');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === '#admin') {
+        setCurrentPage('admin');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === '#gallery') {
         setCurrentPage('gallery');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (hash === '#ceo' || hash === '#about-ceo') {
@@ -110,8 +123,16 @@ export default function App() {
     }
   };
 
-  const handleNavigatePage = (page: 'home' | 'gallery' | 'ceo', sectionId?: string) => {
-    if (page === 'gallery') {
+  const handleNavigatePage = (page: string, sectionId?: string) => {
+    if (page === 'admin-login') {
+      setCurrentPage('admin-login');
+      window.location.hash = '#admin/login';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (page === 'admin') {
+      setCurrentPage('admin');
+      window.location.hash = '#admin';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (page === 'gallery') {
       setCurrentPage('gallery');
       window.location.hash = '#gallery';
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -138,24 +159,53 @@ export default function App() {
     }
   };
 
+  // Render Admin Routes directly without Navbar/Footer
+  if (currentPage === 'admin-login') {
+    return (
+      <AdminLogin
+        onLoginSuccess={() => handleNavigatePage('admin')}
+        onBackToHome={() => handleNavigatePage('home')}
+      />
+    );
+  }
+
+  if (currentPage === 'admin') {
+    if (authLoading) {
+      return (
+        <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center font-bold">
+          Verifying Admin Credentials...
+        </div>
+      );
+    }
+    if (!user || !isAdmin) {
+      return (
+        <AdminLogin
+          onLoginSuccess={() => handleNavigatePage('admin')}
+          onBackToHome={() => handleNavigatePage('home')}
+        />
+      );
+    }
+    return (
+      <AdminDashboard
+        onBackToHome={() => handleNavigatePage('home')}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans selection:bg-[#1565C0] selection:text-white">
       {!isLoaderFinished && (
-        <PageLoader
-          customLogoUrl={customLogoUrl}
-          onComplete={() => setIsLoaderFinished(true)}
-        />
+        <PageLoader onFinished={() => setIsLoaderFinished(true)} />
       )}
 
       {/* Header & Navigation */}
       <Navbar
         onOpenSchedule={() => setScheduleModalOpen(true)}
-
         activeSection={activeSection}
         customLogoUrl={customLogoUrl}
         taglineText={taglineText}
         currentPage={currentPage}
-        onNavigatePage={handleNavigatePage}
+        onNavigatePage={handleNavigatePage as any}
       />
 
       {/* Page Routing */}
@@ -214,7 +264,7 @@ export default function App() {
         onOpenSchedule={() => setScheduleModalOpen(true)}
         customLogoUrl={customLogoUrl}
         taglineText={taglineText}
-        onNavigatePage={handleNavigatePage}
+        onNavigatePage={handleNavigatePage as any}
       />
 
       {/* Schedule Meeting Modal */}
@@ -229,5 +279,13 @@ export default function App() {
       {/* Vercel Analytics */}
       <Analytics />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <MainApp />
+    </AuthProvider>
   );
 }
