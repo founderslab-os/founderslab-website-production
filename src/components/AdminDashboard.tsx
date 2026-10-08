@@ -122,6 +122,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
     setModalOpen(true);
   };
 
+  const sanitizeInput = (str: string, maxLength: number = 500): string => {
+    if (!str) return '';
+    return str
+      .slice(0, maxLength)
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .trim();
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -132,15 +141,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
         return;
       }
 
-      // Validate MIME type
+      // Validate MIME type & file extension
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif'];
-      if (!allowedTypes.includes(file.type)) {
-        setFormError('Only JPG, PNG, WEBP, and AVIF image formats are allowed.');
+      const ext = file.name.split('.').pop()?.toLowerCase();
+      const allowedExts = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
+
+      if (!allowedTypes.includes(file.type) || !ext || !allowedExts.includes(ext)) {
+        setFormError('Security rejection: Only JPG, PNG, WEBP, and AVIF image formats are allowed.');
         return;
       }
 
       setFormError('');
       setSelectedFile(file);
+      
+      // Revoke previous object URL if any to prevent memory leaks
+      if (filePreview && filePreview.startsWith('blob:')) {
+        URL.revokeObjectURL(filePreview);
+      }
       setFilePreview(URL.createObjectURL(file));
     }
   };
