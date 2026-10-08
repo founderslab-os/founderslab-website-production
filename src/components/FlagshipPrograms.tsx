@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { FLAGSHIP_PROGRAMS } from '../data/founderslabData';
 import { Program } from '../types';
-import { X } from 'lucide-react';
+import { X, ChevronDown, ChevronUp } from 'lucide-react';
 import './FlagshipInitiatives.css';
 import './FlagshipInitiatives.mobile.css';
 import './Programs.mobile.css';
@@ -12,11 +12,22 @@ interface FlagshipProgramsProps {
   onScheduleMeeting: () => void;
 }
 
+const PROGRAM_DIAGRAMS: Record<string, string> = {
+  'young-founders-lab': 'IDEA → PROTOTYPE → VENTURE',
+  'pharmapreneur': 'RESEARCH → IP → MARKET',
+  'industry-readiness': 'CAMPUS → INDUSTRY → TALENT',
+};
+
 export const FlagshipPrograms: React.FC<FlagshipProgramsProps> = ({
   onSelectProgram,
   onScheduleMeeting,
 }) => {
   const [selectedModalProgram, setSelectedModalProgram] = useState<Program | null>(null);
+  const [activeTabId, setActiveTabId] = useState<string>(FLAGSHIP_PROGRAMS[0].id);
+  const [highlightsOpen, setHighlightsOpen] = useState<boolean>(false);
+
+  const activeProgram = FLAGSHIP_PROGRAMS.find((p) => p.id === activeTabId) || FLAGSHIP_PROGRAMS[0];
+  const activeIndex = FLAGSHIP_PROGRAMS.findIndex((p) => p.id === activeTabId);
 
   return (
     <section id="programs" className="fl-initiatives">
@@ -35,8 +46,103 @@ export const FlagshipPrograms: React.FC<FlagshipProgramsProps> = ({
           </div>
         </div>
 
-        {/* 3 Flagship Program Grid */}
-        <div className="fl-initiatives-grid">
+        {/* MOBILE INTERACTIVE PROGRAM SELECTOR */}
+        <div className="fl-mobile-program-selector md:hidden">
+          {/* Tab Selector Buttons */}
+          <div className="fl-mobile-tabs">
+            {FLAGSHIP_PROGRAMS.map((prog, idx) => (
+              <button
+                key={prog.id}
+                onClick={() => {
+                  setActiveTabId(prog.id);
+                  setHighlightsOpen(false);
+                }}
+                className={`fl-mobile-tab-btn ${prog.id === activeTabId ? 'active' : ''}`}
+              >
+                0{idx + 1} {prog.title}
+              </button>
+            ))}
+          </div>
+
+          {/* Active Program View */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeProgram.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              className="fl-mobile-program-card"
+            >
+              <div className="fl-mobile-card-top">
+                <span className="fl-mobile-card-index">0{activeIndex + 1}</span>
+                <span className="fl-mobile-card-badge">{activeProgram.badge}</span>
+              </div>
+
+              <h3 className="fl-mobile-card-title">{activeProgram.title}</h3>
+              <p className="fl-mobile-card-subtitle">{activeProgram.subtitle}</p>
+
+              {/* Unique Journey Diagram */}
+              <div className="fl-mobile-diagram">
+                {PROGRAM_DIAGRAMS[activeProgram.id] || 'IDEATE → BUILD → SCALE'}
+              </div>
+
+              <p className="fl-mobile-card-desc">{activeProgram.description}</p>
+
+              {/* 3 Metric Summary Strip */}
+              <div className="fl-mobile-metrics-strip">
+                {activeProgram.impactMetrics.map((m, mIdx) => (
+                  <div key={mIdx} className="fl-mobile-metric">
+                    <span className="fl-mobile-metric-val">{m.value}</span>
+                    <span className="fl-mobile-metric-lbl">{m.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Interactive Program Highlights Accordion */}
+              <div className="fl-mobile-highlights-accordion">
+                <button
+                  onClick={() => setHighlightsOpen(!highlightsOpen)}
+                  className="fl-mobile-accordion-toggle"
+                >
+                  <span>PROGRAM HIGHLIGHTS</span>
+                  <span>{highlightsOpen ? '−' : '+'}</span>
+                </button>
+
+                <AnimatePresence>
+                  {highlightsOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="fl-mobile-accordion-content"
+                    >
+                      {activeProgram.keyBenefits.map((b, bIdx) => (
+                        <div key={bIdx} className="fl-mobile-highlight-row">
+                          <span className="fl-mobile-highlight-num">0{bIdx + 1}</span>
+                          <span className="fl-mobile-highlight-text">{b}</span>
+                        </div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Actions */}
+              <div className="fl-mobile-actions">
+                <button
+                  onClick={() => setSelectedModalProgram(activeProgram)}
+                  className="fl-mobile-btn-primary"
+                >
+                  EXPLORE PROGRAM ROADMAP →
+                </button>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* DESKTOP 3-CARD GRID */}
+        <div className="fl-initiatives-grid hidden md:grid">
           {FLAGSHIP_PROGRAMS.map((prog, idx) => (
             <div 
               key={prog.id} 

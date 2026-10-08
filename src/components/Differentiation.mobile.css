@@ -1,96 +1,153 @@
-/* Differentiation.mobile.css - Mobile optimization for Strategic Differentiation */
+/* Differentiation.mobile.css - Mobile interactive comparison carousel styling */
 
 @media (max-width: 767px) {
   .sd-section {
-    padding-block: 48px;
+    padding-block: 40px;
     background: #FFFFFF;
   }
 
   .sd-header {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .sd-header-title {
-    font-size: clamp(26px, 7vw, 32px);
+    font-size: clamp(24px, 6.5vw, 30px);
   }
 
   .sd-header-desc {
-    font-size: 14px;
+    font-size: 13.5px;
     line-height: 1.45;
   }
 
-  .sd-matrix-wrapper {
-    padding-left: 16px;
-  }
-
-  .sd-mobile-rail {
-    left: 0;
-    width: 2px;
-    background-color: #E2E8F0;
-  }
-
-  .sd-mobile-rail-progress {
-    background-color: #F57C00;
-  }
-
-  .sd-row {
+  /* Interactive Mobile Carousel */
+  .fl-mobile-comp-carousel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: #FAFAFA;
     border: 1px solid #E2E8F0;
     border-radius: 4px;
-    margin-bottom: 20px;
-    padding: 0;
-    box-shadow: none;
+    padding: 16px;
   }
 
-  .sd-row.is-active {
-    border-left: 3px solid #F57C00;
-    border-color: #E2E8F0;
-    background-color: #FFFDFB;
+  .fl-mobile-comp-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #E2E8F0;
   }
 
-  .sd-col-index {
-    padding: 14px 16px;
-    border-bottom: 1px solid #F1F5F9;
-    background-color: #FAFAFA;
-  }
-
-  .sd-index-number {
+  .fl-mobile-comp-badge {
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
     color: #F57C00;
-    margin-bottom: 2px;
+    font-family: monospace;
   }
 
-  .sd-dimension-title {
+  .fl-mobile-comp-feature {
     font-size: 16px;
     font-weight: 700;
     color: #0F172A;
+    margin: 0;
   }
 
-  .sd-col-traditional {
-    padding: 12px 16px;
-    border-bottom: 1px solid #F1F5F9;
+  .fl-mobile-comp-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
-  .sd-traditional-text {
+  .fl-mobile-comp-block {
+    padding: 12px;
+    border-radius: 4px;
+  }
+
+  .fl-mobile-comp-block.traditional {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+  }
+
+  .fl-mobile-comp-block.founderslab {
+    background: #FFFDFB;
+    border: 1px solid #FED7AA;
+  }
+
+  .fl-mobile-comp-tag {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #64748B;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .fl-mobile-comp-tag.fl-tag {
+    color: #F57C00;
+  }
+
+  .fl-mobile-comp-text {
     font-size: 13px;
     line-height: 1.4;
-    color: #64748B;
+    color: #334155;
+    margin: 0;
   }
 
-  .sd-col-founderslab {
-    padding: 12px 16px;
-    background-color: transparent;
-  }
-
-  .sd-founderslab-text {
+  .fl-mobile-comp-text.fl-text {
     font-size: 13.5px;
-    line-height: 1.4;
-    color: #0F172A;
     font-weight: 600;
+    color: #0F172A;
   }
 
-  .sd-mobile-label {
+  .fl-mobile-comp-vs {
+    align-self: center;
     font-size: 10px;
-    margin-bottom: 4px;
+    font-weight: 800;
+    color: #94A3B8;
+    background: #F1F5F9;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .fl-mobile-comp-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid #E2E8F0;
+  }
+
+  .fl-mobile-comp-nav-btn {
+    padding: 8px;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 4px;
+    color: #0F172A;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .fl-mobile-comp-numbers {
+    display: flex;
+    gap: 4px;
+  }
+
+  .fl-mobile-comp-num-btn {
+    padding: 6px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748B;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .fl-mobile-comp-num-btn.active {
+    background: #0F172A;
+    color: #FFFFFF;
+    border-color: #0F172A;
   }
 }

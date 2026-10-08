@@ -1,131 +1,217 @@
-/* Programs.mobile.css - Compact Editorial Program List for Mobile */
+/* Programs.mobile.css - Interactive Program Selector & Accordion Layout for Mobile */
 
 @media (max-width: 767px) {
   .fl-initiatives {
-    padding-block: 48px;
+    padding-block: 40px;
     background: #FAFAFA;
   }
 
   .fl-initiatives-header {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding-bottom: 24px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
     border-bottom: 1px solid #E2E8F0;
-    margin-bottom: 24px;
   }
 
   .fl-initiatives-title {
-    font-size: clamp(26px, 7vw, 32px);
+    font-size: clamp(24px, 6.5vw, 30px);
     line-height: 1.15;
   }
 
   .fl-initiatives-header-desc {
-    font-size: 14px;
+    font-size: 13.5px;
     line-height: 1.45;
-    color: #475569;
   }
 
-  .fl-initiatives-grid {
+  /* Interactive Tab Switcher */
+  .fl-mobile-program-selector {
     display: flex;
     flex-direction: column;
-    gap: 0;
-    border-top: 1px solid #E2E8F0;
+    gap: 16px;
   }
 
-  .fl-initiative {
-    height: auto;
-    min-height: auto;
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid #E2E8F0;
-    background: #FFFFFF !important;
-    padding: 24px 0;
-    position: relative;
-    overflow: visible;
+  .fl-mobile-tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 4px;
   }
 
-  .fl-initiative-bg, .fl-initiative-overlay {
+  .fl-mobile-tabs::-webkit-scrollbar {
     display: none;
   }
 
-  .fl-initiative-content {
-    position: relative;
-    height: auto;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    color: #0F172A;
-  }
-
-  .fl-initiative-category {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-
-  .fl-initiative-index {
+  .fl-mobile-tab-btn {
+    flex: 1;
+    min-width: max-content;
+    padding: 10px 14px;
     font-size: 12px;
     font-weight: 700;
+    color: #475569;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+
+  .fl-mobile-tab-btn.active {
+    background: #0F172A;
+    color: #FFFFFF;
+    border-color: #0F172A;
+  }
+
+  /* Program Detail Card */
+  .fl-mobile-program-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 4px;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .fl-mobile-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .fl-mobile-card-index {
+    font-size: 14px;
+    font-weight: 800;
     color: #F57C00;
     font-family: monospace;
   }
 
-  .fl-initiative-title {
+  .fl-mobile-card-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #0F172A;
+    background: #F1F5F9;
+    padding: 4px 8px;
+    border-radius: 2px;
+  }
+
+  .fl-mobile-card-title {
     font-size: 20px;
     font-weight: 700;
     color: #0F172A;
-    margin-bottom: 4px;
+    margin: 0;
   }
 
-  .fl-initiative-subtitle {
+  .fl-mobile-card-subtitle {
     font-size: 13px;
+    font-weight: 600;
     color: #64748B;
-    margin-bottom: 12px;
-    font-weight: 500;
   }
 
-  .fl-initiative-description {
-    font-size: 14px;
+  /* Journey Diagram */
+  .fl-mobile-diagram {
+    font-family: monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #F57C00;
+    background: #FFFDFB;
+    border: 1px dashed #FDBA74;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-align: center;
+    letter-spacing: 0.05em;
+  }
+
+  .fl-mobile-card-desc {
+    font-size: 13.5px;
     line-height: 1.45;
     color: #334155;
-    margin-bottom: 16px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+  }
+
+  /* Metric Summary Strip */
+  .fl-mobile-metrics-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding-block: 12px;
+    border-block: 1px solid #F1F5F9;
+  }
+
+  .fl-mobile-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .fl-mobile-metric-val {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0F172A;
+  }
+
+  .fl-mobile-metric-lbl {
+    font-size: 10px;
+    color: #64748B;
+  }
+
+  /* Program Highlights Accordion */
+  .fl-mobile-highlights-accordion {
+    border-top: 1px solid #F1F5F9;
+    padding-top: 10px;
+  }
+
+  .fl-mobile-accordion-toggle {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+    border: none;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #0F172A;
+    padding: 6px 0;
+    cursor: pointer;
+  }
+
+  .fl-mobile-accordion-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 8px;
     overflow: hidden;
   }
 
-  .fl-initiative-divider,
-  .fl-initiative-metrics,
-  .fl-initiative-highlights {
-    display: none;
-  }
-
-  .fl-initiative-cta {
+  .fl-mobile-highlight-row {
     display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-top: 8px;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: #334155;
   }
 
-  .fl-initiative-btn.primary-cta {
-    background: transparent;
-    border: none;
+  .fl-mobile-highlight-num {
+    font-size: 11px;
+    font-weight: 700;
     color: #F57C00;
-    padding: 0;
-    font-size: 13px;
-    font-weight: 600;
   }
 
-  .fl-initiative-btn.secondary-cta {
-    display: none;
-  }
-
-  .fl-initiatives-modal-content {
-    padding: 24px 16px;
-    max-height: 90vh;
-    overflow-y: auto;
+  .fl-mobile-btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: #0F172A;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-align: center;
   }
 }

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { motion, useScroll, useMotionValueEvent, useSpring } from 'motion/react';
+import { motion, useScroll, useMotionValueEvent, useSpring, AnimatePresence } from 'motion/react';
 import { WHY_FOUNDERSLAB_COMPARISON } from '../data/founderslabData';
-import { Check, X, ShieldCheck, Sparkles, Rocket, Landmark, ArrowRight, Award, Cpu, Lightbulb } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import './StrategicDifferentiation.css';
 import './StrategicDifferentiation.mobile.css';
 import './Differentiation.mobile.css';
@@ -29,6 +29,12 @@ export const WhyFoundersLab: React.FC<WhyFoundersLabProps> = ({ onScheduleMeetin
   const matrixRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  // Mobile interactive comparison carousel index
+  const [mobileCompIndex, setMobileCompIndex] = useState(0);
+
+  // Mobile Blueprint progressive disclosure expanded states
+  const [expandedBlueprintPhases, setExpandedBlueprintPhases] = useState<Record<number, boolean>>({});
+
   const { scrollYProgress } = useScroll({
     target: matrixRef,
     offset: ["start center", "end center"]
@@ -46,11 +52,19 @@ export const WhyFoundersLab: React.FC<WhyFoundersLabProps> = ({ onScheduleMeetin
     if (index >= WHY_FOUNDERSLAB_COMPARISON.length) index = WHY_FOUNDERSLAB_COMPARISON.length - 1;
     setActiveIndex(index);
   });
+
+  const toggleBlueprintPhase = (idx: number) => {
+    setExpandedBlueprintPhases(prev => ({
+      ...prev,
+      [idx]: !prev[idx]
+    }));
+  };
+
   const roadmapSteps: RoadmapStep[] = [
     {
       phase: 'Phase 01',
-      title: 'Inspire',
-      subtitle: 'Creating an Innovation Mindset',
+      title: 'INSPIRE',
+      subtitle: 'Innovation Mindset',
       bullets: [
         'Identify student talent',
         'Idea generation workshops',
@@ -59,14 +73,14 @@ export const WhyFoundersLab: React.FC<WhyFoundersLabProps> = ({ onScheduleMeetin
         'Faculty & EDC orientation'
       ],
       outcome: 'Students begin thinking like innovators.',
-      icon: Landmark,
-      color: 'from-[#0B2E6B] to-[#1565C0]',
+      icon: null,
+      color: '',
       highlight: 'Mindset & Orientation'
     },
     {
       phase: 'Phase 02',
-      title: 'Innovate',
-      subtitle: 'Transforming Ideas into Prototypes',
+      title: 'INNOVATE',
+      subtitle: 'Prototype Development',
       bullets: [
         'Idea validation',
         'Design thinking',
@@ -75,14 +89,14 @@ export const WhyFoundersLab: React.FC<WhyFoundersLabProps> = ({ onScheduleMeetin
         'Hackathons & innovation labs'
       ],
       outcome: 'Ideas become working solutions.',
-      icon: Cpu,
-      color: 'from-[#1565C0] to-[#0284C7]',
+      icon: null,
+      color: '',
       highlight: 'Prototyping & Labs'
     },
     {
       phase: 'Phase 03',
-      title: 'Incubate',
-      subtitle: 'Building Startups & Future Entrepreneurs',
+      title: 'INCUBATE',
+      subtitle: 'Startup Formation',
       bullets: [
         'Academic Incubation Centre',
         'Startup mentoring',
@@ -90,15 +104,15 @@ export const WhyFoundersLab: React.FC<WhyFoundersLabProps> = ({ onScheduleMeetin
         'Industry & investor connect',
         'Product validation'
       ],
-      outcome: 'Students become startup founders.',
-      icon: Award,
-      color: 'from-[#0284C7] to-[#0D9488]',
+      outcome: 'Students become founders.',
+      icon: null,
+      color: '',
       highlight: 'Incubation & Mentoring'
     },
     {
       phase: 'Phase 04',
-      title: 'Accelerate',
-      subtitle: 'Creating Sustainable Enterprises',
+      title: 'ACCELERATE',
+      subtitle: 'Enterprise Growth',
       bullets: [
         'Funding readiness',
         'Market access',
@@ -107,11 +121,13 @@ export const WhyFoundersLab: React.FC<WhyFoundersLabProps> = ({ onScheduleMeetin
         'Job creation & impact'
       ],
       outcome: 'Startups become successful enterprises that create jobs and drive economic growth.',
-      icon: Rocket,
-      color: 'from-[#F57C00] to-[#E65100]',
+      icon: null,
+      color: '',
       highlight: 'Growth & Enterprise'
     }
   ];
+
+  const currentCompItem = WHY_FOUNDERSLAB_COMPARISON[mobileCompIndex] || WHY_FOUNDERSLAB_COMPARISON[0];
 
   return (
     <>
@@ -130,8 +146,70 @@ export const WhyFoundersLab: React.FC<WhyFoundersLabProps> = ({ onScheduleMeetin
               </p>
             </div>
 
-            {/* Comparison Matrix */}
-            <div className="sd-matrix-wrapper" ref={matrixRef}>
+            {/* MOBILE INTERACTIVE COMPARISON CAROUSEL */}
+            <div className="fl-mobile-comp-carousel md:hidden">
+              <div className="fl-mobile-comp-header">
+                <span className="fl-mobile-comp-badge">0{mobileCompIndex + 1} / 0{WHY_FOUNDERSLAB_COMPARISON.length}</span>
+                <h3 className="fl-mobile-comp-feature">{currentCompItem.feature}</h3>
+              </div>
+
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={mobileCompIndex}
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="fl-mobile-comp-card"
+                >
+                  <div className="fl-mobile-comp-block traditional">
+                    <span className="fl-mobile-comp-tag">TRADITIONAL APPROACH</span>
+                    <p className="fl-mobile-comp-text">{currentCompItem.traditional}</p>
+                  </div>
+
+                  <div className="fl-mobile-comp-vs">VS</div>
+
+                  <div className="fl-mobile-comp-block founderslab">
+                    <span className="fl-mobile-comp-tag fl-tag">FOUNDERSLAB</span>
+                    <p className="fl-mobile-comp-text fl-text">{currentCompItem.founderslab}</p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Number Buttons Controls */}
+              <div className="fl-mobile-comp-controls">
+                <button 
+                  onClick={() => setMobileCompIndex((prev) => (prev > 0 ? prev - 1 : WHY_FOUNDERSLAB_COMPARISON.length - 1))}
+                  className="fl-mobile-comp-nav-btn"
+                  aria-label="Previous comparison"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+
+                <div className="fl-mobile-comp-numbers">
+                  {WHY_FOUNDERSLAB_COMPARISON.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setMobileCompIndex(idx)}
+                      className={`fl-mobile-comp-num-btn ${idx === mobileCompIndex ? 'active' : ''}`}
+                    >
+                      0{idx + 1}
+                    </button>
+                  ))}
+                </div>
+
+                <button 
+                  onClick={() => setMobileCompIndex((prev) => (prev < WHY_FOUNDERSLAB_COMPARISON.length - 1 ? prev + 1 : 0))}
+                  className="fl-mobile-comp-nav-btn"
+                  aria-label="Next comparison"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* DESKTOP COMPARISON MATRIX WITH ORANGE RAIL */}
+            <div className="sd-matrix-wrapper hidden md:block" ref={matrixRef}>
               <div className="sd-mobile-rail">
                 <motion.div 
                   className="sd-mobile-rail-progress"
@@ -194,36 +272,47 @@ export const WhyFoundersLab: React.FC<WhyFoundersLabProps> = ({ onScheduleMeetin
             </div>
 
             <div className="ltb-grid">
-              {roadmapSteps.map((step, idx) => (
-                <div className="ltb-card" key={idx}>
-                  <div className="ltb-card-header">
-                    <div className="ltb-phase-number">
-                      0{idx + 1}
-                      <div className="ltb-phase-accent"></div>
+              {roadmapSteps.map((step, idx) => {
+                const isExpanded = !!expandedBlueprintPhases[idx];
+                return (
+                  <div className="ltb-card" key={idx}>
+                    <div className="ltb-card-header">
+                      <div className="ltb-phase-number">
+                        0{idx + 1}
+                        <div className="ltb-phase-accent"></div>
+                      </div>
+                      <h3 className="ltb-phase-title">{step.title}</h3>
+                      <h4 className="ltb-phase-subtitle">{step.subtitle}</h4>
                     </div>
-                    <h3 className="ltb-phase-title">{step.title}</h3>
-                    <h4 className="ltb-phase-subtitle">{step.subtitle}</h4>
-                  </div>
-                  
-                  <div className="ltb-card-body">
-                    <ul className="ltb-bullets">
-                      {step.bullets?.map((b, i) => (
-                        <li key={i}>{b}</li>
-                      ))}
-                    </ul>
-                  </div>
 
-                  <div className="ltb-card-outcome">
-                    <span className="ltb-outcome-label">Outcome</span>
-                    <p className="ltb-outcome-text">{step.outcome}</p>
-                  </div>
+                    <div className="ltb-card-outcome">
+                      <span className="ltb-outcome-label">OUTCOME</span>
+                      <p className="ltb-outcome-text">{step.outcome}</p>
+                    </div>
+                    
+                    {/* Progressive Disclosure Activities for Mobile */}
+                    <div className="ltb-card-body">
+                      <button 
+                        onClick={() => toggleBlueprintPhase(idx)}
+                        className="ltb-toggle-activities-btn md:hidden"
+                      >
+                        {isExpanded ? 'HIDE STAGE ACTIVITIES −' : 'VIEW STAGE ACTIVITIES +'}
+                      </button>
 
-                  <div className="ltb-card-footer">
-                    <span className="ltb-bottom-text">{step.highlight}</span>
-                    <span className="ltb-bottom-num">0{idx + 1}</span>
+                      <ul className={`ltb-bullets ${isExpanded ? 'is-expanded' : ''}`}>
+                        {step.bullets?.map((b, i) => (
+                          <li key={i}>{b}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="ltb-card-footer hidden md:flex">
+                      <span className="ltb-bottom-text">{step.highlight}</span>
+                      <span className="ltb-bottom-num">0{idx + 1}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
