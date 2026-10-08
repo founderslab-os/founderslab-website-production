@@ -3,6 +3,7 @@ import { PageLoader } from './components/PageLoader';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AboutSection } from './components/AboutSection';
+import { HomepageGallery } from './components/HomepageGallery';
 import { ImpactMetrics } from './components/ImpactMetrics';
 import { FlagshipPrograms } from './components/FlagshipPrograms';
 import { WhyFoundersLab } from './components/WhyFoundersLab';
@@ -181,6 +182,11 @@ export default function App() {
 
           {/* About FoundersLab */}
           <AboutSection />
+
+          {/* Institutional Moments Gallery */}
+          <HomepageGallery
+            onNavigateToGallery={() => handleNavigatePage('gallery')}
+          />
 
           {/* Quantifiable Impact Metrics */}
           <ImpactMetrics

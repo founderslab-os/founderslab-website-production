@@ -1,0 +1,141 @@
+/* ==========================================================================
+   FOUNDERSLAB HOMEPAGE GALLERY — MOBILE RESPONSIVE STYLES
+   Explicit 2-column mobile layout. Absolute zero image cropping.
+   Breakpoints: 768px, 600px, 480px, 430px, 390px, 375px, 360px, 320px
+   ========================================================================== */
+
+@media (max-width: 991px) {
+  .fl-gallery-header-main {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .fl-gallery-subheading {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .fl-homepage-gallery {
+    padding: 3.5rem 1rem;
+  }
+
+  .fl-gallery-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .fl-gallery-heading {
+    font-size: clamp(1.35rem, 5vw, 1.85rem);
+  }
+
+  .fl-gallery-subheading {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  /* MANDATORY MOBILE LAYOUT: 2 IMAGES PER ROW */
+  .fl-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem 0.875rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .fl-gallery-card-num {
+    font-size: 0.75rem;
+    margin-bottom: 0.375rem;
+  }
+
+  /* MOBILE IMAGE CONTAINER RATIO MAINTAINED */
+  .fl-gallery-image-wrapper {
+    aspect-ratio: 4 / 3;
+    margin-bottom: 0.875rem;
+    background-color: #F8FAFC;
+  }
+
+  .fl-gallery-image-frame {
+    padding: 0.375rem;
+  }
+
+  .fl-gallery-card-category {
+    font-size: 0.625rem;
+    margin-bottom: 0.375rem;
+  }
+
+  .fl-gallery-card-title {
+    font-size: 0.9375rem;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+  }
+
+  .fl-gallery-card-desc {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    margin-bottom: 0.875rem;
+    -webkit-line-clamp: 3;
+  }
+
+  .fl-gallery-card-link {
+    font-size: 0.75rem;
+  }
+
+  .fl-gallery-footer {
+    justify-content: center;
+    padding-top: 1.5rem;
+  }
+
+  .fl-gallery-cta-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* SMALLER SMARTPHONES (480px, 430px, 390px, 375px) */
+@media (max-width: 480px) {
+  .fl-homepage-gallery {
+    padding: 2.75rem 0.75rem;
+  }
+
+  .fl-gallery-grid {
+    gap: 1rem 0.75rem;
+  }
+
+  .fl-gallery-card-title {
+    font-size: 0.875rem;
+  }
+
+  .fl-gallery-card-desc {
+    font-size: 0.78125rem;
+    -webkit-line-clamp: 2;
+  }
+}
+
+/* ULTRA NARROW SCREENS (360px & 320px) */
+@media (max-width: 360px) {
+  .fl-gallery-grid {
+    gap: 0.875rem 0.5rem;
+  }
+
+  .fl-gallery-image-frame {
+    padding: 0.25rem;
+  }
+
+  .fl-gallery-card-title {
+    font-size: 0.8125rem;
+  }
+
+  .fl-gallery-card-desc {
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .fl-gallery-card-link span {
+    font-size: 0.7rem;
+  }
+}

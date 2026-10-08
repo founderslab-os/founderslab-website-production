@@ -1,0 +1,279 @@
+/* ==========================================================================
+   FOUNDERSLAB HOMEPAGE GALLERY — DESKTOP & BASE STYLES
+   Editorial, institutional MNC aesthetic. Clean, precise, zero image cropping.
+   ========================================================================== */
+
+.fl-homepage-gallery {
+  background-color: #F8FAFC;
+  border-top: 1px solid #E2E8F0;
+  border-bottom: 1px solid #E2E8F0;
+  padding: 5rem 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fl-gallery-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* SECTION HEADER */
+.fl-gallery-header {
+  margin-bottom: 3.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.fl-gallery-header-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.fl-gallery-index {
+  font-family: var(--font-heading, system-ui, -apple-system, sans-serif);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #F97316;
+  text-transform: uppercase;
+}
+
+.fl-gallery-accent-bar {
+  width: 32px;
+  height: 2px;
+  background-color: #F97316;
+}
+
+.fl-gallery-header-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: end;
+}
+
+.fl-gallery-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fl-gallery-eyebrow {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #64748B;
+  text-transform: uppercase;
+}
+
+.fl-gallery-heading {
+  font-family: var(--font-heading, system-ui, -apple-system, sans-serif);
+  font-size: clamp(1.75rem, 2.7vw, 2.5rem);
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.fl-gallery-subheading {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #475569;
+  margin: 0;
+  max-width: 520px;
+}
+
+/* 3-COLUMN EDITORIAL GRID */
+.fl-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 3.5rem;
+}
+
+.fl-gallery-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: transparent;
+  transition: transform 0.25s ease;
+}
+
+.fl-gallery-card-num {
+  font-family: var(--font-heading, system-ui, -apple-system, sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #94A3B8;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+/* IMAGE FRAME & CONTAINER: STRICT NO-CROP IMPLEMENTATION */
+.fl-gallery-image-wrapper {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: #F1F5F9;
+  border: 1px solid #CBD5E1;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-center: center;
+  position: relative;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.fl-gallery-image-frame {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.fl-gallery-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+/* HOVER STATES */
+.fl-gallery-card:hover .fl-gallery-image-wrapper {
+  border-color: #F97316;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.fl-gallery-card:hover .fl-gallery-img {
+  transform: scale(1.02);
+}
+
+.fl-gallery-card:hover .fl-gallery-card-arrow {
+  transform: translateX(4px);
+  color: #EA580C;
+}
+
+.fl-gallery-card:hover .fl-gallery-card-title {
+  color: #EA580C;
+}
+
+/* CONTENT BELOW IMAGE */
+.fl-gallery-card-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.fl-gallery-card-category {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #F97316;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.fl-gallery-card-title {
+  font-family: var(--font-heading, system-ui, -apple-system, sans-serif);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.35;
+  margin: 0 0 0.625rem 0;
+  transition: color 0.2s ease;
+}
+
+.fl-gallery-card-desc {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: #64748B;
+  margin: 0 0 1.25rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.fl-gallery-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-heading, system-ui, -apple-system, sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #0F172A;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  margin-top: auto;
+  align-self: flex-start;
+  transition: color 0.2s ease;
+}
+
+.fl-gallery-card-arrow {
+  color: #0F172A;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/* SECTION FOOTER / VIEW GALLERY CTA */
+.fl-gallery-footer {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #E2E8F0;
+  padding-top: 2rem;
+}
+
+.fl-gallery-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: transparent;
+  border: 1px solid #0F172A;
+  padding: 0.875rem 1.75rem;
+  font-family: var(--font-heading, system-ui, -apple-system, sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #0F172A;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.fl-gallery-cta-btn:hover {
+  background-color: #0F172A;
+  color: #FFFFFF;
+  border-color: #0F172A;
+}
+
+.fl-gallery-cta-arrow {
+  transition: transform 0.25s ease;
+}
+
+.fl-gallery-cta-btn:hover .fl-gallery-cta-arrow {
+  transform: translateX(4px);
+}
+
+.desktop-only {
+  display: inline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fl-gallery-card,
+  .fl-gallery-img,
+  .fl-gallery-card-arrow,
+  .fl-gallery-cta-arrow,
+  .fl-gallery-image-wrapper {
+    transition: none !important;
+    transform: none !important;
+  }
+}
