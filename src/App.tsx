@@ -13,6 +13,7 @@ import { Footer } from './components/Footer';
 import { GalleryPage } from './components/GalleryPage';
 import { CeoPage } from './components/CeoPage';
 import { FloatingPhoneCTA } from './components/FloatingPhoneCTA';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
@@ -218,6 +219,9 @@ export default function App() {
 
       {/* Global Floating Phone CTA */}
       <FloatingPhoneCTA />
+
+      {/* Vercel Analytics */}
+      <Analytics />
     </div>
   );
 }
