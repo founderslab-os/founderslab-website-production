@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { supabase, DbGalleryEvent, DbGalleryImage, DbActivityLog } from '../lib/supabase';
+import { supabase, DbEvent, DbGalleryImage, DbActivityLog } from '../lib/supabase';
 import { 
   Shield, Image as ImageIcon, Upload, LogOut, CheckCircle, 
   XCircle, Trash2, Edit3, Search, Plus, Eye, EyeOff, Star,
@@ -28,7 +28,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
   const { user, adminProfile, signOut } = useAuth();
   
   const [activeTab, setActiveTab] = useState<'overview' | 'gallery' | 'logs'>('gallery');
-  const [events, setEvents] = useState<DbGalleryEvent[]>([]);
+  const [events, setEvents] = useState<DbEvent[]>([]);
   const [logs, setLogs] = useState<DbActivityLog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -37,18 +37,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
 
   // Modal State for Add / Edit Event
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingEvent, setEditingEvent] = useState<DbGalleryEvent | null>(null);
+  const [editingEvent, setEditingEvent] = useState<DbEvent | null>(null);
 
   // Event Form State
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('Events');
-  const [eventName, setEventName] = useState('');
+  const [keyDignitaries, setKeyDignitaries] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [location, setLocation] = useState('');
-  const [altText, setAltText] = useState('');
   const [isPublished, setIsPublished] = useState(true);
-  const [showDescriptions, setShowDescriptions] = useState(true);
   const [sortOrder, setSortOrder] = useState(0);
 
   // Multi-Image Form State
@@ -68,7 +66,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
     setLoading(true);
     try {
       const { data: eventsData, error: eventsError } = await supabase
-        .from('gallery_events')
+        .from('events')
         .select('*')
         .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false });
@@ -83,10 +81,27 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
           .in('event_id', eventIds.length > 0 ? eventIds : ['00000000-0000-0000-0000-000000000000'])
           .order('sort_order', { ascending: true });
 
-        const mappedEvents: DbGalleryEvent[] = eventsData.map(ev => ({
-          ...ev,
-          images: (imagesData || []).filter(img => img.event_id === ev.id)
-        }));
+        const mappedEvents: DbEvent[] = eventsData.map(ev => {
+          let images = (imagesData || []).filter(img => img.event_id === ev.id);
+          if (images.length === 0 && ev.image_url) {
+            images = [{
+              id: `fallback_${ev.id}`,
+              event_id: ev.id,
+              image_url: ev.image_url,
+              storage_path: '',
+              description: ev.title,
+              alt_text: ev.title,
+              sort_order: 0,
+              is_main: true,
+              created_at: ev.created_at || new Date().toISOString(),
+              updated_at: ev.updated_at || new Date().toISOString()
+            }];
+          }
+          return {
+            ...ev,
+            images
+          };
+        });
 
         setEvents(mappedEvents);
       }
@@ -126,12 +141,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
     setTitle('');
     setDescription('');
     setCategory('Events');
-    setEventName('');
+    setKeyDignitaries('');
     setEventDate('');
     setLocation('');
-    setAltText('');
     setIsPublished(true);
-    setShowDescriptions(true);
     setSortOrder(events.length + 1);
     setImageItems([]);
     setDeletedImageIds([]);
@@ -140,22 +153,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
     setModalOpen(true);
   };
 
-  const handleOpenEditModal = (event: DbGalleryEvent) => {
+  const handleOpenEditModal = (event: DbEvent) => {
     setEditingEvent(event);
     setTitle(event.title);
     setDescription(event.description || '');
     setCategory(event.category || 'Events');
-    setEventName(event.event_name || '');
+    setKeyDignitaries(event.key_dignitaries || '');
     setEventDate(event.event_date || '');
     setLocation(event.location || '');
-    setAltText(event.alt_text || '');
     setIsPublished(event.is_published);
-    setShowDescriptions(event.show_descriptions ?? true);
     setSortOrder(event.sort_order);
 
-    const mappedExistingImages: PendingImageItem[] = (event.images || []).map((img, idx) => ({
+    let mappedExistingImages: PendingImageItem[] = (event.images || []).map((img, idx) => ({
       id: img.id,
-      dbImageId: img.id,
+      dbImageId: img.id.startsWith('fallback_') ? undefined : img.id,
       previewUrl: img.image_url,
       storagePath: img.storage_path,
       description: img.description || '',
@@ -163,6 +174,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
       isMain: img.is_main,
       sortOrder: img.sort_order ?? idx
     }));
+
+    if (mappedExistingImages.length === 0 && event.image_url) {
+      mappedExistingImages = [{
+        id: `main_${event.id}`,
+        previewUrl: event.image_url,
+        description: event.title,
+        altText: event.title,
+        isMain: true,
+        sortOrder: 0
+      }];
+    }
 
     setImageItems(mappedExistingImages);
     setDeletedImageIds([]);
@@ -280,33 +302,31 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
     setUploadProgress(10);
 
     try {
-      // 1. Create or Update gallery_events record
+      // 1. Create or Update events record
       const eventPayload = {
         title: title.trim(),
         description: description.trim() || null,
         category: category.trim() || 'Events',
-        event_name: eventName.trim() || null,
+        key_dignitaries: keyDignitaries.trim() || null,
         event_date: eventDate || null,
         location: location.trim() || null,
-        alt_text: altText.trim() || title.trim(),
         is_published: isPublished,
-        show_descriptions: showDescriptions,
         sort_order: Number(sortOrder) || 0,
         updated_at: new Date().toISOString()
-      };
+      } as any;
 
       let activeEventId = editingEvent?.id;
 
       if (editingEvent) {
         const { error: updateError } = await supabase
-          .from('gallery_events')
+          .from('events')
           .update(eventPayload)
           .eq('id', editingEvent.id);
 
         if (updateError) throw updateError;
       } else {
         const { data: newEvent, error: createError } = await supabase
-          .from('gallery_events')
+          .from('events')
           .insert([{
             ...eventPayload,
             created_by: user?.id || null
@@ -378,6 +398,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
         } else {
           await supabase.from('gallery_images').insert([imagePayload]);
         }
+
+        if (item.isMain) {
+           await supabase.from('events').update({ image_url: imageUrl }).eq('id', activeEventId);
+        }
       }
 
       setUploadProgress(100);
@@ -397,10 +421,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
     }
   };
 
-  const handleTogglePublish = async (event: DbGalleryEvent) => {
+  const handleTogglePublish = async (event: DbEvent) => {
     const newStatus = !event.is_published;
     const { error } = await supabase
-      .from('gallery_events')
+      .from('events')
       .update({ is_published: newStatus, updated_at: new Date().toISOString() })
       .eq('id', event.id);
 
@@ -414,7 +438,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
     }
   };
 
-  const handleDeleteEvent = async (event: DbGalleryEvent) => {
+  const handleDeleteEvent = async (event: DbEvent) => {
     const confirmDelete = window.confirm(
       `Delete event gallery "${event.title}"?\n\nThis will permanently remove the event and all ${event.images?.length || 0} associated photos.`
     );
@@ -429,7 +453,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
 
       // 2. Delete event DB record (gallery_images cascades automatically)
       const { error } = await supabase
-        .from('gallery_events')
+        .from('events')
         .delete()
         .eq('id', event.id);
 
@@ -687,18 +711,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
           {activeTab === 'overview' && (
             <div className="fl-admin-section">
               <h1 className="fl-section-title">Multi-Image Schema Architecture</h1>
-              <p className="fl-section-desc">PostgreSQL tables: <code>gallery_events</code> + <code>gallery_images</code></p>
+              <p className="fl-section-desc">PostgreSQL tables: <code>events</code> + <code>gallery_images</code></p>
 
               <div className="fl-overview-grid">
                 <div className="fl-overview-box">
                   <h3>Event Schema (Parent)</h3>
-                  <p>Table: <code>public.gallery_events</code></p>
-                  <p>Contains event title, description, date, location, category, show_descriptions flag.</p>
+                  <p>Table: <code>public.events</code></p>
+                  <p>Contains event title, description, key dignitaries, date, location, category, image_url.</p>
                 </div>
 
                 <div className="fl-overview-box">
                   <h3>Photo Gallery Schema (Child)</h3>
-                  <p>Table: <code>public.gallery_images</code> (FK cascade to <code>gallery_events</code>)</p>
+                  <p>Table: <code>public.gallery_images</code> (FK cascade to <code>events</code>)</p>
                   <p>Guaranteed 1 main cover image via PostgreSQL partial unique index.</p>
                 </div>
               </div>
@@ -775,6 +799,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
                     placeholder="e.g. Events, Orientation, Summit"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="fl-form-row">
+                <div className="fl-form-group">
+                  <label>Key Dignitaries</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Sri K.T. Rama Rao..."
+                    value={keyDignitaries}
+                    onChange={(e) => setKeyDignitaries(e.target.value)}
                   />
                 </div>
               </div>
@@ -910,7 +946,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
                 )}
               </div>
 
-              {/* Toggles */}
               <div className="fl-form-row">
                 <label className="fl-checkbox-label">
                   <input
@@ -919,15 +954,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
                     onChange={(e) => setIsPublished(e.target.checked)}
                   />
                   <span>Publish event immediately on FoundersLab website</span>
-                </label>
-
-                <label className="fl-checkbox-label">
-                  <input
-                    type="checkbox"
-                    checked={showDescriptions}
-                    onChange={(e) => setShowDescriptions(e.target.checked)}
-                  />
-                  <span>Display individual photo captions in Lightbox</span>
                 </label>
               </div>
 

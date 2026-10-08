@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { GALLERY_ITEMS } from '../data/founderslabData';
 import { GalleryItem } from '../types';
-import { supabase, DbGalleryEvent, DbGalleryImage } from '../lib/supabase';
+import { supabase, DbEvent, DbGalleryImage } from '../lib/supabase';
 import './Gallery.mobile.css';
 
 
@@ -39,7 +39,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
     async function loadLiveEvents() {
       try {
         const { data: eventsData, error: eventsError } = await supabase
-          .from('gallery_events')
+          .from('events')
           .select('*')
           .eq('is_published', true)
           .order('sort_order', { ascending: true })
@@ -53,7 +53,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
             .in('event_id', eventIds)
             .order('sort_order', { ascending: true });
 
-          const mapped: GalleryItem[] = eventsData.map((ev: DbGalleryEvent) => {
+          const mapped: GalleryItem[] = eventsData.map((ev: DbEvent) => {
             const evImages = (imagesData || []).filter((i: DbGalleryImage) => i.event_id === ev.id);
             const mainImg = evImages.find(i => i.is_main) || evImages[0];
 
@@ -64,8 +64,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
               date: ev.event_date || new Date(ev.created_at).toLocaleDateString(),
               campusOrCity: ev.location || 'India',
               description: ev.description || '',
-              imageUrl: mainImg ? mainImg.image_url : '/T-HUB_GRP.jpeg',
-              images: evImages.map(i => i.image_url),
+              imageUrl: mainImg ? mainImg.image_url : (ev.image_url || '/T-HUB_GRP.jpeg'),
+              images: evImages.length > 0 ? evImages.map(i => i.image_url) : [ev.image_url || '/T-HUB_GRP.jpeg'],
               tags: [ev.category || 'Events', ev.location || 'FoundersLab'].filter(Boolean)
             };
           });

@@ -12,18 +12,17 @@ export const supabase = createClient(
   supabaseAnonKey || ''
 );
 
-export interface DbGalleryEvent {
+export interface DbEvent {
   id: string;
   title: string;
   description?: string | null;
-  category?: string | null;
-  event_name?: string | null;
+  key_dignitaries?: string | null;
   event_date?: string | null;
   location?: string | null;
-  alt_text?: string | null;
+  category?: string | null;
+  image_url?: string | null;
   is_published: boolean;
   sort_order: number;
-  show_descriptions: boolean;
   created_by?: string | null;
   created_at: string;
   updated_at: string;
