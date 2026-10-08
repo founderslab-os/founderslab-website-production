@@ -76,7 +76,7 @@
   background-image: var(--program-image);
   background-size: cover;
   background-position: center;
-  filter: blur(1.5px); /* Decreased blur */
+  filter: blur(0px); /* Crisper image without heavy blur */
   transform: scale(1.04);
   z-index: 1;
 }
