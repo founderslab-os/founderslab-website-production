@@ -1,73 +1,91 @@
-/* FoundersLabHero.mobile.css */
+/* FoundersLabHero.mobile.css - Mobile optimization for Home/Hero section */
 
-/* Tablet overrides */
 @media (max-width: 1024px) {
   .fl-hero__content { grid-column: 1 / 13; padding-right: 0; }
   .fl-hero__visual { display: none; }
 }
 
-/* Mobile overrides */
 @media (max-width: 767px) {
   .fl-hero {
-    padding: 100px 24px 60px;
+    padding: 80px 20px 40px;
     height: auto;
-    min-height: 100vh;
+    min-height: auto;
   }
+
   .fl-hero__container {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 40px;
+    gap: 24px;
   }
   
+  .fl-hero__eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
   .fl-hero__title {
-    font-size: clamp(40px, 11vw, 54px);
-    line-height: 0.98;
-    letter-spacing: -0.04em;
-    margin-bottom: 24px;
+    font-size: clamp(30px, 8vw, 38px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
   }
+
+  .fl-hero__title span {
+    display: block;
+  }
+
+  .fl-hero__divider {
+    margin: 16px 0;
+    height: 1px;
+    background: #E2E8F0;
+  }
+
   .fl-hero__description {
-    font-size: 16px;
-    margin-bottom: 32px;
+    font-size: 15px;
+    line-height: 1.45;
+    margin-bottom: 24px;
+    color: #475569;
   }
+
   .fl-hero__actions {
     flex-direction: column;
     align-items: stretch;
-    gap: 20px;
+    gap: 12px;
   }
+
   .fl-hero__btn-primary {
     width: 100%;
     justify-content: center;
+    padding: 14px 20px;
+    font-size: 14px;
+    border-radius: 4px;
   }
   
   .fl-hero__btn-link {
     width: 100%;
-    justify-content: flex-start;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #F1F5F9;
   }
   
-  .fl-hero__eyebrow {
-    font-size: 10px;
-    margin-bottom: 24px;
-  }
-
-  .fl-hero__divider {
-    margin: 32px 0;
-  }
-
   .fl-hero__visual {
     display: block;
     grid-column: auto;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 12px;
   }
 
   .fl-hero__image-frame {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 9;
     position: relative;
     overflow: hidden;
     border-radius: 4px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E2E8F0;
     background-color: #fafafa;
   }
 }

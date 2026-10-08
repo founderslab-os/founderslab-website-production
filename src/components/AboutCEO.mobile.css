@@ -1,0 +1,203 @@
+/* AboutCEO.mobile.css - Mobile Executive Dossier Styling */
+
+.ceo-read-more-btn {
+  display: none;
+}
+
+.ceo-pillar-toggle-icon {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .ceo-container {
+    padding-inline: 16px !important;
+  }
+
+  .ceo-hero-section {
+    padding-top: 16px;
+    gap: 20px;
+  }
+
+  .ceo-hero-image-wrap {
+    aspect-ratio: 4 / 3;
+    max-height: 260px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .ceo-hero-image {
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .ceo-name {
+    font-size: clamp(26px, 7vw, 32px);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .ceo-hero-statement {
+    font-size: clamp(20px, 5.5vw, 24px);
+    line-height: 1.2;
+    margin-block: 12px;
+  }
+
+  /* Compact 2x2 Metric Grid */
+  .ceo-metrics-section {
+    padding-block: 24px;
+  }
+
+  .ceo-metrics-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px 12px !important;
+  }
+
+  .ceo-metric-item {
+    border-left: 2px solid #F57C00 !important;
+    padding-left: 10px !important;
+    text-align: left !important;
+  }
+
+  .ceo-metric-number {
+    font-size: 24px !important;
+    justify-content: flex-start !important;
+  }
+
+  .ceo-metric-label {
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Read More Expander */
+  .ceo-bio-expandable {
+    display: none;
+  }
+
+  .ceo-bio-expandable.is-expanded {
+    display: block;
+  }
+
+  .ceo-read-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    color: #F57C00;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    padding: 0;
+  }
+
+  /* Compact Timeline */
+  .ceo-timeline-section {
+    padding-block: 24px;
+  }
+
+  .ceo-timeline-heading {
+    font-size: 22px;
+  }
+
+  .ceo-timeline-item {
+    padding-bottom: 20px;
+  }
+
+  .ceo-timeline-role {
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+
+  .ceo-timeline-org {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .ceo-timeline-desc {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  /* Pillar Accordion */
+  .ceo-pillars-heading {
+    font-size: 22px;
+  }
+
+  .ceo-pillars-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ceo-pillar-card {
+    padding: 14px 16px !important;
+    border: 1px solid #E2E8F0;
+    border-radius: 4px;
+    background: #FFFFFF;
+    cursor: pointer;
+  }
+
+  .ceo-pillar-mobile-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: space-between;
+  }
+
+  .ceo-pillar-number {
+    font-size: 14px;
+    font-weight: 800;
+    color: #F57C00;
+  }
+
+  .ceo-pillar-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0;
+    flex: 1;
+  }
+
+  .ceo-pillar-toggle-icon {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    color: #64748B;
+  }
+
+  .ceo-pillar-desc {
+    display: none;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #475569;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #F1F5F9;
+  }
+
+  .ceo-pillar-card.is-open .ceo-pillar-desc {
+    display: block;
+  }
+
+  .ceo-pillar-indicator {
+    display: none;
+  }
+
+  /* Quote Section */
+  .ceo-quote-section {
+    padding-block: 28px;
+  }
+
+  .ceo-quote-mark {
+    font-size: 36px;
+    height: 24px;
+  }
+
+  .ceo-quote-text {
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+    margin-block: 12px !important;
+  }
+}

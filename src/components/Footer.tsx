@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Footer.css';
 import './Footer.mobile.css';
 
@@ -14,6 +14,7 @@ export const Footer: React.FC<FooterProps> = ({
   customLogoUrl = '/logo.jpeg',
   onNavigatePage,
 }) => {
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
 
   const handleNav = (e: React.MouseEvent, page: 'home' | 'gallery' | 'ceo', sectionId?: string) => {
     e.preventDefault();
@@ -23,6 +24,10 @@ export const Footer: React.FC<FooterProps> = ({
       const el = document.getElementById(sectionId);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const toggleGroup = (group: string) => {
+    setOpenGroup(openGroup === group ? null : group);
   };
 
   return (
@@ -53,11 +58,14 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
         </div>
 
-        {/* Navigation Grid */}
+        {/* Navigation Accordions for Mobile / Grid for Desktop */}
         <div className="ft-grid">
           
-          <div className="ft-col">
-            <h4 className="ft-col-title">Connect With Us</h4>
+          <div className={`ft-col ${openGroup === 'connect' ? 'is-open' : ''}`}>
+            <div className="ft-col-header" onClick={() => toggleGroup('connect')}>
+              <h4 className="ft-col-title">Connect With Us</h4>
+              <span className="ft-accordion-icon">{openGroup === 'connect' ? '−' : '+'}</span>
+            </div>
             <ul className="ft-list">
               <li><a href="mailto:admin@founderslab.co.in" className="ft-link">admin@founderslab.co.in</a></li>
               <li><a href="tel:+919010207999" className="ft-link">+91 9010207999</a></li>
@@ -66,8 +74,11 @@ export const Footer: React.FC<FooterProps> = ({
             </ul>
           </div>
 
-          <div className="ft-col">
-            <h4 className="ft-col-title">Navigation</h4>
+          <div className={`ft-col ${openGroup === 'nav' ? 'is-open' : ''}`}>
+            <div className="ft-col-header" onClick={() => toggleGroup('nav')}>
+              <h4 className="ft-col-title">Navigation</h4>
+              <span className="ft-accordion-icon">{openGroup === 'nav' ? '−' : '+'}</span>
+            </div>
             <ul className="ft-list">
               <li><button onClick={(e) => handleNav(e, 'home', 'home')} className="ft-link">Home</button></li>
               <li><button onClick={(e) => handleNav(e, 'home', 'about')} className="ft-link">About FoundersLab</button></li>
@@ -79,8 +90,11 @@ export const Footer: React.FC<FooterProps> = ({
             </ul>
           </div>
 
-          <div className="ft-col">
-            <h4 className="ft-col-title">Initiatives & Tools</h4>
+          <div className={`ft-col ${openGroup === 'initiatives' ? 'is-open' : ''}`}>
+            <div className="ft-col-header" onClick={() => toggleGroup('initiatives')}>
+              <h4 className="ft-col-title">Initiatives & Tools</h4>
+              <span className="ft-accordion-icon">{openGroup === 'initiatives' ? '−' : '+'}</span>
+            </div>
             <ul className="ft-list">
               <li><button onClick={(e) => handleNav(e, 'home', 'programs')} className="ft-link">Young FoundersLab</button></li>
               <li><button onClick={(e) => handleNav(e, 'home', 'programs')} className="ft-link">PharmaPreneur Program</button></li>

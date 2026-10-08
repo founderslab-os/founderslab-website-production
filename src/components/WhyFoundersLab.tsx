@@ -4,8 +4,10 @@ import { WHY_FOUNDERSLAB_COMPARISON } from '../data/founderslabData';
 import { Check, X, ShieldCheck, Sparkles, Rocket, Landmark, ArrowRight, Award, Cpu, Lightbulb } from 'lucide-react';
 import './StrategicDifferentiation.css';
 import './StrategicDifferentiation.mobile.css';
+import './Differentiation.mobile.css';
 import './LongTermBlueprint.css';
 import './LongTermBlueprint.mobile.css';
+import './Blueprint.mobile.css';
 
 interface WhyFoundersLabProps {
   onScheduleMeeting: () => void;

@@ -1,0 +1,130 @@
+/* Impact.mobile.css - Mobile 2-column editorial metric grid */
+
+@media (max-width: 767px) {
+  .fl-impact {
+    padding-block: 48px;
+    background: #FFFFFF;
+  }
+
+  .fl-impact__header {
+    margin-bottom: 24px;
+    gap: 12px;
+  }
+  
+  .fl-impact__title {
+    font-size: clamp(26px, 7vw, 32px);
+    line-height: 1.15;
+  }
+
+  .fl-impact__subtitle {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+
+  .fl-impact__description {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  /* Compact 2-column KPI strip */
+  .fl-impact__kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 16px;
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid #E2E8F0;
+  }
+
+  .fl-impact__kpi-divider {
+    display: none;
+  }
+
+  .fl-impact__kpi-item {
+    border-left: 2px solid #F57C00;
+    padding-left: 10px;
+  }
+
+  .fl-impact__kpi-index {
+    display: none;
+  }
+
+  .fl-impact__kpi-value {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #0F172A;
+    margin-bottom: 4px;
+  }
+
+  .fl-impact__kpi-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #334155;
+  }
+
+  .fl-impact__kpi-desc {
+    font-size: 11px;
+    color: #64748B;
+  }
+
+  /* Matrix Grid: Compact 2-column */
+  .fl-impact__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0;
+    border: 1px solid #E2E8F0;
+  }
+
+  .fl-impact__card {
+    padding: 16px 12px;
+    border-right: 1px solid #E2E8F0;
+    border-bottom: 1px solid #E2E8F0;
+  }
+
+  .fl-impact__card:nth-child(2n) {
+    border-right: none;
+  }
+
+  .fl-impact__card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .fl-impact__card-index {
+    font-size: 11px;
+    color: #F57C00;
+  }
+
+  .fl-impact__card-status {
+    font-size: 9px;
+    text-transform: uppercase;
+    color: #64748B;
+  }
+
+  .fl-impact__card-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0F172A;
+    margin-bottom: 2px;
+  }
+
+  .fl-impact__card-metric {
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+    line-height: 1.25;
+    margin-bottom: 4px;
+  }
+
+  .fl-impact__card-desc {
+    font-size: 11px;
+    line-height: 1.35;
+    color: #64748B;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}

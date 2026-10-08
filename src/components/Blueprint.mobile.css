@@ -1,0 +1,116 @@
+/* Blueprint.mobile.css - Mobile optimization for Long-Term Blueprint progression */
+
+@media (max-width: 767px) {
+  .ltb-section {
+    padding-block: 48px;
+    background: #FAFAFA;
+  }
+
+  .ltb-header {
+    margin-bottom: 24px;
+  }
+
+  .ltb-title {
+    font-size: clamp(26px, 7vw, 32px);
+  }
+
+  .ltb-desc {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .ltb-journey-container {
+    padding-left: 16px;
+  }
+
+  .ltb-journey-track {
+    left: 0;
+    width: 2px;
+    background-color: #E2E8F0;
+  }
+
+  .ltb-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ltb-card {
+    border-radius: 4px;
+    border: 1px solid #E2E8F0;
+    background: #FFFFFF;
+  }
+
+  .ltb-card-header {
+    padding: 16px;
+    border-bottom: 1px solid #F1F5F9;
+  }
+
+  .ltb-phase-number {
+    font-size: 20px;
+    font-weight: 800;
+    color: #F57C00;
+    margin-bottom: 4px;
+  }
+
+  .ltb-phase-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0F172A;
+  }
+
+  .ltb-phase-subtitle {
+    font-size: 13px;
+    color: #64748B;
+  }
+
+  .ltb-card-body {
+    padding: 12px 16px;
+  }
+
+  .ltb-bullets li {
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: #334155;
+    margin-bottom: 6px;
+  }
+
+  .ltb-card-outcome {
+    padding: 12px 16px;
+    background: #F8FAFC;
+    border-top: 1px solid #F1F5F9;
+  }
+
+  .ltb-outcome-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #F57C00;
+    font-weight: 700;
+  }
+
+  .ltb-outcome-text {
+    font-size: 12px;
+    color: #0F172A;
+    font-weight: 500;
+  }
+
+  .ltb-card-footer {
+    display: none;
+  }
+
+  .ltb-cta {
+    padding-top: 24px;
+    margin-top: 32px;
+    border-top: 1px solid #E2E8F0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .ltb-cta-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+  }
+}

@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './FoundersLabAbout.css';
+import './About.mobile.css';
 
 export const AboutSection: React.FC = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <section id="about" className="fl-about">
       <div className="fl-about__container">
@@ -15,9 +18,24 @@ export const AboutSection: React.FC = () => {
             Building Enterprises.<br />
             Building the Nation.
           </h2>
-          <p className="fl-about__intro">
-            FoundersLab is India's dedicated Innovation & Entrepreneurship Ecosystem Builder. We don't conduct superficial one-off workshops—we architect long-term, sustainable innovation infrastructure inside educational campuses.
-          </p>
+          <div className="fl-about__intro-wrapper">
+            <p className="fl-about__intro">
+              FoundersLab is India's dedicated Innovation & Entrepreneurship Ecosystem Builder. We don't conduct superficial one-off workshops—we architect long-term, sustainable innovation infrastructure inside educational campuses.
+            </p>
+            
+            <div className={`fl-about__expandable-content ${isExpanded ? 'is-open' : ''}`}>
+              <p className="fl-about__intro-extra">
+                We work directly alongside leadership boards, Senate bodies, and Trust Chairmen to establish institutional innovation policies, set up makerspaces, structure Faculty–Student joint venture guidelines, and provide direct investor access.
+              </p>
+            </div>
+
+            <button 
+              className="fl-about__read-more-btn"
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              {isExpanded ? 'Read less ↑' : 'Read more →'}
+            </button>
+          </div>
         </div>
 
         <div className="fl-about__divider"></div>
@@ -106,4 +124,3 @@ export const AboutSection: React.FC = () => {
     </section>
   );
 };
-

@@ -5,6 +5,7 @@ import { Program } from '../types';
 import { X } from 'lucide-react';
 import './FlagshipInitiatives.css';
 import './FlagshipInitiatives.mobile.css';
+import './Programs.mobile.css';
 
 interface FlagshipProgramsProps {
   onSelectProgram: (program: Program) => void;

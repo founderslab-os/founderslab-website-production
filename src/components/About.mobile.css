@@ -1,0 +1,74 @@
+/* About.mobile.css - Mobile optimization for About FoundersLab section */
+
+.fl-about__read-more-btn {
+  display: none;
+}
+
+.fl-about__intro-extra {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .fl-about {
+    padding-block: 48px;
+  }
+
+  .fl-about__read-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    color: #F57C00;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    padding: 0;
+  }
+
+  .fl-about__expandable-content {
+    display: none;
+    margin-top: 10px;
+  }
+
+  .fl-about__expandable-content.is-open {
+    display: block;
+  }
+
+  .fl-about__intro-extra {
+    font-size: 14px;
+    line-height: 1.45;
+    color: #64748B;
+  }
+
+  .fl-about__framework-top {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .fl-about__section-text {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .fl-about__areas {
+    grid-template-columns: 1fr;
+    border-top: none;
+  }
+
+  .fl-about__area {
+    padding: 16px 0 !important;
+    border-right: none !important;
+    border-top: 1px solid #E2E8F0;
+  }
+
+  .fl-about__area-title {
+    font-size: 15px;
+  }
+
+  .fl-about__area-description {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+}

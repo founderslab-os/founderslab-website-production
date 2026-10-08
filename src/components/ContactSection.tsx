@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import './ContactSection.css';
 import './ContactSection.mobile.css';
+import './Contact.mobile.css';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({

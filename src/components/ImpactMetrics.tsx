@@ -3,6 +3,7 @@ import { useInView } from 'motion/react';
 import { ALL_IMPACT_METRICS } from '../data/founderslabData';
 import './QuantifiableEcosystemImpact.css';
 import './QuantifiableEcosystemImpact.mobile.css';
+import './Impact.mobile.css';
 
 // Animated Counter component
 const AnimatedCounter: React.FC<{ value: number; duration?: number; suffix?: string }> = ({ value, duration = 2000, suffix = '' }) => {

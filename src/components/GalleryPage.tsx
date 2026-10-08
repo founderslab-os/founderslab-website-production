@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { GALLERY_ITEMS } from '../data/founderslabData';
 import { GalleryItem } from '../types';
+import './Gallery.mobile.css';
 
 
 interface GalleryPageProps {

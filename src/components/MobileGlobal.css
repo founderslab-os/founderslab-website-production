@@ -1,0 +1,77 @@
+/* MobileGlobal.css - Dedicated Mobile Design System Rules (<768px) */
+
+@media (max-width: 768px) {
+  /* Global Section & Container Spacing */
+  section {
+    padding-block: 48px !important;
+  }
+
+  .container, [class*="container"] {
+    padding-inline: 20px !important;
+  }
+
+  /* Typography Scale Overrides for Mobile */
+  h1 {
+    font-size: clamp(32px, 8vw, 42px) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  h2 {
+    font-size: clamp(26px, 6.5vw, 32px) !important;
+    line-height: 1.18 !important;
+    letter-spacing: -0.015em !important;
+  }
+
+  h3 {
+    font-size: clamp(20px, 5vw, 24px) !important;
+    line-height: 1.25 !important;
+  }
+
+  .text-eyebrow, [class*="eyebrow"], .uppercase.tracking-wider {
+    font-size: 12px !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  p, span, li {
+    line-height: 1.5 !important;
+  }
+
+  /* Global Mobile Card & Border Discipline */
+  .rounded-2xl, .rounded-3xl, .rounded-xl {
+    border-radius: 6px !important;
+  }
+
+  /* Prevent any horizontal overflow */
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  section {
+    padding-block: 38px !important;
+  }
+
+  .container, [class*="container"] {
+    padding-inline: 16px !important;
+  }
+
+  h1 {
+    font-size: clamp(28px, 8.5vw, 36px) !important;
+  }
+
+  h2 {
+    font-size: clamp(24px, 7vw, 28px) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
