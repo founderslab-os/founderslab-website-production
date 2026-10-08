@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { supabase, DbGalleryItem, DbActivityLog } from '../lib/supabase';
+import { supabase, DbGalleryEvent, DbGalleryImage, DbActivityLog } from '../lib/supabase';
 import { 
   Shield, Image as ImageIcon, Upload, LogOut, CheckCircle, 
-  XCircle, Trash2, Edit3, Search, Plus, Eye, EyeOff, ArrowUp, ArrowDown,
-  Activity, Layers, RefreshCw
+  XCircle, Trash2, Edit3, Search, Plus, Eye, EyeOff, Star,
+  Activity, Layers, RefreshCw, MoveUp, MoveDown
 } from 'lucide-react';
 import './AdminDashboard.css';
 
@@ -12,22 +12,34 @@ interface AdminDashboardProps {
   onBackToHome: () => void;
 }
 
+interface PendingImageItem {
+  id: string;
+  file?: File;
+  previewUrl: string;
+  description: string;
+  altText: string;
+  isMain: boolean;
+  dbImageId?: string;
+  storagePath?: string;
+  sortOrder: number;
+}
+
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) => {
   const { user, adminProfile, signOut } = useAuth();
   
   const [activeTab, setActiveTab] = useState<'overview' | 'gallery' | 'logs'>('gallery');
-  const [items, setItems] = useState<DbGalleryItem[]>([]);
+  const [events, setEvents] = useState<DbGalleryEvent[]>([]);
   const [logs, setLogs] = useState<DbActivityLog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<'all' | 'published' | 'draft'>('all');
 
-  // Modal State for Add / Edit
+  // Modal State for Add / Edit Event
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<DbGalleryItem | null>(null);
+  const [editingEvent, setEditingEvent] = useState<DbGalleryEvent | null>(null);
 
-  // Form State
+  // Event Form State
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('Events');
@@ -36,32 +48,53 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
   const [location, setLocation] = useState('');
   const [altText, setAltText] = useState('');
   const [isPublished, setIsPublished] = useState(true);
+  const [showDescriptions, setShowDescriptions] = useState(true);
   const [sortOrder, setSortOrder] = useState(0);
 
-  // Image File State
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [filePreview, setFilePreview] = useState<string | null>(null);
+  // Multi-Image Form State
+  const [imageItems, setImageItems] = useState<PendingImageItem[]>([]);
+  const [deletedImageIds, setDeletedImageIds] = useState<string[]>([]);
+  const [deletedStoragePaths, setDeletedStoragePaths] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [formError, setFormError] = useState('');
 
   useEffect(() => {
-    fetchGalleryItems();
+    fetchEvents();
     fetchActivityLogs();
   }, []);
 
-  const fetchGalleryItems = async () => {
+  const fetchEvents = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('gallery_items')
-      .select('*')
-      .order('sort_order', { ascending: true })
-      .order('created_at', { ascending: false });
+    try {
+      const { data: eventsData, error: eventsError } = await supabase
+        .from('gallery_events')
+        .select('*')
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: false });
 
-    if (data && !error) {
-      setItems(data as DbGalleryItem[]);
+      if (eventsError) throw eventsError;
+
+      if (eventsData) {
+        const eventIds = eventsData.map(e => e.id);
+        const { data: imagesData } = await supabase
+          .from('gallery_images')
+          .select('*')
+          .in('event_id', eventIds.length > 0 ? eventIds : ['00000000-0000-0000-0000-000000000000'])
+          .order('sort_order', { ascending: true });
+
+        const mappedEvents: DbGalleryEvent[] = eventsData.map(ev => ({
+          ...ev,
+          images: (imagesData || []).filter(img => img.event_id === ev.id)
+        }));
+
+        setEvents(mappedEvents);
+      }
+    } catch (err: any) {
+      console.error('Fetch events error:', err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const fetchActivityLogs = async () => {
@@ -81,7 +114,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
     await supabase.from('activity_logs').insert([{
       admin_id: user.id,
       action,
-      entity_type: 'GALLERY',
+      entity_type: 'GALLERY_EVENT',
       entity_id: entityId,
       metadata: metadata || {}
     }]);
@@ -89,7 +122,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
   };
 
   const handleOpenAddModal = () => {
-    setEditingItem(null);
+    setEditingEvent(null);
     setTitle('');
     setDescription('');
     setCategory('Events');
@@ -98,124 +131,157 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
     setLocation('');
     setAltText('');
     setIsPublished(true);
-    setSortOrder(items.length + 1);
-    setSelectedFile(null);
-    setFilePreview(null);
+    setShowDescriptions(true);
+    setSortOrder(events.length + 1);
+    setImageItems([]);
+    setDeletedImageIds([]);
+    setDeletedStoragePaths([]);
     setFormError('');
     setModalOpen(true);
   };
 
-  const handleOpenEditModal = (item: DbGalleryItem) => {
-    setEditingItem(item);
-    setTitle(item.title);
-    setDescription(item.description || '');
-    setCategory(item.category || 'Events');
-    setEventName(item.event_name || '');
-    setEventDate(item.event_date || '');
-    setLocation(item.location || '');
-    setAltText(item.alt_text || '');
-    setIsPublished(item.is_published);
-    setSortOrder(item.sort_order);
-    setSelectedFile(null);
-    setFilePreview(item.image_url);
+  const handleOpenEditModal = (event: DbGalleryEvent) => {
+    setEditingEvent(event);
+    setTitle(event.title);
+    setDescription(event.description || '');
+    setCategory(event.category || 'Events');
+    setEventName(event.event_name || '');
+    setEventDate(event.event_date || '');
+    setLocation(event.location || '');
+    setAltText(event.alt_text || '');
+    setIsPublished(event.is_published);
+    setShowDescriptions(event.show_descriptions ?? true);
+    setSortOrder(event.sort_order);
+
+    const mappedExistingImages: PendingImageItem[] = (event.images || []).map((img, idx) => ({
+      id: img.id,
+      dbImageId: img.id,
+      previewUrl: img.image_url,
+      storagePath: img.storage_path,
+      description: img.description || '',
+      altText: img.alt_text || '',
+      isMain: img.is_main,
+      sortOrder: img.sort_order ?? idx
+    }));
+
+    setImageItems(mappedExistingImages);
+    setDeletedImageIds([]);
+    setDeletedStoragePaths([]);
     setFormError('');
     setModalOpen(true);
   };
 
-  const sanitizeInput = (str: string, maxLength: number = 500): string => {
-    if (!str) return '';
-    return str
-      .slice(0, maxLength)
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .trim();
-  };
+  const handleAddImageFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
+    const filesArray: File[] = Array.from(e.target.files);
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif'];
+    const allowedExts = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
 
-      // Validate file size (10MB)
+    const newItems: PendingImageItem[] = [];
+
+    for (const file of filesArray) {
       if (file.size > 10 * 1024 * 1024) {
-        setFormError('File size exceeds maximum limit of 10MB.');
+        setFormError(`File "${file.name}" exceeds maximum limit of 10MB.`);
         return;
       }
 
-      // Validate MIME type & file extension
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif'];
       const ext = file.name.split('.').pop()?.toLowerCase();
-      const allowedExts = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
-
       if (!allowedTypes.includes(file.type) || !ext || !allowedExts.includes(ext)) {
-        setFormError('Security rejection: Only JPG, PNG, WEBP, and AVIF image formats are allowed.');
+        setFormError(`Security rejection: "${file.name}" is not a supported image format.`);
         return;
       }
 
-      setFormError('');
-      setSelectedFile(file);
-      
-      // Revoke previous object URL if any to prevent memory leaks
-      if (filePreview && filePreview.startsWith('blob:')) {
-        URL.revokeObjectURL(filePreview);
-      }
-      setFilePreview(URL.createObjectURL(file));
+      newItems.push({
+        id: `new_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        file,
+        previewUrl: URL.createObjectURL(file),
+        description: '',
+        altText: file.name.split('.')[0].replace(/[-_]/g, ' '),
+        isMain: false,
+        sortOrder: imageItems.length + newItems.length
+      });
     }
+
+    setFormError('');
+    let updatedList = [...imageItems, ...newItems];
+
+    // Ensure at least one image is marked as main
+    if (updatedList.length > 0 && !updatedList.some(i => i.isMain)) {
+      updatedList[0].isMain = true;
+    }
+
+    setImageItems(updatedList);
   };
 
-  const handleSaveItem = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!title.trim()) {
-      setFormError('Title is required.');
+  const handleSetMainImage = (id: string) => {
+    setImageItems(prev => prev.map(item => ({
+      ...item,
+      isMain: item.id === id
+    })));
+  };
+
+  const handleRemoveImageItem = (id: string) => {
+    const target = imageItems.find(i => i.id === id);
+    if (!target) return;
+
+    if (target.dbImageId) {
+      setDeletedImageIds(prev => [...prev, target.dbImageId!]);
+      if (target.storagePath) {
+        setDeletedStoragePaths(prev => [...prev, target.storagePath!]);
+      }
+    } else if (target.previewUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(target.previewUrl);
+    }
+
+    const remaining = imageItems.filter(i => i.id !== id);
+    
+    // Fallback: If removed image was main, assign lowest sort_order image as main
+    if (target.isMain && remaining.length > 0) {
+      remaining[0].isMain = true;
+    }
+
+    setImageItems(remaining);
+  };
+
+  const handleMoveImageOrder = (index: number, direction: 'up' | 'down') => {
+    if ((direction === 'up' && index === 0) || (direction === 'down' && index === imageItems.length - 1)) {
       return;
     }
 
-    if (!editingItem && !selectedFile) {
-      setFormError('An image file is required for new gallery items.');
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    const reordered = [...imageItems];
+    const temp = reordered[index];
+    reordered[index] = reordered[targetIndex];
+    reordered[targetIndex] = temp;
+
+    // Update sort_order values
+    const updated = reordered.map((item, idx) => ({
+      ...item,
+      sortOrder: idx
+    }));
+
+    setImageItems(updated);
+  };
+
+  const handleSaveEvent = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!title.trim()) {
+      setFormError('Event title is required.');
+      return;
+    }
+
+    if (imageItems.length === 0) {
+      setFormError('At least one photograph is required for an event gallery.');
       return;
     }
 
     setUploading(true);
-    setUploadProgress(20);
-
-    let imageUrl = editingItem ? editingItem.image_url : '';
-    let storagePath = editingItem ? editingItem.storage_path : '';
-    let oldStoragePathToClean: string | null = null;
+    setUploadProgress(10);
 
     try {
-      // If a new file is selected, upload to Supabase Storage
-      if (selectedFile) {
-        const fileExt = selectedFile.name.split('.').pop();
-        const year = new Date().getFullYear();
-        const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
-        const newPath = `gallery/${year}/${fileName}`;
-
-        setUploadProgress(50);
-        const { error: uploadError } = await supabase.storage
-          .from('founderslab-media')
-          .upload(newPath, selectedFile, {
-            cacheControl: '3600',
-            upsert: false
-          });
-
-        if (uploadError) {
-          throw new Error(`Upload failed: ${uploadError.message}`);
-        }
-
-        const { data: publicUrlData } = supabase.storage
-          .from('founderslab-media')
-          .getPublicUrl(newPath);
-
-        if (editingItem && editingItem.storage_path) {
-          oldStoragePathToClean = editingItem.storage_path;
-        }
-
-        imageUrl = publicUrlData.publicUrl;
-        storagePath = newPath;
-      }
-
-      setUploadProgress(80);
-
-      const payload = {
+      // 1. Create or Update gallery_events record
+      const eventPayload = {
         title: title.trim(),
         description: description.trim() || null,
         category: category.trim() || 'Events',
@@ -224,127 +290,179 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
         location: location.trim() || null,
         alt_text: altText.trim() || title.trim(),
         is_published: isPublished,
+        show_descriptions: showDescriptions,
         sort_order: Number(sortOrder) || 0,
-        image_url: imageUrl,
-        storage_path: storagePath,
         updated_at: new Date().toISOString()
       };
 
-      if (editingItem) {
-        // UPDATE
+      let activeEventId = editingEvent?.id;
+
+      if (editingEvent) {
         const { error: updateError } = await supabase
-          .from('gallery_items')
-          .update(payload)
-          .eq('id', editingItem.id);
+          .from('gallery_events')
+          .update(eventPayload)
+          .eq('id', editingEvent.id);
 
         if (updateError) throw updateError;
-
-        // Cleanup old image if replaced
-        if (oldStoragePathToClean) {
-          await supabase.storage.from('founderslab-media').remove([oldStoragePathToClean]);
-        }
-
-        await logActivity(
-          selectedFile ? 'GALLERY_IMAGE_REPLACED' : (isPublished ? 'GALLERY_PUBLISHED' : 'GALLERY_UPDATED'),
-          editingItem.id,
-          { title: payload.title }
-        );
       } else {
-        // INSERT
-        const { data: insertedData, error: insertError } = await supabase
-          .from('gallery_items')
+        const { data: newEvent, error: createError } = await supabase
+          .from('gallery_events')
           .insert([{
-            ...payload,
+            ...eventPayload,
             created_by: user?.id || null
           }])
           .select()
           .single();
 
-        if (insertError) throw insertError;
+        if (createError) throw createError;
+        activeEventId = newEvent.id;
+      }
 
-        await logActivity(
-          isPublished ? 'GALLERY_PUBLISHED' : 'GALLERY_CREATED',
-          insertedData?.id,
-          { title: payload.title }
-        );
+      setUploadProgress(30);
+
+      // 2. Remove deleted images from DB and Storage
+      if (deletedImageIds.length > 0) {
+        await supabase.from('gallery_images').delete().in('id', deletedImageIds);
+      }
+      if (deletedStoragePaths.length > 0) {
+        await supabase.storage.from('founderslab-media').remove(deletedStoragePaths);
+      }
+
+      setUploadProgress(50);
+
+      // 3. Process new and existing image items
+      let mainSet = false;
+      const currentList = [...imageItems];
+      if (!currentList.some(i => i.isMain) && currentList.length > 0) {
+        currentList[0].isMain = true;
+      }
+
+      for (let i = 0; i < currentList.length; i++) {
+        const item = currentList[i];
+        let imageUrl = item.previewUrl;
+        let storagePath = item.storagePath || '';
+
+        if (item.file) {
+          // Upload file to Supabase storage under gallery/events/{event_id}/
+          const fileExt = item.file.name.split('.').pop()?.toLowerCase() || 'jpg';
+          const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
+          const newPath = `gallery/events/${activeEventId}/${fileName}`;
+
+          const { error: uploadErr } = await supabase.storage
+            .from('founderslab-media')
+            .upload(newPath, item.file, { cacheControl: '3600', upsert: false });
+
+          if (uploadErr) throw new Error(`Upload failed for ${item.file.name}: ${uploadErr.message}`);
+
+          const { data: pubUrlData } = supabase.storage
+            .from('founderslab-media')
+            .getPublicUrl(newPath);
+
+          imageUrl = pubUrlData.publicUrl;
+          storagePath = newPath;
+        }
+
+        const imagePayload = {
+          event_id: activeEventId,
+          image_url: imageUrl,
+          storage_path: storagePath,
+          description: item.description.trim() || null,
+          alt_text: item.altText.trim() || title.trim(),
+          sort_order: i,
+          is_main: item.isMain,
+          updated_at: new Date().toISOString()
+        };
+
+        if (item.dbImageId) {
+          await supabase.from('gallery_images').update(imagePayload).eq('id', item.dbImageId);
+        } else {
+          await supabase.from('gallery_images').insert([imagePayload]);
+        }
       }
 
       setUploadProgress(100);
+      await logActivity(
+        editingEvent ? 'GALLERY_EVENT_UPDATED' : 'GALLERY_EVENT_CREATED',
+        activeEventId,
+        { title: eventPayload.title, imageCount: currentList.length }
+      );
+
       setModalOpen(false);
-      fetchGalleryItems();
+      fetchEvents();
     } catch (err: any) {
-      console.error('Save error:', err);
-      setFormError(err.message || 'Failed to save gallery item.');
+      console.error('Save event error:', err);
+      setFormError(err.message || 'Failed to save gallery event.');
     } finally {
       setUploading(false);
     }
   };
 
-  const handleTogglePublish = async (item: DbGalleryItem) => {
-    const newStatus = !item.is_published;
+  const handleTogglePublish = async (event: DbGalleryEvent) => {
+    const newStatus = !event.is_published;
     const { error } = await supabase
-      .from('gallery_items')
+      .from('gallery_events')
       .update({ is_published: newStatus, updated_at: new Date().toISOString() })
-      .eq('id', item.id);
+      .eq('id', event.id);
 
     if (!error) {
       logActivity(
-        newStatus ? 'GALLERY_PUBLISHED' : 'GALLERY_UNPUBLISHED',
-        item.id,
-        { title: item.title }
+        newStatus ? 'EVENT_PUBLISHED' : 'EVENT_UNPUBLISHED',
+        event.id,
+        { title: event.title }
       );
-      fetchGalleryItems();
+      fetchEvents();
     }
   };
 
-  const handleDeleteItem = async (item: DbGalleryItem) => {
+  const handleDeleteEvent = async (event: DbGalleryEvent) => {
     const confirmDelete = window.confirm(
-      `Delete gallery item "${item.title}"?\n\nThis will permanently remove the record and storage image from FoundersLab.`
+      `Delete event gallery "${event.title}"?\n\nThis will permanently remove the event and all ${event.images?.length || 0} associated photos.`
     );
     if (!confirmDelete) return;
 
     try {
-      // 1. Delete storage file
-      if (item.storage_path) {
-        await supabase.storage.from('founderslab-media').remove([item.storage_path]);
+      // 1. Delete storage files
+      const storagePaths = (event.images || []).map(img => img.storage_path).filter(Boolean);
+      if (storagePaths.length > 0) {
+        await supabase.storage.from('founderslab-media').remove(storagePaths);
       }
 
-      // 2. Delete database record
+      // 2. Delete event DB record (gallery_images cascades automatically)
       const { error } = await supabase
-        .from('gallery_items')
+        .from('gallery_events')
         .delete()
-        .eq('id', item.id);
+        .eq('id', event.id);
 
       if (error) throw error;
 
-      await logActivity('GALLERY_DELETED', item.id, { title: item.title });
-      fetchGalleryItems();
+      await logActivity('GALLERY_EVENT_DELETED', event.id, { title: event.title });
+      fetchEvents();
     } catch (err: any) {
       alert(`Delete failed: ${err.message}`);
     }
   };
 
-  // Filtered gallery list
-  const categories = Array.from(new Set(items.map(i => i.category || 'Events')));
+  // Filtered gallery events list
+  const categories = Array.from(new Set(events.map(e => e.category || 'Events')));
   
-  const filteredItems = items.filter(item => {
+  const filteredEvents = events.filter(event => {
     const matchesSearch = 
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (item.location && item.location.toLowerCase().includes(searchQuery.toLowerCase()));
+      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (event.description && event.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (event.location && event.location.toLowerCase().includes(searchQuery.toLowerCase()));
 
-    const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
+    const matchesCategory = selectedCategory === 'all' || event.category === selectedCategory;
 
     const matchesStatus = 
       filterStatus === 'all' ||
-      (filterStatus === 'published' && item.is_published) ||
-      (filterStatus === 'draft' && !item.is_published);
+      (filterStatus === 'published' && event.is_published) ||
+      (filterStatus === 'draft' && !event.is_published);
 
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
-  const totalCount = items.length;
-  const publishedCount = items.filter(i => i.is_published).length;
+  const totalCount = events.length;
+  const publishedCount = events.filter(e => e.is_published).length;
   const draftCount = totalCount - publishedCount;
 
   return (
@@ -355,7 +473,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
         <div className="fl-admin-nav-left">
           <div className="fl-admin-nav-brand">
             <Shield size={20} className="fl-brand-icon" />
-            <span>FoundersLab CMS</span>
+            <span>FoundersLab Multi-Image CMS</span>
           </div>
           <div className="fl-admin-nav-user">
             <span>{adminProfile?.full_name || user?.email || 'Administrator'}</span>
@@ -385,7 +503,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
               onClick={() => setActiveTab('gallery')}
             >
               <ImageIcon size={18} />
-              <span>Gallery Items ({totalCount})</span>
+              <span>Gallery Events ({totalCount})</span>
             </button>
 
             <button
@@ -394,7 +512,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
               onClick={() => setActiveTab('overview')}
             >
               <Layers size={18} />
-              <span>CMS Overview</span>
+              <span>CMS Architecture</span>
             </button>
 
             <button
@@ -403,7 +521,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
               onClick={() => setActiveTab('logs')}
             >
               <Activity size={18} />
-              <span>Audit Logs ({logs.length})</span>
+              <span>Audit Trail ({logs.length})</span>
             </button>
           </nav>
         </aside>
@@ -411,19 +529,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
         {/* Main Content Area */}
         <main className="fl-admin-content">
           
-          {/* TAB: GALLERY MANAGEMENT */}
+          {/* TAB: GALLERY EVENTS */}
           {activeTab === 'gallery' && (
             <div className="fl-admin-section">
               
               {/* Header Bar */}
               <div className="fl-section-header">
                 <div>
-                  <h1 className="fl-section-title">Gallery CMS</h1>
-                  <p className="fl-section-desc">Manage, reorder, and publish institutional moments to the public website.</p>
+                  <h1 className="fl-section-title">Institutional Event Gallery</h1>
+                  <p className="fl-section-desc">Manage multi-photo events, set main cover photos, and publish to FoundersLab.</p>
                 </div>
                 <button type="button" onClick={handleOpenAddModal} className="fl-primary-btn">
                   <Plus size={18} />
-                  <span>Upload Image</span>
+                  <span>Create New Event</span>
                 </button>
               </div>
 
@@ -431,7 +549,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
               <div className="fl-admin-metrics">
                 <div className="fl-metric-card">
                   <span className="fl-metric-val">{totalCount}</span>
-                  <span className="fl-metric-label">Total Media Items</span>
+                  <span className="fl-metric-label">Total Events</span>
                 </div>
                 <div className="fl-metric-card success">
                   <span className="fl-metric-val">{publishedCount}</span>
@@ -449,7 +567,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
                   <Search size={16} />
                   <input
                     type="text"
-                    placeholder="Search by title, location..."
+                    placeholder="Search by event title, location..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -477,7 +595,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
                     <option value="draft">Drafts Only</option>
                   </select>
 
-                  <button type="button" onClick={fetchGalleryItems} className="fl-refresh-btn" title="Refresh">
+                  <button type="button" onClick={fetchEvents} className="fl-refresh-btn" title="Refresh">
                     <RefreshCw size={16} />
                   </button>
                 </div>
@@ -485,74 +603,80 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
 
               {/* Gallery Grid */}
               {loading ? (
-                <div className="fl-admin-loading">Loading Supabase Gallery database...</div>
-              ) : filteredItems.length === 0 ? (
+                <div className="fl-admin-loading">Loading Supabase Event Gallery...</div>
+              ) : filteredEvents.length === 0 ? (
                 <div className="fl-admin-empty">
                   <ImageIcon size={48} />
-                  <p>No gallery items found matching your filters.</p>
+                  <p>No gallery events found matching your filters.</p>
                   <button type="button" onClick={handleOpenAddModal} className="fl-secondary-btn">
-                    Add First Gallery Image
+                    Create First Multi-Photo Event
                   </button>
                 </div>
               ) : (
                 <div className="fl-admin-gallery-grid">
-                  {filteredItems.map(item => (
-                    <div key={item.id} className={`fl-admin-card ${item.is_published ? 'published' : 'draft'}`}>
-                      
-                      <div className="fl-admin-card-image-wrap">
-                        <img src={item.image_url} alt={item.title} className="fl-admin-card-img" />
-                        <span className={`fl-status-badge ${item.is_published ? 'pub' : 'dft'}`}>
-                          {item.is_published ? 'PUBLISHED' : 'DRAFT'}
-                        </span>
-                        <span className="fl-order-badge">#{item.sort_order}</span>
-                      </div>
+                  {filteredEvents.map(ev => {
+                    const mainImage = ev.images?.find(i => i.is_main) || ev.images?.[0];
+                    const photoCount = ev.images?.length || 0;
 
-                      <div className="fl-admin-card-body">
-                        <div className="fl-card-category">{item.category?.toUpperCase() || 'EVENTS'}</div>
-                        <h3 className="fl-card-title">{item.title}</h3>
-                        {item.description && (
-                          <p className="fl-card-desc">{item.description}</p>
-                        )}
-
-                        <div className="fl-card-meta">
-                          {item.event_date && <span>📅 {item.event_date}</span>}
-                          {item.location && <span>📍 {item.location}</span>}
+                    return (
+                      <div key={ev.id} className={`fl-admin-card ${ev.is_published ? 'published' : 'draft'}`}>
+                        
+                        <div className="fl-admin-card-image-wrap">
+                          {mainImage ? (
+                            <img src={mainImage.image_url} alt={ev.title} className="fl-admin-card-img" />
+                          ) : (
+                            <div className="fl-no-image">No Photos</div>
+                          )}
+                          <span className={`fl-status-badge ${ev.is_published ? 'pub' : 'dft'}`}>
+                            {ev.is_published ? 'PUBLISHED' : 'DRAFT'}
+                          </span>
+                          <span className="fl-photo-count-badge">📷 {photoCount} Photos</span>
                         </div>
+
+                        <div className="fl-admin-card-body">
+                          <div className="fl-card-category">{ev.category?.toUpperCase() || 'EVENTS'}</div>
+                          <h3 className="fl-card-title">{ev.title}</h3>
+                          {ev.description && (
+                            <p className="fl-card-desc">{ev.description}</p>
+                          )}
+
+                          <div className="fl-card-meta">
+                            {ev.event_date && <span>📅 {ev.event_date}</span>}
+                            {ev.location && <span>📍 {ev.location}</span>}
+                          </div>
+                        </div>
+
+                        <div className="fl-admin-card-actions">
+                          <button
+                            type="button"
+                            onClick={() => handleTogglePublish(ev)}
+                            className={`fl-action-btn ${ev.is_published ? 'unpublish' : 'publish'}`}
+                          >
+                            {ev.is_published ? <EyeOff size={16} /> : <Eye size={16} />}
+                            <span>{ev.is_published ? 'Unpublish' : 'Publish'}</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEditModal(ev)}
+                            className="fl-action-btn edit"
+                          >
+                            <Edit3 size={16} />
+                            <span>Edit Event</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteEvent(ev)}
+                            className="fl-action-btn delete"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+
                       </div>
-
-                      <div className="fl-admin-card-actions">
-                        <button
-                          type="button"
-                          onClick={() => handleTogglePublish(item)}
-                          className={`fl-action-btn ${item.is_published ? 'unpublish' : 'publish'}`}
-                          title={item.is_published ? 'Unpublish' : 'Publish'}
-                        >
-                          {item.is_published ? <EyeOff size={16} /> : <Eye size={16} />}
-                          <span>{item.is_published ? 'Unpublish' : 'Publish'}</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleOpenEditModal(item)}
-                          className="fl-action-btn edit"
-                          title="Edit"
-                        >
-                          <Edit3 size={16} />
-                          <span>Edit</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteItem(item)}
-                          className="fl-action-btn delete"
-                          title="Delete"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
 
@@ -562,22 +686,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
           {/* TAB: OVERVIEW */}
           {activeTab === 'overview' && (
             <div className="fl-admin-section">
-              <h1 className="fl-section-title">System & Storage Overview</h1>
-              <p className="fl-section-desc">Supabase Project: <strong>founderslab-web-fullstack</strong></p>
+              <h1 className="fl-section-title">Multi-Image Schema Architecture</h1>
+              <p className="fl-section-desc">PostgreSQL tables: <code>gallery_events</code> + <code>gallery_images</code></p>
 
               <div className="fl-overview-grid">
                 <div className="fl-overview-box">
-                  <h3>Connected Supabase Database</h3>
-                  <p>URL: <code>https://zecyhbxgfnfzuuikkhlm.supabase.co</code></p>
-                  <p>Status: <span className="text-green">ACTIVE_HEALTHY</span></p>
-                  <p>Tables: <code>gallery_items</code>, <code>admin_profiles</code>, <code>activity_logs</code></p>
+                  <h3>Event Schema (Parent)</h3>
+                  <p>Table: <code>public.gallery_events</code></p>
+                  <p>Contains event title, description, date, location, category, show_descriptions flag.</p>
                 </div>
 
                 <div className="fl-overview-box">
-                  <h3>Supabase Storage Bucket</h3>
-                  <p>Bucket Name: <code>founderslab-media</code></p>
-                  <p>Max Upload Size: 10MB per image</p>
-                  <p>Allowed MIME Types: JPG, JPEG, PNG, WEBP, AVIF</p>
+                  <h3>Photo Gallery Schema (Child)</h3>
+                  <p>Table: <code>public.gallery_images</code> (FK cascade to <code>gallery_events</code>)</p>
+                  <p>Guaranteed 1 main cover image via PostgreSQL partial unique index.</p>
                 </div>
               </div>
             </div>
@@ -617,13 +739,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
         </main>
       </div>
 
-      {/* UPLOAD / EDIT MODAL */}
+      {/* EVENT EDITOR MODAL */}
       {modalOpen && (
         <div className="fl-modal-overlay">
-          <div className="fl-modal-container">
+          <div className="fl-modal-container fl-modal-large">
             
             <div className="fl-modal-header">
-              <h2>{editingItem ? 'Edit Gallery Item' : 'Upload New Gallery Image'}</h2>
+              <h2>{editingEvent ? 'Edit Event & Photo Gallery' : 'Create New Event Gallery'}</h2>
               <button type="button" onClick={() => setModalOpen(false)} className="fl-close-btn">×</button>
             </div>
 
@@ -631,35 +753,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
               <div className="fl-modal-error">{formError}</div>
             )}
 
-            <form onSubmit={handleSaveItem} className="fl-modal-form">
+            <form onSubmit={handleSaveEvent} className="fl-modal-form">
               
-              {/* Image Upload Box */}
-              <div className="fl-form-group full">
-                <label>Media Photograph (Max 10MB)</label>
-                <div className="fl-image-picker-box">
-                  {filePreview ? (
-                    <div className="fl-picker-preview">
-                      <img src={filePreview} alt="Preview" />
-                      <div className="fl-picker-overlay">
-                        <span>Change Photograph</span>
-                        <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={handleFileChange} />
-                      </div>
-                    </div>
-                  ) : (
-                    <label className="fl-picker-dropzone">
-                      <Upload size={32} />
-                      <span>Click or Drag photo here to upload</span>
-                      <small>JPG, PNG, WEBP, AVIF up to 10MB</small>
-                      <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={handleFileChange} />
-                    </label>
-                  )}
-                </div>
-              </div>
-
-              {/* Title & Category */}
+              {/* Event Details */}
               <div className="fl-form-row">
                 <div className="fl-form-group">
-                  <label>Title *</label>
+                  <label>Event Title *</label>
                   <input
                     type="text"
                     required
@@ -680,30 +779,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
                 </div>
               </div>
 
-              {/* Event Name & Date */}
               <div className="fl-form-row">
                 <div className="fl-form-group">
-                  <label>Event Name (Optional)</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. T-Hub Anniversary 2024"
-                    value={eventName}
-                    onChange={(e) => setEventName(e.target.value)}
-                  />
-                </div>
-
-                <div className="fl-form-group">
-                  <label>Event Date (Optional)</label>
+                  <label>Event Date</label>
                   <input
                     type="date"
                     value={eventDate}
                     onChange={(e) => setEventDate(e.target.value)}
                   />
                 </div>
-              </div>
 
-              {/* Location & Alt Text */}
-              <div className="fl-form-row">
                 <div className="fl-form-group">
                   <label>Location / Campus</label>
                   <input
@@ -713,48 +798,136 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
                     onChange={(e) => setLocation(e.target.value)}
                   />
                 </div>
-
-                <div className="fl-form-group">
-                  <label>Sort Order Number</label>
-                  <input
-                    type="number"
-                    value={sortOrder}
-                    onChange={(e) => setSortOrder(Number(e.target.value))}
-                  />
-                </div>
               </div>
 
-              {/* Description */}
               <div className="fl-form-group full">
-                <label>Description / Story Excerpt</label>
+                <label>Event Overview & Story</label>
                 <textarea
-                  rows={3}
-                  placeholder="Detailed description of the institutional event..."
+                  rows={2}
+                  placeholder="Detailed background of the event..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
 
-              {/* Alt text */}
+              {/* Multi-Photo Gallery Upload Section */}
               <div className="fl-form-group full">
-                <label>Image Alt Text (Accessibility)</label>
-                <input
-                  type="text"
-                  placeholder="Descriptive alt text for screen readers..."
-                  value={altText}
-                  onChange={(e) => setAltText(e.target.value)}
-                />
+                <div className="fl-photos-header">
+                  <label>Event Photos ({imageItems.length})</label>
+                  <label className="fl-add-photos-btn">
+                    <Plus size={16} />
+                    <span>Add Photographs</span>
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/jpeg,image/jpg,image/png,image/webp,image/avif"
+                      onChange={handleAddImageFiles}
+                    />
+                  </label>
+                </div>
+
+                {imageItems.length === 0 ? (
+                  <div className="fl-no-photos-box">
+                    <Upload size={32} />
+                    <p>No photos added yet. Click "Add Photographs" to upload event images.</p>
+                  </div>
+                ) : (
+                  <div className="fl-photos-editor-list">
+                    {imageItems.map((img, index) => (
+                      <div key={img.id} className={`fl-photo-editor-card ${img.isMain ? 'is-main' : ''}`}>
+                        
+                        <div className="fl-photo-thumb-wrap">
+                          <img src={img.previewUrl} alt={img.altText} />
+                          {img.isMain && <span className="fl-main-star">★ COVER</span>}
+                        </div>
+
+                        <div className="fl-photo-inputs">
+                          <div className="fl-photo-input-row">
+                            <input
+                              type="text"
+                              placeholder="Photo caption / description..."
+                              value={img.description}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setImageItems(prev => prev.map(i => i.id === img.id ? { ...i, description: val } : i));
+                              }}
+                            />
+                            <input
+                              type="text"
+                              placeholder="Alt text..."
+                              value={img.altText}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setImageItems(prev => prev.map(i => i.id === img.id ? { ...i, altText: val } : i));
+                              }}
+                            />
+                          </div>
+
+                          <div className="fl-photo-controls">
+                            <button
+                              type="button"
+                              onClick={() => handleSetMainImage(img.id)}
+                              className={`fl-main-toggle ${img.isMain ? 'active' : ''}`}
+                            >
+                              <Star size={14} />
+                              <span>{img.isMain ? 'Cover Photo' : 'Set as Cover'}</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => handleMoveImageOrder(index, 'up')}
+                              disabled={index === 0}
+                              className="fl-order-btn"
+                              title="Move Up"
+                            >
+                              <MoveUp size={14} />
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => handleMoveImageOrder(index, 'down')}
+                              disabled={index === imageItems.length - 1}
+                              className="fl-order-btn"
+                              title="Move Down"
+                            >
+                              <MoveDown size={14} />
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveImageItem(img.id)}
+                              className="fl-remove-photo-btn"
+                              title="Remove Photo"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {/* Publish Toggle */}
-              <div className="fl-form-group full checkbox-group">
+              {/* Toggles */}
+              <div className="fl-form-row">
                 <label className="fl-checkbox-label">
                   <input
                     type="checkbox"
                     checked={isPublished}
                     onChange={(e) => setIsPublished(e.target.checked)}
                   />
-                  <span>Publish immediately to FoundersLab website</span>
+                  <span>Publish event immediately on FoundersLab website</span>
+                </label>
+
+                <label className="fl-checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={showDescriptions}
+                    onChange={(e) => setShowDescriptions(e.target.checked)}
+                  />
+                  <span>Display individual photo captions in Lightbox</span>
                 </label>
               </div>
 
@@ -762,7 +935,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
               {uploading && (
                 <div className="fl-upload-progress">
                   <div className="fl-progress-bar" style={{ width: `${uploadProgress}%` }} />
-                  <span>Uploading to Supabase Storage... {uploadProgress}%</span>
+                  <span>Saving event & uploading photos to Supabase... {uploadProgress}%</span>
                 </div>
               )}
 
@@ -772,7 +945,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToHome }) 
                   Cancel
                 </button>
                 <button type="submit" disabled={uploading} className="fl-save-btn">
-                  {uploading ? 'Saving to Supabase...' : (editingItem ? 'Update Gallery Item' : 'Save & Publish')}
+                  {uploading ? 'Saving to Supabase...' : (editingEvent ? 'Update Event Gallery' : 'Save & Publish Event')}
                 </button>
               </div>
 

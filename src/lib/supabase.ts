@@ -12,12 +12,10 @@ export const supabase = createClient(
   supabaseAnonKey || ''
 );
 
-export interface DbGalleryItem {
+export interface DbGalleryEvent {
   id: string;
   title: string;
   description?: string | null;
-  image_url: string;
-  storage_path: string;
   category?: string | null;
   event_name?: string | null;
   event_date?: string | null;
@@ -25,7 +23,22 @@ export interface DbGalleryItem {
   alt_text?: string | null;
   is_published: boolean;
   sort_order: number;
+  show_descriptions: boolean;
   created_by?: string | null;
+  created_at: string;
+  updated_at: string;
+  images?: DbGalleryImage[];
+}
+
+export interface DbGalleryImage {
+  id: string;
+  event_id: string;
+  image_url: string;
+  storage_path: string;
+  description?: string | null;
+  alt_text?: string | null;
+  sort_order: number;
+  is_main: boolean;
   created_at: string;
   updated_at: string;
 }

@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { GALLERY_ITEMS } from '../data/founderslabData';
 import { GalleryItem } from '../types';
-import { supabase, DbGalleryItem } from '../lib/supabase';
+import { supabase, DbGalleryEvent, DbGalleryImage } from '../lib/supabase';
 import './Gallery.mobile.css';
 
 
@@ -36,33 +36,47 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
   const [items, setItems] = useState<GalleryItem[]>(GALLERY_ITEMS);
 
   useEffect(() => {
-    async function loadLiveGallery() {
+    async function loadLiveEvents() {
       try {
-        const { data, error } = await supabase
-          .from('gallery_items')
+        const { data: eventsData, error: eventsError } = await supabase
+          .from('gallery_events')
           .select('*')
           .eq('is_published', true)
           .order('sort_order', { ascending: true })
           .order('created_at', { ascending: false });
 
-        if (data && !error && data.length > 0) {
-          const mapped: GalleryItem[] = data.map((row: DbGalleryItem) => ({
-            id: row.id,
-            title: row.title,
-            category: row.category || 'Events',
-            date: row.event_date || new Date(row.created_at).toLocaleDateString(),
-            campusOrCity: row.location || 'India',
-            description: row.description || '',
-            imageUrl: row.image_url,
-            tags: [row.category || 'Events', row.location || 'FoundersLab'].filter(Boolean)
-          }));
+        if (eventsData && !eventsError && eventsData.length > 0) {
+          const eventIds = eventsData.map(e => e.id);
+          const { data: imagesData } = await supabase
+            .from('gallery_images')
+            .select('*')
+            .in('event_id', eventIds)
+            .order('sort_order', { ascending: true });
+
+          const mapped: GalleryItem[] = eventsData.map((ev: DbGalleryEvent) => {
+            const evImages = (imagesData || []).filter((i: DbGalleryImage) => i.event_id === ev.id);
+            const mainImg = evImages.find(i => i.is_main) || evImages[0];
+
+            return {
+              id: ev.id,
+              title: ev.title,
+              category: ev.category || 'Events',
+              date: ev.event_date || new Date(ev.created_at).toLocaleDateString(),
+              campusOrCity: ev.location || 'India',
+              description: ev.description || '',
+              imageUrl: mainImg ? mainImg.image_url : '/T-HUB_GRP.jpeg',
+              images: evImages.map(i => i.image_url),
+              tags: [ev.category || 'Events', ev.location || 'FoundersLab'].filter(Boolean)
+            };
+          });
+
           setItems(mapped);
         }
       } catch (err) {
-        console.error('Supabase gallery fetch error:', err);
+        console.error('Supabase live events fetch error:', err);
       }
     }
-    loadLiveGallery();
+    loadLiveEvents();
   }, []);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
