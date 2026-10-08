@@ -1,0 +1,101 @@
+/* QuantifiableEcosystemImpact.mobile.css */
+
+/* Tablet (Portrait & Smaller Desktop) */
+@media (max-width: 1024px) {
+  .fl-impact__header {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .fl-impact__header-eyebrow {
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
+  
+  .fl-impact__header-content {
+    grid-column: 1 / -1;
+  }
+
+  .fl-impact__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .fl-impact {
+    padding: 64px 20px 80px;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+  .fl-impact__header {
+    margin-bottom: 48px;
+    gap: 16px;
+  }
+  
+  .fl-impact__header-content {
+    padding-bottom: 32px;
+  }
+  
+  .fl-impact__title {
+    font-size: clamp(32px, 9vw, 42px);
+  }
+
+  .fl-impact__subtitle {
+    font-size: 18px;
+  }
+
+  /* KPI Strip */
+  .fl-impact__kpi-strip {
+    flex-direction: column;
+    gap: 40px;
+    padding-bottom: 48px;
+    margin-bottom: 48px;
+  }
+
+  .fl-impact__kpi-divider {
+    display: none;
+  }
+
+  .fl-impact__kpi-index {
+    margin-bottom: 8px;
+  }
+
+  .fl-impact__kpi-value {
+    font-size: 56px;
+    margin-bottom: 8px;
+  }
+
+  /* Nav */
+  .fl-impact__nav-container {
+    width: 100vw;
+    margin-left: -20px;
+    padding-left: 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  
+  .fl-impact__nav-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .fl-impact__nav {
+    padding-right: 20px;
+    width: max-content;
+  }
+
+  .fl-impact__grid {
+    grid-template-columns: 1fr;
+    border-top: 1px solid #e5e5e5;
+    border-left: 1px solid #e5e5e5;
+    border-right: 1px solid #e5e5e5;
+  }
+
+  .fl-impact__card {
+    border-left: none;
+    border-right: none;
+    padding: 24px 20px;
+  }
+}

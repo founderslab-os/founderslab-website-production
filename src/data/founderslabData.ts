@@ -117,7 +117,7 @@ export const FLAGSHIP_PROGRAMS: Program[] = [
     ],
     illustrationType: 'industry',
     colorGradient: 'from-[#0B2E6B] to-[#F57C00]',
-    imageUrl: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=800&q=80'
+    imageUrl: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80'
   }
 ];
 

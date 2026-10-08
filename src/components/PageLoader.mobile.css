@@ -1,0 +1,37 @@
+/* PageLoader.mobile.css - Mobile Dedicated Styles */
+
+@media (max-width: 768px) {
+  .page-loader-content {
+    max-width: 340px;
+    padding: 16px;
+  }
+
+  .page-loader-logo {
+    height: 48px;
+    max-width: 160px;
+  }
+
+  .page-loader-logo-accent {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .page-loader-tagline {
+    font-size: 20px;
+    line-height: 1.35;
+    max-width: 300px;
+    margin-bottom: 14px;
+  }
+
+  .page-loader-descriptor {
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .page-loader-progress-container {
+    max-width: 240px;
+    height: 2px;
+  }
+}

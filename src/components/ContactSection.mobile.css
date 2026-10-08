@@ -1,0 +1,65 @@
+/* ContactSection.mobile.css */
+
+@media (max-width: 1024px) {
+  .cs-layout {
+    grid-template-columns: 1fr;
+    gap: 80px;
+  }
+  .cs-hq-col {
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 80px;
+  }
+  .cs-form-col {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .cs-section {
+    padding: 64px 20px;
+  }
+
+  .cs-intro {
+    flex-direction: column;
+    gap: 40px;
+    margin-bottom: 64px;
+    padding-bottom: 48px;
+  }
+
+  .cs-intro-right {
+    align-items: flex-start;
+  }
+
+  .cs-status-block {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .cs-status-value {
+    text-align: left;
+  }
+
+  .cs-title {
+    font-size: clamp(32px, 8vw, 40px);
+  }
+
+  .cs-form-row {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .cs-form-submit {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .cs-contact-list {
+    gap: 32px;
+  }
+  
+  .cs-map-area {
+    height: 200px;
+  }
+}

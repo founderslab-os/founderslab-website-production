@@ -1,0 +1,282 @@
+/* FoundersLabAbout.css - Compact Corporate Strategy Panel */
+
+.fl-about {
+  background-color: #ffffff;
+  color: #111111;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 72px 5vw 64px;
+  position: relative;
+}
+
+.fl-about__container {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Eyebrow */
+.fl-about__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #555555;
+  font-weight: 500;
+  margin-bottom: 32px;
+}
+
+.fl-about__eyebrow::after {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background-color: #c45b33;
+}
+
+/* Top Area */
+.fl-about__top {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.fl-about__heading {
+  grid-column: 1 / 6;
+  font-size: clamp(44px, 4vw, 68px);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  color: #111111;
+  margin: 0;
+}
+
+.fl-about__intro {
+  grid-column: 6 / 13;
+  font-size: 17px;
+  line-height: 1.45;
+  color: #555555;
+  max-width: 620px;
+  margin: 0;
+  padding-top: 6px;
+}
+
+/* Divider */
+.fl-about__divider {
+  width: 100%;
+  height: 1px;
+  background-color: #e5e5e5;
+  margin: 36px 0;
+}
+
+/* Framework Top (Vision + Architecture) */
+.fl-about__framework-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 36px;
+}
+
+.fl-about__vision,
+.fl-about__architecture {
+  display: flex;
+  flex-direction: column;
+}
+
+.fl-about__section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.fl-about__section-number {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111111;
+}
+
+.fl-about__section-label {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #111111;
+  font-weight: 500;
+}
+
+.fl-about__section-text {
+  font-size: 15px;
+  line-height: 1.45;
+  color: #555555;
+  margin: 0;
+  max-width: 580px;
+}
+
+/* Strategic Areas */
+.fl-about__areas {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.fl-about__area {
+  padding: 24px 24px 24px 0;
+  border-right: 1px solid #e6e6e6;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  cursor: default;
+}
+
+.fl-about__area:first-child {
+  padding-left: 0;
+}
+
+.fl-about__area:last-child {
+  padding-right: 0;
+  border-right: none;
+}
+
+.fl-about__area:not(:first-child) {
+  padding-left: 24px;
+}
+
+.fl-about__area-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.fl-about__area-number {
+  font-size: 13px;
+  font-weight: 600;
+  color: #888888;
+  transition: color 250ms ease;
+  position: relative;
+}
+
+.fl-about__area-line {
+  width: 0;
+  height: 2px;
+  background-color: #c45b33;
+  margin-top: 6px;
+  transition: width 250ms ease;
+}
+
+.fl-about__area-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #111111;
+  margin: 0;
+  transition: transform 250ms ease;
+  line-height: 1.25;
+}
+
+.fl-about__area-description {
+  font-size: 14px;
+  line-height: 1.45;
+  color: #555555;
+  margin: 0;
+}
+
+/* Interactions */
+.fl-about__area:hover .fl-about__area-number {
+  color: #c45b33;
+}
+
+.fl-about__area:hover .fl-about__area-line {
+  width: 24px;
+}
+
+.fl-about__area:hover .fl-about__area-title {
+  transform: translateX(2px);
+}
+
+/* Responsive Styles */
+
+/* Tablet / Smaller Desktop */
+@media (max-width: 1024px) {
+  .fl-about__areas {
+    grid-template-columns: repeat(2, 1fr);
+    border-bottom: none;
+  }
+  
+  .fl-about__area {
+    padding: 24px 24px 24px 0 !important;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  
+  .fl-about__area:nth-child(even) {
+    padding-left: 24px !important;
+    padding-right: 0 !important;
+    border-right: none !important;
+  }
+  
+  .fl-about__area:nth-child(odd) {
+    padding-left: 0 !important;
+    border-right: 1px solid #e6e6e6 !important;
+  }
+
+  .fl-about__top {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .fl-about__heading, .fl-about__intro {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Tablet Portrait */
+@media (max-width: 768px) {
+  .fl-about__framework-top {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .fl-about {
+    padding: 48px 20px;
+  }
+  
+  .fl-about__eyebrow {
+    margin-bottom: 24px;
+  }
+  
+  .fl-about__heading {
+    font-size: clamp(36px, 9vw, 44px);
+  }
+  
+  .fl-about__intro {
+    font-size: 15px;
+  }
+  
+  .fl-about__divider {
+    margin: 32px 0;
+  }
+  
+  .fl-about__areas {
+    grid-template-columns: 1fr;
+    border-top: none;
+  }
+  
+  .fl-about__area {
+    padding: 24px 0 !important;
+    border-right: none !important;
+    border-top: 1px solid #e6e6e6;
+  }
+  
+  .fl-about__area:first-child {
+    border-top: none;
+  }
+  
+  .fl-about__area-title {
+    font-size: 16px;
+  }
+}

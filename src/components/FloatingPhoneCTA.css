@@ -1,0 +1,114 @@
+/* FloatingPhoneCTA.css - Desktop Styles */
+
+.floating-phone-cta {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  z-index: 9999;
+  background-color: #F57C00;
+  border: none;
+  box-shadow: 0 4px 15px rgba(245, 124, 0, 0.3);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  text-decoration: none;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.floating-phone-cta:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 4px;
+}
+
+.floating-phone-cta:hover {
+  background-color: #111111;
+  box-shadow: 0 6px 20px rgba(17, 17, 17, 0.3) !important;
+  transform: translateY(-4px) scale(1.02) !important;
+}
+
+.floating-cta-inner {
+  display: flex;
+  align-items: center;
+  padding: 10px 18px;
+  gap: 8px;
+}
+
+.floating-cta-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.floating-phone-cta:hover .floating-cta-icon {
+  transform: scale(1.1) rotate(-5deg);
+  color: #ffffff;
+}
+
+.floating-cta-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+  transition: color 0.3s ease;
+}
+
+.floating-phone-cta:hover .floating-cta-text {
+  color: #ffffff;
+}
+
+.floating-cta-arrow {
+  color: #ffffff;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.floating-phone-cta:hover .floating-cta-arrow {
+  transform: translateX(6px);
+}
+
+/* Smart Visibility Transition & Idle Animation */
+@keyframes smoothFloat {
+  0% { transform: translateY(0); box-shadow: 0 4px 15px rgba(245, 124, 0, 0.25); }
+  50% { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(245, 124, 0, 0.4); }
+  100% { transform: translateY(0); box-shadow: 0 4px 15px rgba(245, 124, 0, 0.25); }
+}
+
+.floating-cta-visible {
+  opacity: 1;
+  pointer-events: auto;
+  animation: smoothFloat 4s ease-in-out infinite;
+}
+
+.floating-phone-cta:hover {
+  animation: none;
+}
+
+.floating-cta-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-phone-cta {
+    transition: opacity 0.3s ease;
+    will-change: opacity;
+  }
+  .floating-phone-cta:hover {
+    transform: none;
+  }
+  .floating-cta-arrow,
+  .floating-cta-icon {
+    transition: none;
+  }
+  .floating-phone-cta:hover .floating-cta-arrow {
+    transform: none;
+  }
+  .floating-cta-hidden {
+    transform: none;
+  }
+}

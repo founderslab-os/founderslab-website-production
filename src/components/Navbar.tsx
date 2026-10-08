@@ -1,25 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Menu, 
-  X, 
-  Calendar, 
-  ArrowRight, 
-  PhoneCall, 
-  Sparkles, 
-  Upload, 
-  Camera, 
-  Images, 
-  ChevronDown, 
-  UserCheck, 
-  Compass, 
-  Building 
-} from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Logo } from './Logo';
 
 interface NavbarProps {
   onOpenSchedule: () => void;
-
   activeSection: string;
   customLogoUrl?: string;
   taglineText?: string;
@@ -29,47 +14,17 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({
   onOpenSchedule,
-
   activeSection,
   customLogoUrl = '',
   taglineText = 'BUILD ENTERPRISE • BUILD NATION',
   currentPage = 'home',
   onNavigatePage,
 }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
-  const [mobileAboutExpanded, setMobileAboutExpanded] = useState(true);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Close desktop dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setAboutDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const isAboutActive = currentPage === 'ceo' || (currentPage === 'home' && activeSection === 'about');
+  const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
 
   const handleNavigate = (page: 'home' | 'gallery' | 'ceo', sectionId?: string) => {
     setMobileMenuOpen(false);
-    setAboutDropdownOpen(false);
     onNavigatePage(page, sectionId);
   };
 
@@ -86,381 +41,210 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      {/* Top Banner Notice */}
-      <div className="bg-[#0B2E6B] text-white py-1.5 px-4 text-xs font-medium text-center border-b border-white/10 flex items-center justify-center gap-2">
-        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#F57C00] text-white font-bold text-[10px] uppercase tracking-wider">
-          <Sparkles className="w-3 h-3" />
-          Ecosystem Leadership
-        </span>
-        <span className="truncate sm:whitespace-normal max-w-[200px] sm:max-w-none">
-          Transforming Educational Campuses into World-Class Innovation Hubs Across India.
-        </span>
-      </div>
-
-      <header
-        className={`fixed left-0 right-0 z-50 transition-all duration-300 px-4 lg:px-8 ${
-          isScrolled ? 'top-0' : 'top-8 sm:top-7'
-        }`}
-      >
-        <div
-          className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 ${
-            isScrolled
-              ? 'glass-panel shadow-lg shadow-[#0B2E6B]/5 py-1.5 sm:py-2 border border-slate-200/80'
-              : 'bg-white/90 backdrop-blur-md py-2 sm:py-2.5 border border-slate-100 shadow-sm'
-          }`}
-        >
-          <div className="px-3 sm:px-4 lg:px-6 flex items-center justify-between">
-            {/* Logo Container */}
-            <div className="flex items-center gap-3">
-              <button 
-                onClick={() => handleNavigate('home', 'home')} 
-                className="text-left cursor-pointer focus:outline-none"
-              >
-                <Logo size="md" customLogoUrl={customLogoUrl} taglineText={taglineText} />
-              </button>
-            </div>
-
-            {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-              {/* Home */}
-              <button
-                onClick={() => handleNavigate('home', 'home')}
-                className={`px-2.5 xl:px-3 py-1.5 rounded-md text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                  currentPage === 'home' && activeSection === 'home'
-                    ? 'text-[#0B2E6B] bg-[#F5F7FA] font-bold border border-slate-200/70 shadow-xs'
-                    : 'text-slate-700 hover:text-[#1565C0] hover:bg-slate-50'
-                }`}
-              >
-                Home
-              </button>
-
-              {/* About with Dropdown */}
-              <div 
-                ref={dropdownRef}
-                className="relative"
-                onMouseEnter={() => setAboutDropdownOpen(true)}
-                onMouseLeave={() => setAboutDropdownOpen(false)}
-              >
-                <button
-                  onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
-                  className={`px-2.5 xl:px-3 py-1.5 rounded-md text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                    isAboutActive
-                      ? 'text-[#0B2E6B] bg-[#F5F7FA] font-bold border border-slate-200/70 shadow-xs'
-                      : 'text-slate-700 hover:text-[#1565C0] hover:bg-slate-50'
-                  }`}
-                  aria-haspopup="true"
-                  aria-expanded={aboutDropdownOpen}
-                >
-                  <span>About</span>
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${aboutDropdownOpen ? 'rotate-180 text-[#F57C00]' : 'text-slate-500'}`} />
-                </button>
-
-                {/* Dropdown Menu */}
-                <AnimatePresence>
-                  {aboutDropdownOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute left-0 mt-1.5 w-64 rounded-2xl bg-white border border-slate-200 shadow-xl shadow-[#0B2E6B]/10 p-2 z-50 text-slate-800"
-                    >
-                      <button
-                        onClick={() => handleNavigate('home', 'about')}
-                        className={`w-full p-2.5 rounded-xl text-left transition-colors flex items-start gap-3 cursor-pointer ${
-                          currentPage === 'home' && activeSection === 'about'
-                            ? 'bg-[#F5F7FA] text-[#0B2E6B] font-bold'
-                            : 'hover:bg-slate-50 text-slate-700'
-                        }`}
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-[#0B2E6B]/10 text-[#0B2E6B] flex items-center justify-center shrink-0 mt-0.5">
-                          <Compass className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold text-slate-900">About FoundersLab</div>
-                          <div className="text-[11px] text-slate-500 font-normal leading-tight mt-0.5">
-                            Mission, Institutional Transformation & Pillars
-                          </div>
-                        </div>
-                      </button>
-
-                      <div className="my-1 border-t border-slate-100" />
-
-                      <button
-                        onClick={() => handleNavigate('ceo')}
-                        className={`w-full p-2.5 rounded-xl text-left transition-colors flex items-start gap-3 cursor-pointer group ${
-                          currentPage === 'ceo'
-                            ? 'bg-[#F5F7FA] text-[#0B2E6B] font-bold'
-                            : 'hover:bg-[#F57C00]/5 text-slate-700'
-                        }`}
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-[#F57C00]/15 text-[#F57C00] flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
-                          <UserCheck className="w-4 h-4" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-bold text-slate-900 group-hover:text-[#0B2E6B]">
-                              About the CEO
-                            </span>
-                            <span className="px-1.5 py-0.2 rounded-full bg-[#F57C00] text-white text-[9px] font-black uppercase">
-                              Profile
-                            </span>
-                          </div>
-                          <div className="text-[11px] text-slate-500 font-normal leading-tight mt-0.5">
-                            Ms. Sakuntala Kasaragadda (Phd) – Leadership & Vision
-                          </div>
-                        </div>
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Programs */}
-              <button
-                onClick={() => handleNavigate('home', 'programs')}
-                className={`px-2.5 xl:px-3 py-1.5 rounded-md text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                  currentPage === 'home' && activeSection === 'programs'
-                    ? 'text-[#0B2E6B] bg-[#F5F7FA] font-bold border border-slate-200/70 shadow-xs'
-                    : 'text-slate-700 hover:text-[#1565C0] hover:bg-slate-50'
-                }`}
-              >
-                Programs
-              </button>
-
-              {/* Impact */}
-              <button
-                onClick={() => handleNavigate('home', 'impact')}
-                className={`px-2.5 xl:px-3 py-1.5 rounded-md text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                  currentPage === 'home' && activeSection === 'impact'
-                    ? 'text-[#0B2E6B] bg-[#F5F7FA] font-bold border border-slate-200/70 shadow-xs'
-                    : 'text-slate-700 hover:text-[#1565C0] hover:bg-slate-50'
-                }`}
-              >
-                Impact
-              </button>
-
-              {/* Gallery */}
-              <button
-                onClick={() => handleNavigate('gallery')}
-                className={`px-2.5 xl:px-3 py-1.5 rounded-md text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                  currentPage === 'gallery'
-                    ? 'text-[#0B2E6B] bg-[#F5F7FA] font-bold border border-slate-200/70 shadow-xs'
-                    : 'text-slate-700 hover:text-[#1565C0] hover:bg-slate-50'
-                }`}
-              >
-                <Camera className={`w-3.5 h-3.5 ${currentPage === 'gallery' ? 'text-[#F57C00]' : 'text-slate-500'}`} />
-                <span>Gallery</span>
-                <span className="px-1.5 py-0.5 rounded-full bg-[#F57C00]/15 text-[#F57C00] text-[9px] font-black uppercase tracking-wider">
-                  New
-                </span>
-              </button>
-
-              {/* Contact */}
-              <button
-                onClick={() => handleNavigate('home', 'contact')}
-                className={`px-2.5 xl:px-3 py-1.5 rounded-md text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
-                  currentPage === 'home' && activeSection === 'contact'
-                    ? 'text-[#0B2E6B] bg-[#F5F7FA] font-bold border border-slate-200/70 shadow-xs'
-                    : 'text-slate-700 hover:text-[#1565C0] hover:bg-slate-50'
-                }`}
-              >
-                Contact
-              </button>
-            </nav>
-
-            {/* Desktop Action Buttons */}
-            <div className="hidden lg:flex items-center gap-2 xl:gap-3">
-
-
-              {/* Schedule Meeting CTA */}
-              <button
-                onClick={onOpenSchedule}
-                className="px-4 py-1.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#0B2E6B] via-[#1565C0] to-[#0B2E6B] bg-[length:200%_auto] hover:bg-right transition-all duration-500 shadow-md shadow-[#0B2E6B]/20 hover:shadow-lg hover:shadow-[#0B2E6B]/30 hover:-translate-y-0.5 flex items-center gap-1.5 cursor-pointer whitespace-nowrap border border-[#1565C0]/50"
-              >
-                <Calendar className="w-3.5 h-3.5 text-[#FFB74D]" />
-                Schedule Meeting
-              </button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl bg-slate-100 text-slate-800 hover:bg-slate-200 transition-colors cursor-pointer"
-              aria-label="Toggle menu"
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#ffffff] border-b border-[#E8E8E8] py-4 lg:py-5">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 flex items-center justify-between">
+          <div className="flex items-center">
+            <button 
+              onClick={() => handleNavigate('home', 'home')} 
+              className="text-left cursor-pointer focus:outline-none"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              <Logo size="lg" customLogoUrl={customLogoUrl} taglineText={taglineText} />
             </button>
           </div>
+
+          {/* Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-8">
+            <button
+              onClick={() => handleNavigate('home', 'home')}
+              className={`text-[14px] font-medium transition-colors ${
+                currentPage === 'home' && activeSection === 'home' ? 'text-[#c45b33]' : 'text-[#111111] hover:text-[#c45b33]'
+              }`}
+            >
+              Home
+            </button>
+
+            <div className="relative group">
+              <button
+                className={`text-[14px] font-medium transition-colors flex items-center gap-1.5 ${
+                  (currentPage === 'home' && activeSection === 'about') || currentPage === 'ceo' ? 'text-[#c45b33]' : 'text-[#111111] group-hover:text-[#c45b33]'
+                }`}
+              >
+                About
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg" className={`mt-0.5 opacity-60 transition-transform duration-300 group-hover:rotate-180 ${currentPage === 'ceo' ? 'text-[#c45b33]' : 'currentColor'}`}>
+                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+
+              <div className="absolute top-full left-1/2 -translate-x-1/2 pt-5 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                <div className="bg-white border border-[#E8E8E8] shadow-[0_10px_40px_rgba(0,0,0,0.08)] py-2 min-w-[300px] w-auto whitespace-nowrap rounded-sm">
+                  <button
+                    onClick={() => handleNavigate('home', 'about')}
+                    className="block w-full text-left px-5 py-2.5 text-[14px] font-medium text-[#111111] hover:text-[#c45b33] hover:bg-black/5 transition-colors"
+                  >
+                    FoundersLab
+                  </button>
+                  <button
+                    onClick={() => handleNavigate('ceo')}
+                    className="block w-full text-left px-5 py-2.5 text-[14px] font-medium text-[#111111] hover:text-[#c45b33] hover:bg-black/5 transition-colors"
+                  >
+                    About CEO - Ms. Sakuntala Kasaragadda (Phd)
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => handleNavigate('home', 'programs')}
+              className={`text-[14px] font-medium transition-colors ${
+                currentPage === 'home' && activeSection === 'programs' ? 'text-[#c45b33]' : 'text-[#111111] hover:text-[#c45b33]'
+              }`}
+            >
+              Programs
+            </button>
+
+            <button
+              onClick={() => handleNavigate('home', 'impact')}
+              className={`text-[14px] font-medium transition-colors ${
+                currentPage === 'home' && activeSection === 'impact' ? 'text-[#c45b33]' : 'text-[#111111] hover:text-[#c45b33]'
+              }`}
+            >
+              Impact
+            </button>
+
+            <button
+              onClick={() => handleNavigate('gallery')}
+              className={`text-[14px] font-medium transition-colors flex items-center gap-1.5 ${
+                currentPage === 'gallery' ? 'text-[#c45b33]' : 'text-[#111111] hover:text-[#c45b33]'
+              }`}
+            >
+              Gallery
+              <span className="text-[9px] uppercase font-bold text-[#c45b33] tracking-wider">New</span>
+            </button>
+
+            <button
+              onClick={() => handleNavigate('home', 'contact')}
+              className={`text-[14px] font-medium transition-colors ${
+                currentPage === 'home' && activeSection === 'contact' ? 'text-[#c45b33]' : 'text-[#111111] hover:text-[#c45b33]'
+              }`}
+            >
+              Contact
+            </button>
+          </nav>
+
+          {/* Desktop Action Buttons */}
+          <div className="hidden lg:flex items-center">
+            <button
+              onClick={onOpenSchedule}
+              className="px-6 py-2.5 rounded-sm bg-[#F57C00] hover:bg-[#111111] text-white text-[12px] font-bold uppercase tracking-widest transition-colors cursor-pointer"
+            >
+              Schedule Meeting
+            </button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden text-[#111111] p-2 hover:bg-black/5 rounded-md transition-colors"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
       </header>
 
-      {/* Mobile Drawer Navigation */}
+      {/* Mobile Fullscreen Navigation */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <React.Fragment key="mobile-menu-fragment">
-            <motion.div
-              key="mobile-menu-backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-sm lg:hidden"
-            />
-            <motion.div
-              key="mobile-menu-drawer"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-x-0 top-[76px] sm:top-[84px] z-50 p-4 lg:hidden max-h-[calc(100dvh-80px)] overflow-y-auto scroll-smooth"
-              style={{ WebkitOverflowScrolling: 'touch' }}
-            >
-              <div className="glass-panel-dark rounded-3xl p-5 sm:p-6 shadow-2xl border border-white/20 text-white mb-4">
-              {/* Navigation Grid & Accordion */}
-              <div className="space-y-2 mb-6">
-                {/* Home */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 top-[73px] z-40 bg-[#ffffff] lg:hidden overflow-y-auto border-t border-[#E8E8E8]"
+          >
+            <div className="flex flex-col px-6 py-8 h-full min-h-[calc(100vh-70px)]">
+              <nav className="flex flex-col gap-6 mb-12">
                 <button
                   onClick={() => handleNavigate('home', 'home')}
-                  className={`w-full p-3.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
-                    currentPage === 'home' && activeSection === 'home'
-                      ? 'bg-white/20 text-white font-bold'
-                      : 'text-slate-200 hover:text-white hover:bg-white/10'
-                  }`}
+                  className="text-left text-[28px] font-medium text-[#111111] hover:text-[#c45b33] transition-colors"
                 >
-                  <span>Home</span>
-                  <ArrowRight className="w-3 h-3 text-[#F57C00]" />
+                  Home
                 </button>
-
-                {/* About Section Accordion */}
-                <div className="rounded-xl bg-white/5 border border-white/10 overflow-hidden">
+                <div className="flex flex-col">
                   <button
-                    onClick={() => setMobileAboutExpanded(!mobileAboutExpanded)}
-                    className="w-full p-3.5 text-sm font-medium transition-all flex items-center justify-between text-left cursor-pointer text-slate-200 hover:text-white"
+                    onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
+                    className="flex items-center justify-between text-left text-[28px] font-medium text-[#111111] hover:text-[#c45b33] transition-colors"
                   >
-                    <div className="flex items-center gap-2">
-                      <Compass className="w-3.5 h-3.5 text-[#F57C00]" />
-                      <span className="font-bold">About</span>
-                    </div>
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform ${mobileAboutExpanded ? 'rotate-180 text-[#F57C00]' : 'text-slate-400'}`} />
+                    About
+                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg" className={`transition-transform duration-300 ${mobileAboutOpen ? 'rotate-180' : ''}`}>
+                      <path d="M1 1L7 7L13 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
                   </button>
-
-                  {mobileAboutExpanded && (
-                    <div className="px-3 pb-3 space-y-1.5 border-t border-white/10 pt-2">
-                      <button
-                        onClick={() => handleNavigate('home', 'about')}
-                        className={`w-full p-3 rounded-lg text-sm transition-all flex items-center justify-between text-left cursor-pointer ${
-                          currentPage === 'home' && activeSection === 'about'
-                            ? 'bg-white/20 text-white font-bold'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10'
-                        }`}
+                  
+                  <AnimatePresence>
+                    {mobileAboutOpen && (
+                      <motion.div 
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden flex flex-col gap-4 mt-4 pl-4 border-l-2 border-[#E8E8E8]"
                       >
-                        <div className="flex items-center gap-2">
-                          <Building className="w-3.5 h-3.5 text-slate-400" />
-                          <span>About FoundersLab</span>
-                        </div>
-                        <ArrowRight className="w-3 h-3 text-[#F57C00]" />
-                      </button>
-
-                      <button
-                        onClick={() => handleNavigate('ceo')}
-                        className={`w-full p-3 rounded-lg text-sm transition-all flex items-center justify-between text-left cursor-pointer ${
-                          currentPage === 'ceo'
-                            ? 'bg-white/20 text-white font-bold'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <UserCheck className="w-3.5 h-3.5 text-[#F57C00]" />
-                          <span>About the CEO</span>
-                        </div>
-                        <span className="px-1.5 py-0.5 rounded-full bg-[#F57C00] text-white text-[9px] font-bold">
-                          CEO
-                        </span>
-                      </button>
-                    </div>
-                  )}
+                        <button
+                          onClick={() => handleNavigate('home', 'about')}
+                          className="text-left text-[20px] font-medium text-[#555555] hover:text-[#c45b33]"
+                        >
+                          FoundersLab
+                        </button>
+                        <button
+                          onClick={() => handleNavigate('ceo')}
+                          className="text-left text-[20px] font-medium text-[#555555] hover:text-[#c45b33]"
+                        >
+                          About CEO (Ms. Sakuntala Kasaragadda)
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-
-                {/* Programs */}
                 <button
                   onClick={() => handleNavigate('home', 'programs')}
-                  className={`w-full p-3.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
-                    currentPage === 'home' && activeSection === 'programs'
-                      ? 'bg-white/20 text-white font-bold'
-                      : 'text-slate-200 hover:text-white hover:bg-white/10'
-                  }`}
+                  className="text-left text-[28px] font-medium text-[#111111] hover:text-[#c45b33] transition-colors"
                 >
-                  <span>Programs</span>
-                  <ArrowRight className="w-3 h-3 text-[#F57C00]" />
+                  Programs
                 </button>
-
-                {/* Impact */}
                 <button
                   onClick={() => handleNavigate('home', 'impact')}
-                  className={`w-full p-3.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
-                    currentPage === 'home' && activeSection === 'impact'
-                      ? 'bg-white/20 text-white font-bold'
-                      : 'text-slate-200 hover:text-white hover:bg-white/10'
-                  }`}
+                  className="text-left text-[28px] font-medium text-[#111111] hover:text-[#c45b33] transition-colors"
                 >
-                  <span>Impact</span>
-                  <ArrowRight className="w-3 h-3 text-[#F57C00]" />
+                  Impact
                 </button>
-
-                {/* Gallery */}
                 <button
                   onClick={() => handleNavigate('gallery')}
-                  className={`w-full p-3.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
-                    currentPage === 'gallery'
-                      ? 'bg-white/20 text-white font-bold'
-                      : 'text-slate-200 hover:text-white hover:bg-white/10'
-                  }`}
+                  className="text-left text-[28px] font-medium text-[#111111] hover:text-[#c45b33] transition-colors flex items-center gap-3"
                 >
-                  <div className="flex items-center gap-1.5">
-                    <Camera className="w-3.5 h-3.5 text-[#F57C00]" />
-                    <span>Gallery</span>
-                  </div>
-                  <span className="px-1.5 py-0.5 rounded-full bg-[#F57C00] text-white text-[9px] font-bold">
-                    New
-                  </span>
+                  Gallery
+                  <span className="text-[11px] uppercase font-bold text-[#c45b33] border border-[#c45b33]/30 px-2 py-0.5 rounded-full">New</span>
                 </button>
-
-                {/* Contact */}
                 <button
                   onClick={() => handleNavigate('home', 'contact')}
-                  className={`w-full p-3.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between text-left cursor-pointer ${
-                    currentPage === 'home' && activeSection === 'contact'
-                      ? 'bg-white/20 text-white font-bold'
-                      : 'text-slate-200 hover:text-white hover:bg-white/10'
-                  }`}
+                  className="text-left text-[28px] font-medium text-[#111111] hover:text-[#c45b33] transition-colors"
                 >
-                  <span>Contact</span>
-                  <ArrowRight className="w-3 h-3 text-[#F57C00]" />
+                  Contact
                 </button>
-              </div>
+              </nav>
 
-              <div className="flex flex-col gap-3 pt-2 border-t border-white/10">
+              <div className="mt-auto pb-8">
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);
                     onOpenSchedule();
                   }}
-                  className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#1565C0] to-[#F57C00] text-white text-sm font-bold shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full px-6 py-4 rounded-sm bg-[#F57C00] hover:bg-[#111111] text-white text-[14px] font-bold uppercase tracking-widest transition-colors cursor-pointer"
                 >
-                  <Calendar className="w-4 h-4" />
-                  Schedule Strategic Meeting
+                  Schedule Meeting
                 </button>
-
-                <div className="mt-2 text-center text-[11px] text-slate-300 flex items-center justify-center gap-2">
-                  <PhoneCall className="w-3 h-3 text-[#F57C00]" />
-                  +91 9010207999 | admin@founderslab.co.in
-                </div>
               </div>
             </div>
           </motion.div>
-          </React.Fragment>
         )}
       </AnimatePresence>
     </>

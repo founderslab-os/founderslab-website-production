@@ -1,0 +1,177 @@
+/* Footer.css */
+
+.ft-section {
+  background-color: #f9f9f9;
+  padding: 120px 5vw 40px 5vw;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #111111;
+  border-top: 1px solid #e5e5e5;
+  position: relative;
+}
+
+.ft-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Footer Top Area */
+.ft-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 80px;
+}
+
+.ft-logo-area {
+  max-width: 500px;
+}
+
+.ft-logo {
+  display: block;
+  width: 180px;
+  height: auto;
+  margin-bottom: 32px;
+  transition: opacity 0.3s ease;
+}
+
+.ft-logo:hover {
+  opacity: 0.8;
+}
+
+.ft-desc {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555555;
+  margin: 0;
+}
+
+.ft-motto-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.ft-motto {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #F57C00;
+  margin-bottom: 12px;
+}
+
+.ft-motto-line {
+  width: 60px;
+  height: 1px;
+  background-color: #1a1a1a;
+}
+
+/* Footer Grid */
+.ft-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-top: 1px solid #1a1a1a;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.ft-col {
+  padding: 40px 40px 40px 0;
+  border-right: 1px solid #e5e5e5;
+}
+
+.ft-col:last-child {
+  padding-right: 0;
+  border-right: none;
+}
+
+.ft-col-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #888888;
+  margin: 0 0 24px 0;
+}
+
+.ft-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ft-link {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+  text-align: left;
+}
+
+.ft-link:hover {
+  color: #F57C00;
+  transform: translateX(2px);
+}
+
+/* Footer Secretariat HQ */
+.ft-hq {
+  padding: 40px 0;
+  border-bottom: 1px solid #1a1a1a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ft-hq-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #888888;
+  margin: 0 0 8px 0;
+}
+
+.ft-hq-location {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* Footer Bottom SEO / Legal */
+.ft-bottom {
+  padding-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #888888;
+}
+
+.ft-legal-nav {
+  display: flex;
+  gap: 24px;
+}
+
+.ft-legal-link {
+  color: #888888;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.ft-legal-link:hover {
+  color: #1a1a1a;
+}
+
+.ft-copyright {
+  margin: 0;
+}

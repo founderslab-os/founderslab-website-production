@@ -1,0 +1,204 @@
+/* StrategicDifferentiation.css */
+
+.sd-section {
+  background-color: #ffffff;
+  padding: 120px 5vw;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #111111;
+  position: relative;
+}
+
+.sd-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.sd-header {
+  margin-bottom: 80px;
+  max-width: 800px;
+}
+
+.sd-header-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #F57C00;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.sd-header-line {
+  height: 1px;
+  width: 40px;
+  background-color: #F57C00;
+}
+
+.sd-header-title {
+  font-size: clamp(36px, 4vw, 48px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+  margin: 0 0 16px 0;
+  line-height: 1.1;
+}
+
+.sd-header-desc {
+  font-size: clamp(16px, 1.5vw, 18px);
+  line-height: 1.6;
+  color: #555555;
+  margin: 0;
+}
+
+/* Matrix Setup */
+.sd-matrix-wrapper {
+  position: relative;
+  display: flex;
+}
+
+.sd-matrix {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* Matrix Column Headers (Desktop Only) */
+.sd-matrix-header {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr;
+  padding: 24px 0;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.sd-col-head {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: #888888;
+}
+
+.sd-col-head.highlight {
+  color: #1a1a1a;
+}
+
+/* Row Structure */
+.sd-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr;
+  border-bottom: 1px solid #e5e5e5;
+  transition: background-color 0.5s ease, border-color 0.5s ease;
+  position: relative;
+}
+
+/* Active Row Styles */
+.sd-row.is-active {
+  background-color: rgba(245, 124, 0, 0.08); /* Apply stronger orange to the entire row */
+  border-bottom-color: #F57C00;
+  box-shadow: 0 4px 20px rgba(245, 124, 0, 0.05); /* Subtle glowing shadow for extra emphasis */
+  z-index: 1; /* Keep it above others */
+}
+
+.sd-col-index {
+  padding: 40px 24px 40px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+
+/* The vertical orange indicator for active row */
+.sd-col-index::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 40px;
+  bottom: 40px;
+  width: 2px;
+  background-color: #F57C00;
+  transform: scaleY(0);
+  transition: transform 0.5s ease;
+  transform-origin: top;
+}
+
+.sd-row.is-active .sd-col-index::before {
+  transform: scaleY(1);
+}
+
+.sd-index-number {
+  font-size: 12px;
+  font-family: monospace;
+  color: #a0a0a0;
+  font-weight: 600;
+  transition: color 0.5s ease;
+}
+
+.sd-dimension-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #444444;
+  margin: 0;
+  line-height: 1.3;
+  transition: color 0.5s ease, font-weight 0.5s ease;
+}
+
+.sd-row.is-active .sd-dimension-title {
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+.sd-row.is-active .sd-index-number {
+  color: #F57C00;
+}
+
+/* Traditional Column */
+.sd-col-traditional {
+  padding: 40px 32px;
+  border-right: 1px solid #f0f0f0;
+}
+
+.sd-traditional-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #666666;
+  margin: 0;
+}
+
+/* FoundersLab Column */
+.sd-col-founderslab {
+  padding: 40px 32px;
+  background-color: transparent;
+  transition: background-color 0.5s ease;
+  position: relative;
+}
+
+.sd-founderslab-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #1a1a1a;
+  font-weight: 500;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+  transition: color 0.5s ease, font-weight 0.5s ease;
+}
+
+.sd-row.is-active .sd-founderslab-text {
+  color: #000000;
+  font-weight: 600; /* Bolder text for FoundersLab in active row */
+}
+
+.sd-row.is-active .sd-traditional-text {
+  opacity: 0.7; /* Slightly dim traditional text to emphasize FoundersLab */
+}
+
+/* Hide mobile labels on desktop */
+.sd-mobile-label {
+  display: none;
+}

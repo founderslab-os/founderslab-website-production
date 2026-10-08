@@ -1,0 +1,112 @@
+/* PageLoader.css - Desktop & Base Styles */
+
+.page-loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #FAFAF8;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+  font-family: inherit;
+}
+
+.page-loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 760px;
+  width: 90%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Logo wrapper & image */
+.page-loader-logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.page-loader-logo {
+  height: 64px;
+  width: auto;
+  max-width: 280px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Micro-interaction line under logo */
+.page-loader-logo-accent {
+  height: 2px;
+  background-color: var(--fl-orange, #FF5722);
+  margin-top: 14px;
+  margin-bottom: 24px;
+  border-radius: 1px;
+}
+
+/* Main Tagline */
+.page-loader-tagline {
+  font-size: 26px;
+  line-height: 1.35;
+  font-weight: 400;
+  color: #171717;
+  letter-spacing: -0.01em;
+  margin: 0 0 16px 0;
+  font-family: inherit;
+}
+
+/* Institutional Descriptor */
+.page-loader-descriptor {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #666666;
+  margin: 0 0 36px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page-loader-bullet {
+  color: var(--fl-orange, #FF5722);
+  font-weight: bold;
+}
+
+/* Progress Timeline Track */
+.page-loader-progress-container {
+  width: 100%;
+  max-width: 380px;
+  height: 2px;
+  background-color: #E2E2DF;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+.page-loader-progress-bar {
+  height: 100%;
+  background-color: var(--fl-orange, #FF5722);
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* Reduced Motion fallback */
+@media (prefers-reduced-motion: reduce) {
+  .page-loader-overlay {
+    transition: opacity 0.3s ease !important;
+  }
+}

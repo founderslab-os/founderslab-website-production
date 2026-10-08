@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useInView } from 'motion/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useInView } from 'motion/react';
 import { ALL_IMPACT_METRICS } from '../data/founderslabData';
-import { TrendingUp, Award, Users, Building, Lightbulb, Presentation, Filter, Sparkles, Camera, ArrowRight } from 'lucide-react';
+import './QuantifiableEcosystemImpact.css';
+import './QuantifiableEcosystemImpact.mobile.css';
 
 // Animated Counter component
-const AnimatedCounter: React.FC<{ value: number; duration?: number }> = ({ value, duration = 2000 }) => {
+const AnimatedCounter: React.FC<{ value: number; duration?: number; suffix?: string }> = ({ value, duration = 2000, suffix = '' }) => {
   const [count, setCount] = useState(0);
-  const ref = React.useRef(null);
+  const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
   useEffect(() => {
@@ -31,21 +32,20 @@ const AnimatedCounter: React.FC<{ value: number; duration?: number }> = ({ value
     return () => clearInterval(timer);
   }, [isInView, value, duration]);
 
-  return <span ref={ref}>{count.toLocaleString('en-IN')}</span>;
+  return <span ref={ref}>{count.toLocaleString('en-IN')}{suffix}</span>;
 };
 
 interface ImpactMetricsProps {
   onNavigateToGallery?: () => void;
 }
 
-export const ImpactMetrics: React.FC<ImpactMetricsProps> = ({ onNavigateToGallery }) => {
-
+export const ImpactMetrics: React.FC<ImpactMetricsProps> = () => {
   const [activeTab, setActiveTab] = useState<string>('all');
 
   const tabs = [
-    { id: 'all', label: 'All 16 Ecosystem Metrics' },
+    { id: 'all', label: 'All' },
     { id: 'institutions', label: 'Institutions & Students' },
-    { id: 'startups', label: 'Venture Creation Pipeline' },
+    { id: 'startups', label: 'Venture Creation' },
     { id: 'mentors', label: 'Mentor Network' },
     { id: 'events', label: 'Capacity & Events' },
   ];
@@ -54,119 +54,95 @@ export const ImpactMetrics: React.FC<ImpactMetricsProps> = ({ onNavigateToGaller
     ? ALL_IMPACT_METRICS 
     : ALL_IMPACT_METRICS.filter(m => {
         if (activeTab === 'institutions') return m.category === 'institutions' || m.category === 'students';
-        return m.category === activeTab;
+        if (activeTab === 'startups') return m.category === 'startups';
+        if (activeTab === 'mentors') return m.category === 'mentors';
+        if (activeTab === 'events') return m.category === 'events';
+        return true;
       });
 
   return (
-    <section id="impact" className="py-20 lg:py-32 bg-[#F5F7FA] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="impact" className="fl-impact">
+      <div className="fl-impact__container">
         
-        {/* Section Title */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-[#0B2E6B] text-xs font-bold uppercase tracking-wider shadow-sm">
-            <TrendingUp className="w-3.5 h-3.5 text-[#F57C00]" />
-            Quantifiable Ecosystem Impact
+        {/* Header */}
+        <div className="fl-impact__header">
+          <div className="fl-impact__header-eyebrow">
+            <span className="fl-impact__eyebrow-line"></span>
+            Impact / By the numbers
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0B2E6B] font-poppins tracking-tight">
-            Impact Driven by <span className="gradient-text">Measurable Outcomes</span>
-          </h2>
-          <p className="text-base text-slate-600">
-            Real data from FoundersLab partner campuses across India reflecting tangible venture creation, student reach, research monetization, and mentor engagement.
-          </p>
-        </div>
-
-        {/* Category Filter Tabs */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
-                activeTab === tab.id
-                  ? 'bg-[#0B2E6B] text-white shadow-md shadow-[#0B2E6B]/20'
-                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Highlighted Banner Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Startup Ideas</p>
-            <p className="text-3xl sm:text-4xl font-extrabold font-poppins mt-2 text-[#0B2E6B]">
-              <AnimatedCounter value={2100} />+
+          <div className="fl-impact__header-content">
+            <h2 className="fl-impact__title">Quantifiable Ecosystem Impact</h2>
+            <h3 className="fl-impact__subtitle">Impact Driven by Measurable Outcomes</h3>
+            <p className="fl-impact__description">
+              Real data from FoundersLab partner campuses across India reflecting tangible venture creation, student reach, research monetization, and mentor engagement.
             </p>
-            <p className="text-[11px] text-slate-500 mt-1">Evaluated & registered</p>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Prototypes Built</p>
-            <p className="text-3xl sm:text-4xl font-extrabold font-poppins mt-2 text-[#1565C0]">
-              <AnimatedCounter value={300} />+
-            </p>
-            <p className="text-[11px] text-slate-500 mt-1">Working MVPs</p>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-gradient-to-br from-[#F57C00] to-[#E65100] text-white shadow-xl">
-            <p className="text-xs font-semibold text-amber-100 uppercase tracking-wider">Revenue Startups</p>
-            <p className="text-3xl sm:text-4xl font-extrabold font-poppins mt-2">
-              <AnimatedCounter value={14} />
-            </p>
-            <p className="text-[11px] text-amber-100 mt-1">Actively monetizing</p>
           </div>
         </div>
 
-        {/* Comprehensive Grid for Filtered Metrics */}
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredMetrics.map((metric) => (
-            <motion.div
-              key={metric.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3 }}
-              className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#1565C0]/40 hover:shadow-md transition-all group"
-            >
-              <div className="flex items-baseline justify-between mb-2">
-                <span className="text-2xl sm:text-3xl font-extrabold text-[#0B2E6B] font-poppins group-hover:text-[#1565C0] transition-colors">
-                  {metric.prefix}
-                  <AnimatedCounter value={metric.value} />
-                  {metric.suffix}
-                </span>
-                <span className="text-[10px] font-bold text-[#F57C00] bg-amber-50 px-2 py-0.5 rounded border border-amber-200/60 uppercase">
-                  Verified
-                </span>
-              </div>
-              <h3 className="text-sm font-bold text-slate-800 mb-1">{metric.label}</h3>
-              {metric.description && (
-                <p className="text-xs text-slate-500 leading-snug">{metric.description}</p>
-              )}
-            </motion.div>
-          ))}
+        {/* Primary KPI Strip */}
+        <div className="fl-impact__kpi-strip">
+          <div className="fl-impact__kpi-item">
+            <div className="fl-impact__kpi-index">01</div>
+            <div className="fl-impact__kpi-value"><AnimatedCounter value={2100} suffix="+" /></div>
+            <div className="fl-impact__kpi-label">Startup Ideas</div>
+            <div className="fl-impact__kpi-desc">Evaluated & registered</div>
+          </div>
+          <div className="fl-impact__kpi-divider"></div>
+          <div className="fl-impact__kpi-item">
+            <div className="fl-impact__kpi-index">02</div>
+            <div className="fl-impact__kpi-value"><AnimatedCounter value={300} suffix="+" /></div>
+            <div className="fl-impact__kpi-label">Prototypes Built</div>
+            <div className="fl-impact__kpi-desc">Working MVPs</div>
+          </div>
+          <div className="fl-impact__kpi-divider"></div>
+          <div className="fl-impact__kpi-item">
+            <div className="fl-impact__kpi-index">03</div>
+            <div className="fl-impact__kpi-value"><AnimatedCounter value={14} /></div>
+            <div className="fl-impact__kpi-label">Revenue Startups</div>
+            <div className="fl-impact__kpi-desc">Actively monetizing</div>
+          </div>
         </div>
 
-        {/* Discovery link to Innovation Gallery */}
-        {onNavigateToGallery && (
-          <div className="mt-12 text-center">
-            <div className="inline-flex flex-col sm:flex-row items-center gap-3 p-3 sm:px-6 sm:py-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md transition-all">
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                <span className="p-1.5 rounded-lg bg-[#0B2E6B]/10 text-[#0B2E6B]">
-                  <Camera className="w-4 h-4 text-[#F57C00]" />
-                </span>
-                <span>See photos from campus hackathons, prototypes, and labs in action</span>
-              </div>
-              <button
-                onClick={onNavigateToGallery}
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#0B2E6B] to-[#1565C0] hover:from-[#1565C0] hover:to-[#0B2E6B] text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
-              >
-                <span>View Photo Gallery</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#F57C00]" />
-              </button>
-            </div>
+        {/* Ecosystem Metrics Matrix */}
+        <div className="fl-impact__matrix-section">
+          <div className="fl-impact__matrix-header">
+            <span className="fl-impact__matrix-marker"></span>
+            Ecosystem Metrics
           </div>
-        )}
+
+          <div className="fl-impact__nav-container">
+            <nav className="fl-impact__nav">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`fl-impact__nav-item ${activeTab === tab.id ? 'active' : ''}`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          <div className="fl-impact__grid">
+            {filteredMetrics.map((metric, index) => {
+              const displayIndex = (index + 1).toString().padStart(2, '0');
+              return (
+                <div key={metric.id} className="fl-impact__card">
+                  <div className="fl-impact__card-header">
+                    <span className="fl-impact__card-index">{displayIndex}</span>
+                    <span className="fl-impact__card-status">Verified</span>
+                  </div>
+                  <div className="fl-impact__card-value">
+                    <AnimatedCounter value={metric.value} suffix={metric.suffix} />
+                  </div>
+                  <div className="fl-impact__card-metric">{metric.label}</div>
+                  <div className="fl-impact__card-desc">{metric.description}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
 
       </div>
     </section>

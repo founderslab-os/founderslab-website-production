@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Calendar, Clock, X, CheckCircle2, User, Building, Phone, Mail } from 'lucide-react';
+import { X, CheckCircle2, ArrowRight } from 'lucide-react';
+import './ScheduleModal.css';
+import './ScheduleModal.mobile.css';
 
 interface ScheduleModalProps {
   isOpen: boolean;
@@ -60,47 +62,47 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({ isOpen, onClose })
   return (
     <AnimatePresence>
       <div 
-        className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-sm"
+        className="sm-overlay"
         onClick={onClose}
       >
         <motion.div
-          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          initial={{ scale: 0.95, opacity: 0, y: 10 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.9, opacity: 0, y: 20 }}
+          exit={{ scale: 0.95, opacity: 0, y: 10 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-white rounded-3xl max-w-xl w-full max-h-[95dvh] overflow-y-auto p-5 sm:p-8 shadow-2xl border border-slate-200 relative text-slate-800"
+          className="sm-content"
         >
           <button
             type="button"
             onClick={onClose}
-            className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
+            className="sm-close"
           >
             <X className="w-5 h-5" />
           </button>
 
           {step === 1 ? (
-            <div className="space-y-6">
-              <div className="space-y-1">
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#F57C00] uppercase font-mono">
-                  <Calendar className="w-3.5 h-3.5" /> Executive Advisory Booking
-                </div>
-                <h3 className="text-2xl font-extrabold text-[#0B2E6B] font-poppins">
+            <div>
+              <div className="sm-header">
+                <span className="sm-eyebrow">
+                  Executive Advisory Booking
+                </span>
+                <h3 className="sm-title">
                   Schedule Strategic Session
                 </h3>
-                <p className="text-xs text-slate-500">
+                <p className="sm-desc">
                   Book a 30-minute 1-on-1 consultation with FoundersLab leadership.
                 </p>
               </div>
 
-              <form onSubmit={handleBook} className="space-y-4 text-xs sm:text-sm">
+              <form onSubmit={handleBook} className="sm-form">
                 
                 {/* Meeting Mode */}
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700">Meeting Format</label>
+                <div className="sm-form-group">
+                  <label className="sm-form-label">Meeting Format</label>
                   <select
                     value={meetingType}
                     onChange={(e) => setMeetingType(e.target.value)}
-                    className="w-full p-3 rounded-xl bg-[#F5F7FA] border border-slate-200 font-medium outline-none focus:border-[#1565C0]"
+                    className="sm-form-select"
                   >
                     <option value="Virtual Executive Strategy Session (Google Meet)">
                       Virtual Executive Strategy Session (Google Meet)
@@ -115,23 +117,23 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({ isOpen, onClose })
                 </div>
 
                 {/* Date & Time */}
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="font-bold text-slate-700">Preferred Date</label>
+                <div className="sm-form-row">
+                  <div className="sm-form-group">
+                    <label className="sm-form-label">Preferred Date</label>
                     <input
                       type="date"
                       value={selectedDate}
                       onChange={(e) => setSelectedDate(e.target.value)}
-                      className="w-full p-3 rounded-xl bg-[#F5F7FA] border border-slate-200 font-medium outline-none"
+                      className="sm-form-input"
                     />
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="font-bold text-slate-700">Preferred Time Slot (IST)</label>
+                  <div className="sm-form-group">
+                    <label className="sm-form-label">Preferred Time Slot (IST)</label>
                     <select
                       value={selectedTime}
                       onChange={(e) => setSelectedTime(e.target.value)}
-                      className="w-full p-3 rounded-xl bg-[#F5F7FA] border border-slate-200 font-medium outline-none"
+                      className="sm-form-select"
                     >
                       {availableTimes.map((t) => (
                         <option key={t} value={t}>{t} IST</option>
@@ -141,98 +143,99 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({ isOpen, onClose })
                 </div>
 
                 {/* Name & Designation */}
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="font-bold text-slate-700">Your Name *</label>
+                <div className="sm-form-row">
+                  <div className="sm-form-group">
+                    <label className="sm-form-label">Your Name *</label>
                     <input
                       type="text"
                       required
                       placeholder="Dr. / Prof. / Mr."
                       value={contactInfo.name}
                       onChange={(e) => setContactInfo({ ...contactInfo, name: e.target.value })}
-                      className="w-full p-3 rounded-xl bg-[#F5F7FA] border border-slate-200 outline-none"
+                      className="sm-form-input"
                     />
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="font-bold text-slate-700">Designation *</label>
+                  <div className="sm-form-group">
+                    <label className="sm-form-label">Designation *</label>
                     <input
                       type="text"
                       required
                       placeholder="Vice Chancellor / Chairman / Director"
                       value={contactInfo.designation}
                       onChange={(e) => setContactInfo({ ...contactInfo, designation: e.target.value })}
-                      className="w-full p-3 rounded-xl bg-[#F5F7FA] border border-slate-200 outline-none"
+                      className="sm-form-input"
                     />
                   </div>
                 </div>
 
                 {/* Institution Name */}
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700">University / College Name *</label>
+                <div className="sm-form-group">
+                  <label className="sm-form-label">University / College Name *</label>
                   <input
                     type="text"
                     required
                     placeholder="Institution Name"
                     value={contactInfo.institution}
                     onChange={(e) => setContactInfo({ ...contactInfo, institution: e.target.value })}
-                    className="w-full p-3 rounded-xl bg-[#F5F7FA] border border-slate-200 outline-none"
+                    className="sm-form-input"
                   />
                 </div>
 
                 {/* Email & Phone */}
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="font-bold text-slate-700">Official Email *</label>
+                <div className="sm-form-row">
+                  <div className="sm-form-group">
+                    <label className="sm-form-label">Official Email *</label>
                     <input
                       type="email"
                       required
                       placeholder="vc@university.edu.in"
                       value={contactInfo.email}
                       onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
-                      className="w-full p-3 rounded-xl bg-[#F5F7FA] border border-slate-200 outline-none"
+                      className="sm-form-input"
                     />
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="font-bold text-slate-700">Phone Number *</label>
+                  <div className="sm-form-group">
+                    <label className="sm-form-label">Phone Number *</label>
                     <input
                       type="tel"
                       required
                       placeholder="+91 90000 00000"
                       value={contactInfo.phone}
                       onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
-                      className="w-full p-3 rounded-xl bg-[#F5F7FA] border border-slate-200 outline-none"
+                      className="sm-form-input"
                     />
                   </div>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-[#0B2E6B] to-[#1565C0] hover:scale-[1.01] transition-all shadow-md cursor-pointer"
+                  className="sm-submit"
                 >
                   Confirm Meeting Booking
+                  <ArrowRight className="w-4 h-4" />
                 </button>
 
               </form>
             </div>
           ) : (
-            <div className="text-center py-6 space-y-4">
-              <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto" />
-              <h3 className="text-2xl font-bold font-poppins text-[#0B2E6B]">Meeting Confirmed!</h3>
-              <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
-                Thank you, <span className="font-bold">{contactInfo.name}</span> ({contactInfo.designation}, {contactInfo.institution}).
-                Your session is scheduled for <span className="font-bold text-[#1565C0]">{selectedDate}</span> at <span className="font-bold text-[#1565C0]">{selectedTime} IST</span>.
+            <div className="sm-success">
+              <CheckCircle2 className="sm-success-icon" />
+              <h3 className="sm-success-title">Meeting Confirmed!</h3>
+              <p className="sm-success-desc">
+                Thank you, <span className="font-semibold">{contactInfo.name}</span> ({contactInfo.designation}, {contactInfo.institution}).
+                Your session is scheduled for <span className="font-semibold">{selectedDate}</span> at <span className="font-semibold">{selectedTime} IST</span>.
               </p>
-              <div className="p-4 rounded-2xl bg-[#F5F7FA] border border-slate-200 text-xs text-slate-700 font-medium">
-                A Google Calendar invite and meeting link have been sent to <span className="font-bold">{contactInfo.email}</span>.
+              <div className="sm-success-box">
+                A Google Calendar invite and meeting link have been sent to <strong>{contactInfo.email}</strong>.
               </div>
               <button
                 onClick={() => {
                   setStep(1);
                   onClose();
                 }}
-                className="px-6 py-2.5 rounded-xl font-bold text-xs text-white bg-[#0B2E6B] cursor-pointer"
+                className="sm-done-btn"
               >
                 Done
               </button>

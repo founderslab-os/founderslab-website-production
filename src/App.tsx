@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { PageLoader } from './components/PageLoader';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AboutSection } from './components/AboutSection';
@@ -11,9 +12,11 @@ import { ScheduleModal } from './components/ScheduleModal';
 import { Footer } from './components/Footer';
 import { GalleryPage } from './components/GalleryPage';
 import { CeoPage } from './components/CeoPage';
+import { FloatingPhoneCTA } from './components/FloatingPhoneCTA';
 
 export default function App() {
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
+  const [isLoaderFinished, setIsLoaderFinished] = useState(false);
 
   const [activeSection, setActiveSection] = useState('home');
   
@@ -135,6 +138,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans selection:bg-[#1565C0] selection:text-white">
+      {!isLoaderFinished && (
+        <PageLoader
+          customLogoUrl={customLogoUrl}
+          onComplete={() => setIsLoaderFinished(true)}
+        />
+      )}
+
       {/* Header & Navigation */}
       <Navbar
         onOpenSchedule={() => setScheduleModalOpen(true)}
@@ -206,7 +216,8 @@ export default function App() {
         onClose={() => setScheduleModalOpen(false)}
       />
 
-
+      {/* Global Floating Phone CTA */}
+      <FloatingPhoneCTA />
     </div>
   );
 }

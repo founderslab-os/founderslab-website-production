@@ -1,0 +1,222 @@
+/* ScheduleModal.css */
+.sm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(17, 17, 17, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.sm-content {
+  background-color: #ffffff;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 56px;
+  border-radius: 2px;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #111111;
+}
+
+.sm-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: #888888;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 4px;
+}
+
+.sm-close:hover {
+  color: #111111;
+}
+
+.sm-header {
+  margin-bottom: 40px;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 24px;
+}
+
+.sm-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #F57C00;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sm-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.sm-desc {
+  font-size: 14px;
+  color: #555555;
+  margin: 0;
+}
+
+/* Form Styles */
+.sm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sm-form-row {
+  display: flex;
+  gap: 24px;
+}
+
+.sm-form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.sm-form-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #888888;
+  font-weight: 700;
+  margin-bottom: 8px;
+  transition: color 0.3s ease;
+}
+
+.sm-form-group:focus-within .sm-form-label {
+  color: #1a1a1a;
+}
+
+.sm-form-input,
+.sm-form-select {
+  width: 100%;
+  background-color: #f9f9f9;
+  border: 1px solid #e5e5e5;
+  padding: 14px 16px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  color: #1a1a1a;
+  outline: none;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.sm-form-input:hover,
+.sm-form-select:hover {
+  background-color: #f0f0f0;
+  border-color: #d5d5d5;
+}
+
+.sm-form-input:focus,
+.sm-form-select:focus {
+  background-color: #ffffff;
+  border-color: #F57C00;
+  box-shadow: inset 3px 0 0 #F57C00;
+}
+
+.sm-submit {
+  background-color: #F57C00;
+  color: #ffffff;
+  border: 1px solid #F57C00;
+  padding: 16px 32px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.sm-submit svg {
+  color: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+.sm-submit:hover {
+  background-color: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.sm-submit:hover svg {
+  transform: translateX(4px);
+}
+
+.sm-success {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.sm-success-icon {
+  color: #1a1a1a;
+  margin: 0 auto 24px auto;
+  width: 48px;
+  height: 48px;
+}
+
+.sm-success-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+}
+
+.sm-success-desc {
+  font-size: 14px;
+  color: #555555;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.sm-success-box {
+  background-color: #f9f9f9;
+  border: 1px solid #e5e5e5;
+  padding: 16px;
+  font-size: 12px;
+  color: #1a1a1a;
+  margin-bottom: 32px;
+}
+
+.sm-done-btn {
+  background-color: #F57C00;
+  color: #ffffff;
+  border: 1px solid #F57C00;
+  padding: 12px 32px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.sm-done-btn:hover {
+  background-color: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #ffffff;
+}

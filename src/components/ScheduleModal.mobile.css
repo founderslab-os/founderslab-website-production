@@ -1,0 +1,27 @@
+/* ScheduleModal.mobile.css */
+
+@media (max-width: 767px) {
+  .sm-content {
+    padding: 40px 24px;
+    max-height: 95vh;
+  }
+  
+  .sm-form-row {
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .sm-header {
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+  }
+  
+  .sm-title {
+    font-size: 24px;
+  }
+  
+  .sm-close {
+    top: 16px;
+    right: 16px;
+  }
+}

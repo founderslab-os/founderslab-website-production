@@ -1,7 +1,11 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useRef, useState } from 'react';
+import { motion, useScroll, useMotionValueEvent, useSpring } from 'motion/react';
 import { WHY_FOUNDERSLAB_COMPARISON } from '../data/founderslabData';
 import { Check, X, ShieldCheck, Sparkles, Rocket, Landmark, ArrowRight, Award, Cpu, Lightbulb } from 'lucide-react';
+import './StrategicDifferentiation.css';
+import './StrategicDifferentiation.mobile.css';
+import './LongTermBlueprint.css';
+import './LongTermBlueprint.mobile.css';
 
 interface WhyFoundersLabProps {
   onScheduleMeeting: () => void;
@@ -20,6 +24,26 @@ interface RoadmapStep {
 }
 
 export const WhyFoundersLab: React.FC<WhyFoundersLabProps> = ({ onScheduleMeeting }) => {
+  const matrixRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const { scrollYProgress } = useScroll({
+    target: matrixRef,
+    offset: ["start center", "end center"]
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  useMotionValueEvent(smoothProgress, "change", (latest) => {
+    let index = Math.floor(latest * WHY_FOUNDERSLAB_COMPARISON.length);
+    if (index < 0) index = 0;
+    if (index >= WHY_FOUNDERSLAB_COMPARISON.length) index = WHY_FOUNDERSLAB_COMPARISON.length - 1;
+    setActiveIndex(index);
+  });
   const roadmapSteps: RoadmapStep[] = [
     {
       phase: 'Phase 01',
@@ -88,164 +112,134 @@ export const WhyFoundersLab: React.FC<WhyFoundersLabProps> = ({ onScheduleMeetin
   ];
 
   return (
-    <section className="py-12 lg:py-18 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-3 mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F5F7FA] border border-slate-200 text-[#0B2E6B] text-xs font-bold uppercase tracking-wider">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#F57C00]" />
-            Strategic Differentiation
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-4xl font-extrabold text-[#0B2E6B] font-poppins tracking-tight">
-            Why <span className="gradient-text">FoundersLab?</span>
-          </h2>
-          <p className="text-sm sm:text-base text-slate-600">
-            We don't sell one-off motivational talks or superficial certificates. We partner with institutions to build self-sustaining innovation, entrepreneurship, and incubation ecosystems that create lasting impact.
-          </p>
-        </div>
+    <>
+      <section className="sd-section" id="why-founderslab">
+        <div className="sd-container">
+          <div className="sd-content">
+            {/* Header */}
+            <div className="sd-header">
+              <div className="sd-header-eyebrow">
+                <span>Strategic Differentiation</span>
+                <div className="sd-header-line"></div>
+              </div>
+              <h2 className="sd-header-title">Why FoundersLab?</h2>
+              <p className="sd-header-desc">
+                We don't sell one-off motivational talks or superficial certificates. We partner with institutions to build self-sustaining innovation, entrepreneurship, and incubation ecosystems that create lasting impact.
+              </p>
+            </div>
 
-        {/* Comparison Matrix */}
-        <div className="mb-10 rounded-3xl bg-[#F5F7FA] border border-slate-200 p-5 sm:p-6 shadow-sm">
-          <h3 className="text-lg sm:text-xl font-bold text-[#0B2E6B] font-poppins mb-4 text-center sm:text-left">
-            Institutional Transformation Comparison
-          </h3>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[600px]">
-              <thead>
-                <tr className="border-b border-slate-200 text-xs font-bold uppercase text-slate-500 font-mono">
-                  <th className="py-3 px-4 w-1/3">Ecosystem Dimension</th>
-                  <th className="py-3 px-4 w-1/3 text-red-600 bg-red-50/50 rounded-t-xl">Traditional Workshops & Event Vendors</th>
-                  <th className="py-3 px-4 w-1/3 text-[#0B2E6B] bg-[#0B2E6B]/10 rounded-t-xl">FoundersLab 360° Ecosystem Blueprint</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200 text-xs sm:text-sm">
+            {/* Comparison Matrix */}
+            <div className="sd-matrix-wrapper" ref={matrixRef}>
+              <div className="sd-mobile-rail">
+                <motion.div 
+                  className="sd-mobile-rail-progress"
+                  style={{ scaleY: smoothProgress }}
+                />
+              </div>
+              <div className="sd-matrix">
+                <div className="sd-matrix-header">
+                  <div className="sd-col-head"></div>
+                  <div className="sd-col-head">Traditional Approach</div>
+                  <div className="sd-col-head highlight">FoundersLab</div>
+                </div>
                 {WHY_FOUNDERSLAB_COMPARISON.map((item, idx) => (
-                  <tr key={idx} className="hover:bg-white/60 transition-colors">
-                    <td className="py-4 px-4 font-bold text-slate-800 font-poppins">{item.feature}</td>
-                    <td className="py-4 px-4 text-slate-600 bg-red-50/20">
-                      <div className="flex items-start gap-2">
-                        <X className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
-                        <span>{item.traditional}</span>
-                      </div>
-                    </td>
-                    <td className="py-4 px-4 font-semibold text-[#0B2E6B] bg-[#0B2E6B]/5">
-                      <div className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-[#1565C0] shrink-0 mt-0.5" />
-                        <span>{item.founderslab}</span>
-                      </div>
-                    </td>
-                  </tr>
+                  <div className={`sd-row ${idx === activeIndex ? 'is-active' : ''}`} key={idx}>
+                    <div className="sd-col-index">
+                      <span className="sd-index-number">0{idx + 1}</span>
+                      <h3 className="sd-dimension-title">{item.feature}</h3>
+                    </div>
+                    <div className="sd-col-traditional">
+                      <span className="sd-mobile-label">Traditional Approach</span>
+                      <p className="sd-traditional-text">{item.traditional}</p>
+                    </div>
+                    <div className="sd-col-founderslab">
+                      <span className="sd-mobile-label founderslab-label">FoundersLab</span>
+                      <p className="sd-founderslab-text">{item.founderslab}</p>
+                    </div>
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* 4-Phase Transformation Roadmap */}
-        <div className="space-y-8">
-          <div className="text-center max-w-2xl mx-auto space-y-1.5">
-            <span className="text-xs font-bold text-[#F57C00] uppercase tracking-wider font-mono">
+      <section className="ltb-section">
+        <div className="ltb-container">
+          
+          <div className="ltb-header">
+            <div className="ltb-eyebrow">
               LONG-TERM BLUEPRINT
-            </span>
-            <h3 className="text-xl sm:text-2xl font-bold text-[#0B2E6B] font-poppins">
-              The Campus Transformation Journey
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-600">
+              <div className="ltb-eyebrow-line"></div>
+            </div>
+            <h2 className="ltb-title">The Campus Transformation Journey</h2>
+            <p className="ltb-desc">
               A structured multi-year roadmap from initial audit to investor demo day.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {roadmapSteps.map((step, idx) => {
-              const IconComp = step.icon;
-              return (
-                <motion.div
-                  key={step.phase}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 relative flex flex-col justify-between group overflow-hidden"
-                >
-                  {/* Top gradient accent bar */}
-                  <div className={`absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r ${step.color}`} />
-
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${step.color} text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300`}>
-                        <IconComp className="w-5 h-5 text-white" />
-                      </div>
-                      <span className="text-[10px] font-bold font-mono px-2.5 py-1 rounded-full bg-slate-100 text-[#0B2E6B] border border-slate-200">
-                        {step.phase}
-                      </span>
-                    </div>
-
-                    <div className="mb-3">
-                      <h4 className="text-lg font-extrabold text-[#0B2E6B] font-poppins group-hover:text-[#1565C0] transition-colors">
-                        {step.title}
-                      </h4>
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">
-                        {step.subtitle}
-                      </p>
-                    </div>
-
-                    {step.bullets && step.bullets.length > 0 ? (
-                      <ul className="text-xs text-slate-600 space-y-1.5 mb-4">
-                        {step.bullets.map((bullet, bIdx) => (
-                          <li key={bIdx} className="flex items-start gap-1.5">
-                            <span className="text-[#F57C00] font-extrabold shrink-0 mt-0.5">•</span>
-                            <span className="leading-snug">{bullet}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="text-xs text-slate-600 leading-relaxed mb-4">
-                        {step.desc}
-                      </p>
-                    )}
-
-                    {step.outcome && (
-                      <div className="mb-4 p-2.5 rounded-xl bg-slate-50 border border-slate-200/60 text-xs">
-                        <span className="font-extrabold text-[#0B2E6B] block mb-0.5">Outcome:</span>
-                        <span className="text-slate-700 font-medium">{step.outcome}</span>
-                      </div>
-                    )}
+          <div className="ltb-journey-container">
+            <div className="ltb-journey-track">
+              <div className="ltb-journey-line"></div>
+              <div className="ltb-journey-markers">
+                {[1, 2, 3, 4].map((num) => (
+                  <div key={num} className="ltb-marker-wrapper">
+                    <div className="ltb-marker-dot"></div>
+                    <span className="ltb-marker-num">0{num}</span>
                   </div>
+                ))}
+              </div>
+            </div>
 
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                    <span className="font-semibold text-[#1565C0] bg-[#1565C0]/5 px-2 py-0.5 rounded-md">
-                      {step.highlight}
-                    </span>
-                    <span className="font-mono font-bold text-slate-300">
+            <div className="ltb-grid">
+              {roadmapSteps.map((step, idx) => (
+                <div className="ltb-card" key={idx}>
+                  <div className="ltb-card-header">
+                    <div className="ltb-phase-number">
                       0{idx + 1}
-                    </span>
+                      <div className="ltb-phase-accent"></div>
+                    </div>
+                    <h3 className="ltb-phase-title">{step.title}</h3>
+                    <h4 className="ltb-phase-subtitle">{step.subtitle}</h4>
                   </div>
-                </motion.div>
-              );
-            })}
+                  
+                  <div className="ltb-card-body">
+                    <ul className="ltb-bullets">
+                      {step.bullets?.map((b, i) => (
+                        <li key={i}>{b}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="ltb-card-outcome">
+                    <span className="ltb-outcome-label">Outcome</span>
+                    <p className="ltb-outcome-text">{step.outcome}</p>
+                  </div>
+
+                  <div className="ltb-card-footer">
+                    <span className="ltb-bottom-text">{step.highlight}</span>
+                    <span className="ltb-bottom-num">0{idx + 1}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* CTA Box */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#0B2E6B] via-[#1565C0] to-[#0B2E6B] text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-5">
-            <div className="space-y-2 text-center md:text-left">
-              <h4 className="text-2xl font-bold font-poppins">Ready to Transform Your Campus?</h4>
-              <p className="text-xs sm:text-sm text-slate-200 max-w-xl">
+          <div className="ltb-cta">
+            <div className="ltb-cta-left">
+              <h4 className="ltb-cta-title">Ready to Transform Your Campus?</h4>
+              <p className="ltb-cta-desc">
                 Partner with India's leading Innovation Ecosystem Builder to elevate your institution's global stature, student enrollment appeal, and NIRF rankings.
               </p>
             </div>
-            <button
-              onClick={onScheduleMeeting}
-              className="px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm text-[#0B2E6B] bg-white hover:bg-slate-100 transition-all shadow-md shrink-0 flex items-center gap-2 cursor-pointer"
-            >
+            <button onClick={onScheduleMeeting} className="ltb-cta-btn">
               Schedule Campus Strategy Call
-              <ArrowRight className="w-4 h-4 text-[#F57C00]" />
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
-        </div>
 
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 };

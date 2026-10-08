@@ -1,0 +1,102 @@
+/* CeoPage.mobile.css - Mobile specific overrides */
+
+@media (max-width: 1024px) {
+  .ceo-hero-section {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-top: 40px;
+  }
+  .ceo-hero-image-wrap {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .ceo-journey-section {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .ceo-pillars-grid {
+    grid-template-columns: 1fr;
+  }
+  .ceo-metrics-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px 20px;
+  }
+  .ceo-metric-item {
+    padding: 0;
+    border-right: none;
+    text-align: center;
+  }
+  .ceo-metric-number {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .ceo-container {
+    padding: 0 24px;
+  }
+  
+  .ceo-name {
+    font-size: 38px;
+  }
+  
+  .ceo-hero-statement {
+    font-size: 32px;
+  }
+
+  .ceo-timeline-heading,
+  .ceo-pillars-heading {
+    font-size: 32px;
+  }
+  
+  .ceo-motto-heading {
+    font-size: 36px;
+  }
+
+  .ceo-quote-text {
+    font-size: 24px;
+  }
+  
+  .ceo-metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .ceo-timeline-line {
+    left: 11px;
+  }
+  .ceo-timeline-container {
+    padding-left: 32px;
+  }
+  .ceo-timeline-dot {
+    left: -25px; /* 32 - 11(line center approx) wait, line is at 11, half is 11. 32-11 = 21*/
+  }
+
+  .ceo-pillar-card {
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ceo-name {
+    font-size: 34px;
+  }
+  .ceo-hero-statement {
+    font-size: 30px;
+  }
+  .ceo-motto-heading {
+    font-size: 32px;
+  }
+  .ceo-quote-text {
+    font-size: 22px;
+  }
+  .ceo-hero-bio {
+    font-size: 16px;
+  }
+  .ceo-journey-text {
+    font-size: 16px;
+  }
+  .ceo-timeline-role {
+    font-size: 20px;
+  }
+}

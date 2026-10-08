@@ -1,0 +1,73 @@
+/* FoundersLabHero.mobile.css */
+
+/* Tablet overrides */
+@media (max-width: 1024px) {
+  .fl-hero__content { grid-column: 1 / 13; padding-right: 0; }
+  .fl-hero__visual { display: none; }
+}
+
+/* Mobile overrides */
+@media (max-width: 767px) {
+  .fl-hero {
+    padding: 100px 24px 60px;
+    height: auto;
+    min-height: 100vh;
+  }
+  .fl-hero__container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 40px;
+  }
+  
+  .fl-hero__title {
+    font-size: clamp(40px, 11vw, 54px);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+  }
+  .fl-hero__description {
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+  .fl-hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+  .fl-hero__btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .fl-hero__btn-link {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .fl-hero__eyebrow {
+    font-size: 10px;
+    margin-bottom: 24px;
+  }
+
+  .fl-hero__divider {
+    margin: 32px 0;
+  }
+
+  .fl-hero__visual {
+    display: block;
+    grid-column: auto;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .fl-hero__image-frame {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    background-color: #fafafa;
+  }
+}

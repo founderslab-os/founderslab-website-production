@@ -1,0 +1,337 @@
+/* FlagshipInitiatives.css */
+
+.fl-initiatives {
+  background-color: #ffffff;
+  color: #111111;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 100px 5vw 120px;
+  position: relative;
+}
+
+.fl-initiatives-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Header - Clean white background above the panels */
+.fl-initiatives-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+  padding-bottom: 0;
+  align-items: end;
+  background-color: #ffffff;
+}
+
+.fl-initiatives-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #c45b33;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.fl-initiatives-title {
+  font-size: clamp(32px, 3.5vw, 48px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: #111111;
+  margin: 0;
+}
+
+.fl-initiatives-header-desc {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555555;
+  margin: 0;
+  max-width: 500px;
+}
+
+/* Grid */
+.fl-initiatives-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* Column / Panel */
+.fl-initiative {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  min-height: 720px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Background Image Layer */
+.fl-initiative-bg {
+  position: absolute;
+  inset: -20px;
+  background-image: var(--program-image);
+  background-size: cover;
+  background-position: center;
+  filter: blur(1.5px); /* Decreased blur */
+  transform: scale(1.04);
+  z-index: 1;
+}
+
+/* Specific background positioning for better blur crops */
+.fl-initiative:nth-child(1) .fl-initiative-bg {
+  background-position: center top;
+}
+.fl-initiative:nth-child(2) .fl-initiative-bg {
+  background-position: center center;
+}
+.fl-initiative:nth-child(3) .fl-initiative-bg {
+  background-position: center bottom;
+}
+
+/* Dark Overlay Layer */
+.fl-initiative-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(15, 15, 15, 0.4), rgba(15, 15, 15, 0.8));
+  z-index: 2;
+  transition: background 0.3s ease;
+}
+
+.fl-initiative:hover .fl-initiative-overlay {
+  background: linear-gradient(to bottom, rgba(15, 15, 15, 0.35), rgba(15, 15, 15, 0.75));
+}
+
+/* Content */
+.fl-initiative-content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  padding: 48px 32px;
+  flex: 1;
+}
+
+.fl-initiative-category {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #ffffff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.fl-initiative-index {
+  color: #F57C00;
+}
+
+.fl-initiative-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
+
+.fl-initiative-subtitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 24px 0;
+  line-height: 1.4;
+}
+
+.fl-initiative-description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0 0 32px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Divider before metrics */
+.fl-initiative-divider {
+  width: 32px;
+  height: 2px;
+  background-color: #F57C00;
+  margin-bottom: 24px;
+}
+
+/* Metrics */
+.fl-initiative-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 24px;
+}
+
+.fl-initiative-metric {
+  display: flex;
+  flex-direction: column;
+}
+
+.fl-initiative-metric-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: #F57C00;
+  margin-bottom: 4px;
+}
+
+.fl-initiative-metric-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.3;
+}
+
+/* Highlights */
+.fl-initiative-highlights {
+  margin-bottom: 40px;
+  margin-top: auto;
+}
+
+.fl-initiative-highlights-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.fl-initiative-highlights-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fl-initiative-highlights-list li {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.4;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.fl-initiative-highlights-marker {
+  font-size: 10px;
+  font-weight: 600;
+  color: #F57C00;
+  margin-top: 2px;
+}
+
+/* CTA */
+.fl-initiative-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 24px;
+}
+
+.fl-initiative-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  position: relative;
+}
+
+.fl-initiative-btn span {
+  display: inline-block;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.fl-initiative-btn:hover span {
+  transform: translateX(4px) translateY(-2px) rotate(-45deg);
+  color: #F57C00 !important;
+}
+
+.fl-initiative-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  transition: background-color 0.2s;
+}
+
+.primary-cta {
+  color: #ffffff;
+}
+
+.primary-cta span {
+  color: #F57C00;
+}
+
+.primary-cta::after {
+  background-color: transparent;
+}
+
+.primary-cta:hover::after {
+  background-color: #F57C00;
+}
+
+.secondary-cta {
+  color: #ffffff;
+}
+
+.secondary-cta span {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.secondary-cta::after {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.secondary-cta:hover::after {
+  background-color: transparent;
+}
+
+/* Modal specific styles */
+.fl-initiatives-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(17, 17, 17, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.fl-initiatives-modal-content {
+  background-color: #ffffff;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 48px;
+  border-radius: 4px;
+  position: relative;
+}

@@ -1,0 +1,136 @@
+/* StrategicDifferentiation.mobile.css */
+
+@media (max-width: 1024px) {
+  .sd-matrix-header {
+    grid-template-columns: 140px 1fr 1fr;
+  }
+  .sd-row {
+    grid-template-columns: 140px 1fr 1fr;
+  }
+  .sd-col-index {
+    padding: 32px 16px 32px 0;
+  }
+  .sd-col-traditional, .sd-col-founderslab {
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .sd-section {
+    padding: 64px 20px;
+  }
+
+  .sd-header {
+    margin-bottom: 48px;
+  }
+
+  .sd-header-title {
+    font-size: clamp(32px, 8vw, 40px);
+  }
+
+  /* Hide Desktop Header */
+  .sd-matrix-header {
+    display: none;
+  }
+
+  .sd-matrix {
+    border-top: none;
+  }
+  
+  .sd-matrix-wrapper {
+    position: relative;
+    padding-left: 20px; /* Space for the rail */
+  }
+
+  /* Vertical Progress Rail */
+  .sd-mobile-rail {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 4px;
+    width: 2px;
+    background-color: #e5e5e5;
+    z-index: 1;
+  }
+
+  .sd-mobile-rail-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #F57C00;
+    transform-origin: top;
+    /* Will be controlled via JS inline style `scaleY` */
+    z-index: 2;
+  }
+
+  .sd-row {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #D9D9D9;
+    border-radius: 2px;
+    margin-bottom: 40px;
+    background-color: #ffffff;
+    transition: border-color 0.5s ease;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Active Card Mobile Outline */
+  .sd-row.is-active {
+    border-left: 3px solid #F57C00;
+    border-color: #F57C00;
+    background-color: rgba(245, 124, 0, 0.08); /* Apply to entire mobile card */
+    box-shadow: 0 4px 20px rgba(245, 124, 0, 0.05);
+  }
+
+  .sd-col-index {
+    padding: 24px;
+    border-bottom: 1px solid #eaeaea;
+    background-color: #fafafa;
+  }
+
+  .sd-col-index::before {
+    display: none; /* Hide desktop left orange line */
+  }
+
+  .sd-index-number {
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .sd-dimension-title {
+    font-size: 22px;
+  }
+
+  .sd-mobile-label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #888888;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .sd-col-traditional {
+    padding: 24px;
+    border-right: none;
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  .sd-col-founderslab {
+    padding: 24px;
+    background-color: transparent;
+  }
+  
+  .sd-row.is-active .sd-col-index {
+    background-color: transparent; /* Let the row orange show through */
+  }
+  
+  .sd-row.is-active .sd-mobile-label.founderslab-label {
+    color: #F57C00;
+  }
+}
