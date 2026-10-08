@@ -1,4 +1,4 @@
-/* Contact.mobile.css - Mobile-First Institutional Contact Experience (<768px) */
+/* Contact.mobile.css - Dedicated Mobile Headquarters & Contact Dossier (<768px) */
 
 @media (max-width: 767px) {
   .cs-section {
@@ -46,112 +46,158 @@
     gap: 16px;
   }
 
-  .cs-mobile-divider {
+  .cs-mobile-rule {
     height: 1px;
-    background-color: #F1F5F9;
+    background-color: #E2E8F0;
     width: 100%;
+    margin-block: 4px;
   }
 
-  /* 01 — Headquarters Identity Strip */
-  .cs-mobile-hq-strip {
-    background: #FAFAFA;
-    border: 1px solid #E2E8F0;
-    border-radius: 4px;
-    padding: 14px 16px;
+  /* 01 — Institutional Header */
+  .cs-mobile-inst-header {
     display: flex;
     flex-direction: column;
     gap: 4px;
   }
 
-  .cs-mobile-hq-header {
+  .cs-mobile-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #64748B;
+    text-transform: uppercase;
+  }
+
+  .cs-mobile-inst-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0F172A;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  .cs-mobile-inst-tagline {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #64748B;
+    margin: 0;
+    letter-spacing: 0.04em;
+  }
+
+  /* 02 — HQ Identity Strip */
+  .cs-mobile-hq-identity-strip {
+    background: #FAFAFA;
+    border: 1px solid #E2E8F0;
+    border-radius: 4px;
+    padding: 14px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
 
-  .cs-mobile-hq-tag {
-    font-size: 10px;
+  .cs-mobile-hq-loc {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cs-mobile-hq-label {
+    font-size: 9px;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     color: #64748B;
     text-transform: uppercase;
   }
 
-  .cs-mobile-hq-status {
-    font-size: 10px;
+  .cs-mobile-hq-city {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0F172A;
+    margin: 0;
+    line-height: 1.1;
+  }
+
+  .cs-mobile-hq-state {
+    font-size: 11px;
     font-weight: 700;
-    color: #F57C00;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    color: #475569;
+    margin: 0;
     letter-spacing: 0.05em;
   }
 
-  .cs-mobile-dot {
+  .cs-mobile-hq-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    padding: 6px 10px;
+    border-radius: 2px;
+  }
+
+  .cs-mobile-dot-restrained {
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background-color: #F57C00;
-    display: inline-block;
   }
 
-  .cs-mobile-hq-title {
-    font-size: 16px;
+  .cs-mobile-status-text {
+    font-size: 10px;
     font-weight: 800;
     color: #0F172A;
-    margin: 0;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.08em;
   }
 
-  .cs-mobile-hq-sub {
-    font-size: 12px;
-    font-weight: 600;
-    color: #475569;
-    margin: 0;
-  }
-
-  /* 02 — Direct Quick Contact Buttons */
-  .cs-mobile-quick-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .cs-mobile-quick-btn {
+  /* 03 — Contact Dossier */
+  .cs-mobile-dossier {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    background: #FFFFFF;
+    flex-direction: column;
+    gap: 0;
     border: 1px solid #E2E8F0;
     border-radius: 4px;
-    text-decoration: none;
-    transition: all 0.2s ease;
+    background: #FFFFFF;
+    overflow: hidden;
   }
 
-  .cs-mobile-quick-btn:active {
-    background: #F8FAFC;
-    transform: scale(0.98);
+  .cs-mobile-dossier-heading {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: #64748B;
+    background: #FAFAFA;
+    padding: 10px 14px;
+    border-bottom: 1px solid #E2E8F0;
   }
 
-  /* 03 — Contact Channels Rows */
-  .cs-mobile-contact-rows {
+  .cs-mobile-dossier-row {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .cs-mobile-contact-row {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding-bottom: 8px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px;
     border-bottom: 1px solid #F1F5F9;
-    height: 52px;
-    justify-content: center;
+    text-decoration: none;
+    min-height: 58px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
   }
 
-  .cs-mobile-row-label {
+  .cs-mobile-dossier-row:last-child {
+    border-bottom: none;
+  }
+
+  .cs-mobile-dossier-row:active {
+    background-color: #FAFAFA;
+  }
+
+  .cs-mobile-dossier-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cs-mobile-dossier-cat {
     font-size: 9.5px;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -159,24 +205,45 @@
     text-transform: uppercase;
   }
 
-  .cs-mobile-row-link {
+  .cs-mobile-dossier-val {
     font-size: 13.5px;
     font-weight: 600;
     color: #0F172A;
-    text-decoration: none;
+    line-height: 1.35;
+    word-break: break-word;
+  }
+
+  .cs-mobile-arrow {
+    font-size: 14px;
+    font-weight: 700;
+    color: #94A3B8;
+    transition: transform 0.2s ease, color 0.2s ease;
+    margin-left: 8px;
+  }
+
+  .cs-mobile-dossier-row:active .cs-mobile-arrow {
+    transform: translateX(4px);
+    color: #F57C00;
+  }
+
+  /* WhatsApp Featured Row in Institutional Palette */
+  .cs-mobile-dossier-row.whatsapp-featured {
+    background-color: #FFFDFB;
+    border-left: 3px solid #F57C00;
   }
 
   /* Collapsible HQ Details */
   .cs-mobile-collapsible-hq {
     display: flex;
     flex-direction: column;
+    margin-top: 4px;
   }
 
   .cs-mobile-accordion-btn {
     background: transparent;
     border: none;
     color: #F57C00;
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 700;
     padding: 4px 0;
     text-align: left;
@@ -188,11 +255,11 @@
     border: 1px solid #E2E8F0;
     border-radius: 4px;
     padding: 12px;
-    margin-top: 8px;
+    margin-top: 6px;
     overflow: hidden;
   }
 
-  /* 04 — Compact Map Box (Max Height ~150px) */
+  /* Compact Map Module (Height ~140px) */
   .cs-mobile-map-box {
     display: flex;
     flex-direction: column;
@@ -233,7 +300,7 @@
     margin-top: 4px;
   }
 
-  /* 05 — Partnership Inquiry & 2-Stage Form */
+  /* Partnership Inquiry Box */
   .cs-mobile-inquiry-box {
     display: flex;
     flex-direction: column;
@@ -294,5 +361,38 @@
   .cs-form-input:focus, .cs-form-select:focus, .cs-form-textarea:focus {
     outline: none;
     border-color: #F57C00;
+  }
+
+  /* 06 — Compact Headquarters Signature Seal */
+  .cs-mobile-signature-seal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+    padding-block: 16px 8px;
+    border-top: 1px solid #E2E8F0;
+  }
+
+  .cs-mobile-seal-title {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: #0F172A;
+  }
+
+  .cs-mobile-seal-loc {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #64748B;
+  }
+
+  .cs-mobile-seal-motto {
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: #F57C00;
+    margin-top: 2px;
   }
 }

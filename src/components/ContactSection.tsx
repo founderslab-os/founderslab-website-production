@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, CheckCircle2, Phone, MessageSquare, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Mail, Phone, MessageSquare, ExternalLink } from 'lucide-react';
 import './ContactSection.css';
 import './ContactSection.mobile.css';
 import './Contact.mobile.css';
@@ -53,66 +53,86 @@ export const ContactSection: React.FC = () => {
         {/* MOBILE DEDICATED INSTITUTIONAL COMPOSITION (<768px) */}
         <div className="cs-mobile-wrapper md:hidden">
           
-          {/* 01 — Headquarters Identity Strip */}
-          <div className="cs-mobile-hq-strip">
-            <div className="cs-mobile-hq-header">
-              <span className="cs-mobile-hq-tag">NATIONAL HEADQUARTERS</span>
-              <div className="cs-mobile-hq-status">
-                <span className="cs-mobile-dot"></span> HQ ACTIVE
-              </div>
-            </div>
-            <h3 className="cs-mobile-hq-title">FOUNDERSLAB SECRETARIAT</h3>
-            <p className="cs-mobile-hq-sub">HYDERABAD • TELANGANA, INDIA</p>
+          {/* 01 — Institutional Header */}
+          <div className="cs-mobile-inst-header">
+            <span className="cs-mobile-eyebrow">NATIONAL HEADQUARTERS</span>
+            <h3 className="cs-mobile-inst-title">FoundersLab Secretariat</h3>
+            <p className="cs-mobile-inst-tagline">Building Enterprises • Building the Nation</p>
           </div>
 
-          <div className="cs-mobile-divider"></div>
+          <div className="cs-mobile-rule"></div>
 
-          {/* 02 — Direct Quick Contact Buttons */}
-          <div className="cs-mobile-quick-actions">
-            <a href="tel:+919010207999" className="cs-mobile-quick-btn call">
-              <Phone className="w-4 h-4 text-[#F57C00]" />
-              <div className="flex flex-col">
-                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">CALL DIRECTLY</span>
-                <span className="text-xs font-bold text-slate-900">+91 9010207999</span>
+          {/* 02 — HQ Identity Strip */}
+          <div className="cs-mobile-hq-identity-strip">
+            <div className="cs-mobile-hq-loc">
+              <span className="cs-mobile-hq-label">NATIONAL HEADQUARTERS</span>
+              <h4 className="cs-mobile-hq-city">HYDERABAD</h4>
+              <p className="cs-mobile-hq-state">TELANGANA, INDIA</p>
+            </div>
+            <div className="cs-mobile-hq-badge">
+              <span className="cs-mobile-dot-restrained"></span>
+              <span className="cs-mobile-status-text">HQ ACTIVE</span>
+            </div>
+          </div>
+
+          <div className="cs-mobile-rule"></div>
+
+          {/* 03 — Contact Dossier */}
+          <div className="cs-mobile-dossier">
+            <span className="cs-mobile-dossier-heading">CONTACT THE SECRETARIAT</span>
+
+            {/* Email Row */}
+            <a href="mailto:admin@founderslab.co.in" className="cs-mobile-dossier-row">
+              <div className="cs-mobile-dossier-left">
+                <Mail className="w-4 h-4 text-slate-500 shrink-0" />
+                <div className="flex flex-col">
+                  <span className="cs-mobile-dossier-cat">OFFICIAL EMAIL</span>
+                  <span className="cs-mobile-dossier-val">admin@founderslab.co.in</span>
+                </div>
               </div>
+              <span className="cs-mobile-arrow">→</span>
             </a>
 
+            {/* Phone Row */}
+            <a href="tel:+919010207999" className="cs-mobile-dossier-row">
+              <div className="cs-mobile-dossier-left">
+                <Phone className="w-4 h-4 text-slate-500 shrink-0" />
+                <div className="flex flex-col">
+                  <span className="cs-mobile-dossier-cat">DIRECT ADVISORY PHONE</span>
+                  <span className="cs-mobile-dossier-val">+91 9010207999</span>
+                </div>
+              </div>
+              <span className="cs-mobile-arrow">→</span>
+            </a>
+
+            {/* WhatsApp Row (Enhanced Visual Emphasis within Institutional System) */}
             <a 
-              href="https://wa.me/919010207999?text=Hello%20FoundersLab%20Team%2C%20I%20would%20like%20to%20inquire%20about%20building%20an%20Innovation%20Ecosystem."
+              href="https://wa.me/919010207999?text=Hello%20FoundersLab%20Team%2C%20I%20would%20like%20to%20inquire%20about%20building%20an%20Innovation%20Ecosystem." 
               target="_blank" 
-              rel="noopener noreferrer"
-              className="cs-mobile-quick-btn whatsapp"
+              rel="noopener noreferrer" 
+              className="cs-mobile-dossier-row whatsapp-featured"
             >
-              <MessageSquare className="w-4 h-4 text-emerald-600" />
-              <div className="flex flex-col">
-                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">WHATSAPP</span>
-                <span className="text-xs font-bold text-slate-900">CONNECT →</span>
+              <div className="cs-mobile-dossier-left">
+                <MessageSquare className="w-4 h-4 text-[#F57C00] shrink-0" />
+                <div className="flex flex-col">
+                  <span className="cs-mobile-dossier-cat text-[#F57C00]">WHATSAPP</span>
+                  <span className="cs-mobile-dossier-val font-bold">Connect via WhatsApp (+91 9010207999)</span>
+                </div>
               </div>
+              <span className="cs-mobile-arrow text-[#F57C00]">→</span>
             </a>
-          </div>
 
-          {/* 03 — Compact Contact Channels Rows */}
-          <div className="cs-mobile-contact-rows">
-            <div className="cs-mobile-contact-row">
-              <span className="cs-mobile-row-label">OFFICIAL EMAIL</span>
-              <a href="mailto:admin@founderslab.co.in" className="cs-mobile-row-link">
-                admin@founderslab.co.in →
-              </a>
-            </div>
-
-            <div className="cs-mobile-contact-row">
-              <span className="cs-mobile-row-label">DIRECT ADVISORY PHONE</span>
-              <a href="tel:+919010207999" className="cs-mobile-row-link">
-                +91 9010207999 →
-              </a>
-            </div>
-
-            <div className="cs-mobile-contact-row">
-              <span className="cs-mobile-row-label">WEB PORTAL</span>
-              <a href="http://www.founderslab.co.in" target="_blank" rel="noopener noreferrer" className="cs-mobile-row-link">
-                www.founderslab.co.in →
-              </a>
-            </div>
+            {/* Web Portal Row */}
+            <a href="http://www.founderslab.co.in" target="_blank" rel="noopener noreferrer" className="cs-mobile-dossier-row">
+              <div className="cs-mobile-dossier-left">
+                <ExternalLink className="w-4 h-4 text-slate-500 shrink-0" />
+                <div className="flex flex-col">
+                  <span className="cs-mobile-dossier-cat">OFFICIAL WEB PORTAL</span>
+                  <span className="cs-mobile-dossier-val">www.founderslab.co.in</span>
+                </div>
+              </div>
+              <span className="cs-mobile-arrow">→</span>
+            </a>
           </div>
 
           {/* Collapsible HQ Details */}
@@ -135,17 +155,17 @@ export const ContactSection: React.FC = () => {
                   <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">FoundersLab Secretariat</h4>
                   <p className="text-xs italic text-slate-600 mb-2">Building Enterprises • Building the Nation</p>
                   <p className="text-xs text-slate-700 leading-relaxed">
-                    National Innovation & Incubation Headquarters<br />
-                    Hyderabad • Telangana • 500001, India
+                    Location & HQ: Hyderabad, Telangana, India<br />
+                    FoundersLab Secretariat • Hyderabad • Telangana • 500001
                   </p>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          <div className="cs-mobile-divider"></div>
+          <div className="cs-mobile-rule"></div>
 
-          {/* 04 — Compact Map Preview (Height ~150px) */}
+          {/* 04 — Compact Map Module (Height ~140px) */}
           <div className="cs-mobile-map-box">
             <div className="cs-mobile-map-frame">
               <iframe
@@ -168,7 +188,7 @@ export const ContactSection: React.FC = () => {
             </div>
           </div>
 
-          <div className="cs-mobile-divider"></div>
+          <div className="cs-mobile-rule"></div>
 
           {/* 05 — Progressive Disclosure Partnership Inquiry Form */}
           <div className="cs-mobile-inquiry-box">
@@ -338,6 +358,15 @@ export const ContactSection: React.FC = () => {
                 </form>
               </motion.div>
             )}
+          </div>
+
+          <div className="cs-mobile-rule"></div>
+
+          {/* 06 — Compact Headquarters Signature Seal */}
+          <div className="cs-mobile-signature-seal">
+            <span className="cs-mobile-seal-title">FOUNDERSLAB SECRETARIAT</span>
+            <span className="cs-mobile-seal-loc">HYDERABAD • TELANGANA • INDIA</span>
+            <span className="cs-mobile-seal-motto">BUILDING ENTERPRISES • BUILDING THE NATION</span>
           </div>
 
         </div>
